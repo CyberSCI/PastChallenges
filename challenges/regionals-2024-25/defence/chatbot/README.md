@@ -1,6 +1,6 @@
 # QA Chatbot Defence Challenge
 
-# Author: Trent Holmes (trent.holmes@sympatico.ca)
+# Author: Trent Holmes 
 
 ## CTFD Description
 
@@ -110,45 +110,3 @@ class State(TypedDict):
 +   if username != config.get("configurable", {}).get("username"):
 +        return "You are not allowed to access information for other users"
 ```
-
-## Setup steps
-
-IP: `10.0.2.X`
-
-First package up the service code and put it onto the machine:
-> cd service
-
-> tar -cvf ../chat.tar .
-
-> scp ../chat.tar vpcadmin@{IP}:/home/vpcadmin/
-
-Now ssh onto the machine and set it up
-> ssh vpcadmin@{IP}
-
-Install docker with https://get.docker.com/
-
-> curl -fsSL https://get.docker.com -o install-docker.sh
-
-> sh install-docker.sh --dry-run
-
-> sh install-docker.sh
-
-> rm install-docker.sh
-
-Now reboot `sudo reboot`
-
-> ssh vpcadmin@{IP}
-
-> tar -xvf chat.tar
-
-> sudo docker compose up -d
-
-Great the service is now running!
-
-> cat /dev/null > ~/.bash_history && history -c && exit
-
-## Other
-
-Check instance details:
-
-> curl -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2017-08-01"
