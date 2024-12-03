@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset=UTF-8>
+        <link rel="stylesheet" href="/static/styles.css">
+        <title>Central Electoral Commission: Voter Registry</title>
+    </head>
+    <body>
+        <img class="center" src="/static/logo.png">
+        <hr>
+        {% if user == None %}
+        <a class="text-right" href="/">Login</a>
+        {% else %}
+        <span class="text-right"><span class="bold">Welcome {{ user }}!</span>&nbsp;<a href="/">Logout</a></span>
+        {% endif %}
+        <h2 class="text-center">Voter Address Update</h2>
+
+        <p class="text-center">Use this page to verify your details and update your street address.</p>
+        <br>
+        <form method="POST" action="/voter/{{ id }}">
+            <table class="inp">
+              <tr>
+                <td align="right" class="inp"><span class="bold">Voter ID:</span></td>
+                <td align="left" class="inp">{{ id }}</td>
+              </tr>
+              <tr>
+                <td align="right" class="inp"><span class="bold">Name:</span></td>
+                <td align="left" class="inp">{{ name }}</td>
+              </tr>
+              <tr>
+                <td align="right" class="inp"><span class="bold">Date of Birth:</span></td>
+                <td align="left" class="inp">{{ dob }}</td>
+              </tr>
+              <tr>
+                <td align="right" class="inp"><span class="bold"><label for="address">Address: </label></span></td>
+                <td align="left" class="inp"><input type="address" name="address" size=30 value="{{ address }}"></td>
+              </tr>
+              <tr>
+                <td align="center" colspan="2" class="inp"><input type="submit" value="Save"></td>
+              </tr>
+            </table>
+        </form>
+    </body>
+</html>

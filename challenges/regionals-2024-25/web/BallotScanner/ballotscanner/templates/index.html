@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}Scan your ballot{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="navbar">
+        <nav class="navigation">
+            <h2>Scan Ballot</h2></li>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="wrap">
+            <h3>
+                Select the file below to scan your ballots.
+            </h3>
+            <input type="file" name="ballotimage" id="ballotimage" accept="image/*">
+            <button id="fileselect">Select image...</button>
+            <button id="submit" disabled>Scan</button>
+        </div>
+        <div class="wrap">
+            <p class="note">
+                Ballots must feature a valid barcode for this system's configured voting precinct.
+                A valid example ballot is available <a href="{{ url_for('static', filename='samples/ballot_sample.pdf') }}">here</a>.
+            </p>
+        </div>
+        <div class="wrap hidden" id="waiting">
+            <p>
+                Processing...
+            </p>
+        </div>
+        <p id="messages"></p>
+    </div>
+</div>
+{% endblock %}

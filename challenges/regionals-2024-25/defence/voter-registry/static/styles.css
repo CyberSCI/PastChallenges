@@ -1,0 +1,16 @@
+body { font-family: Arial, Helvetica, sans-serif; background-color: lightgreen; }
+table.voters { border-collapse: collapse; width: 50%; margin-left: auto; margin-right: auto; }
+th.voters { padding: 8px; color: white; background-color: black; }
+td.voters { text-align: left; padding: 8px; }
+hr { width: 50%; }
+
+table.inp { border-collapse: collapse; width: 30%; margin-left: auto; margin-right: auto; }
+td.inp { padding: 8px; }
+
+
+.center  { display: block; margin-left: auto; margin-right: auto; }			
+.chart-center { display: flex; justify-content: center; }
+.text-center { text-align: center; }
+.text-right { display: flex; justify-content: right; width: 80%; }
+.bold { font-weight: bold; }
+.italics { font-style: italic; }

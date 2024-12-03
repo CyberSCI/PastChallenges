@@ -1,0 +1,13 @@
+services:
+  candidate_registry:
+    container_name: candidate_registry
+    build: .
+    restart: unless-stopped
+    ports:
+      - "10001:1337"
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "127.0.0.1", "1337"]
+      start_period: 5s
+      interval: 180s
+      timeout: 10s
+      retries: 3

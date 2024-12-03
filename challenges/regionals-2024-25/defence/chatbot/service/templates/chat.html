@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Val Verde Q/A Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+      #chatbox {
+        margin: 20px auto;
+        width: 60%;
+        max-width: 800px;
+        padding: 20px;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+      #userInput {
+        margin: 20px auto;
+        width: 60%;
+        max-width: 800px;
+        display: flex;
+        align-items: center;
+      }
+      #textInput {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #333;
+        border-radius: 4px;
+        font-size: 16px;
+        margin-right: 10px;
+        background-color: #333;
+        color: #e0e0e0;
+      }
+      .userText,
+      .botText {
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 10px 0;
+      }
+      .userText span {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        display: inline-block;
+      }
+      .botText span {
+        background-color: #333;
+        color: #e0e0e0;
+        padding: 10px;
+        border-radius: 4px;
+        display: inline-block;
+      }
+      .boxed {
+        margin: 20px auto;
+        width: 80%;
+        padding: 20px;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+      h1, h4 {
+        text-align: center;
+        color: #e0e0e0;
+      }
+      img {
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1><b>Val Verde Central Electoral Commission - QA Chatbot</b></h1>
+      <h4><b>Get answers to all your election questions!</b></h4>
+      <p>
+        <img
+          src="https://static.wikia.nocookie.net/val-verde/images/c/cd/Flag1.gif"
+          alt="val verde flag"
+          height="210"
+          width="220"
+        />
+      </p>
+      <div class="boxed">
+        <div>
+          <div id="chatbox">
+            <p class="botText">
+              {% if isCandidate == "true" or isCandidate == "True" %}
+              <span>Hi candidate {{ name }}! I'm your Election Assistant! Feel free to ask me to review/edit your platform!</span>
+              {% else %}
+              <span>Hi {{ name }}! I'm your Election Assistant! You can ask me about the candidates and their platforms! Or you can ask about where you can vote!</span>
+              {% endif %}
+            </p>
+          </div>
+          <div id="userInput">
+            <input
+              id="textInput"
+              type="text"
+              name="msg"
+              placeholder="Type your message here..."
+            />
+          </div>
+        </div>
+        <script>
+          function getBotResponse() {
+            var rawText = "{{ name }}: " + $("#textInput").val();
+            var userHtml =
+              '<p class="userText"><span>' + rawText + "</span></p>";
+            $("#textInput").val("");
+            $("#chatbox").append(userHtml);
+            document
+              .getElementById("userInput")
+              .scrollIntoView({ block: "start", behavior: "smooth" });
+            $.get("/message", { msg: rawText }).done(function (data) {
+              var botHtml = '<p class="botText"><span>' + data + "</span></p>";
+              $("#chatbox").append(botHtml);
+              document
+                .getElementById("userInput")
+                .scrollIntoView({ block: "start", behavior: "smooth" });
+            });
+          }
+          $("#textInput").keypress(function (e) {
+            if (e.which == 13) {
+              getBotResponse();
+            }
+          });
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

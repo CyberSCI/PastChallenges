@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset=UTF-8>
+        <link rel="stylesheet" href="/static/styles.css">
+        <title>Central Electoral Commission: Voter Registry</title>
+    </head>
+    <body>
+        <img class="center" src="/static/logo.png">
+        <h2 class="text-center">Welcome to Central Electoral Commission Voter Registry!</h2>
+        <hr>
+        <br>
+        <p class="text-center bold">To enter, please scan the QR code from your voter registration notice.</p>
+        <p class="text-center italics">(Administrators: scan your badge)</p>
+        <br>
+        <form class="text-center" method="POST" action="/" enctype="multipart/form-data">
+            <input type="file" name="qr"> <input type="submit" value="Enter">
+        </form>
+        <br>
+    </body>
+</html>

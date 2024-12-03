@@ -1,0 +1,120 @@
+Progress: 0.00%
+Progress: 1.05%
+Progress: 2.11%
+Progress: 3.16%
+Progress: 4.21%
+Progress: 5.26%
+Progress: 6.32%
+Progress: 7.37%
+Progress: 8.42%
+Progress: 9.47%
+Progress: 10.53%
+Progress: 11.58%
+Progress: 12.63%
+Progress: 13.68%
+Progress: 14.74%
+Found plaintext block for ct[11]: eed_
+Progress: 15.79%
+Progress: 16.84%
+Progress: 17.89%
+Found plaintext block for ct[6]: here
+Found plaintext block for ct[15]: he e
+Progress: 18.95%
+Found plaintext block for ct[3]: iden
+Found plaintext block for ct[17]: ion 
+Found plaintext block for ct[18]: is u
+Progress: 20.00%
+Progress: 21.05%
+Progress: 22.11%
+Found plaintext block for ct[16]: lect
+Progress: 23.16%
+Progress: 24.21%
+Found plaintext block for ct[19]: nder
+Found plaintext block for ct[10]: no_n
+Progress: 25.26%
+Found plaintext block for ct[13]: orry
+Found plaintext block for ct[5]: ow t
+Progress: 26.32%
+Progress: 27.37%
+Progress: 28.42%
+Progress: 29.47%
+Found plaintext block for ct[9]: sci{
+Progress: 30.53%
+Found plaintext block for ct[1]: the 
+Found plaintext block for ct[12]: to_w
+Found plaintext block for ct[21]: trol
+Found plaintext block for ct[4]: t kn
+Progress: 31.58%
+Progress: 32.63%
+Progress: 33.68%
+Progress: 34.74%
+Progress: 35.79%
+Found plaintext block for ct[8]: yber
+Progress: 36.84%
+Progress: 37.89%
+Progress: 38.95%
+Progress: 40.00%
+Progress: 41.05%
+Progress: 42.11%
+Progress: 43.16%
+Progress: 44.21%
+Progress: 45.26%
+Progress: 46.32%
+Progress: 47.37%
+Progress: 48.42%
+Progress: 49.47%
+Found plaintext block for ct[0]: Let 
+Progress: 50.53%
+Progress: 51.58%
+Progress: 52.63%
+Progress: 53.68%
+Found plaintext block for ct[2]: Pres
+Progress: 54.74%
+Progress: 55.79%
+Progress: 56.84%
+Progress: 57.89%
+Progress: 58.95%
+Progress: 60.00%
+Progress: 61.05%
+Progress: 62.11%
+Progress: 63.16%
+Progress: 64.21%
+Progress: 65.26%
+Progress: 66.32%
+Progress: 67.37%
+Progress: 68.42%
+Progress: 69.47%
+Progress: 70.53%
+Progress: 71.58%
+Found plaintext block for ct[7]: 's c
+Progress: 72.63%
+Progress: 73.68%
+Progress: 74.74%
+Progress: 75.79%
+Progress: 76.84%
+Progress: 77.89%
+Progress: 78.95%
+Progress: 80.00%
+Progress: 81.05%
+Progress: 82.11%
+Progress: 83.16%
+Progress: 84.21%
+Progress: 85.26%
+Progress: 86.32%
+Progress: 87.37%
+Progress: 88.42%
+Progress: 89.47%
+Progress: 90.53%
+Progress: 91.58%
+Progress: 92.63%
+Progress: 93.68%
+Progress: 94.74%
+Found plaintext block for ct[14]: }. T
+Progress: 97.89%
+Progress: 98.95%
+Found plaintext block for ct[20]:  con
+Plaintext: Let the President know there's cybersci{no_need_to_worry}. The election is under control
+Done.
+
+Start time: Sun Nov 10 18:49:50 AST 2024
+End time: Sun Nov 10 18:55:50 AST 2024

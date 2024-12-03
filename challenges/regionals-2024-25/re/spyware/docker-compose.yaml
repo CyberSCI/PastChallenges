@@ -1,0 +1,7 @@
+services:
+  c2-server:
+    build: .
+    container_name: c2-server
+    ports:
+      - "51829:51829"
+    restart: always

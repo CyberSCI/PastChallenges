@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+<h2>{% block title %}Scanner Device Administration{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="navbar">
+        <nav class="navigation">
+            <ul>
+                <li>Administration</li>
+            </ul>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="wrap">
+            <h3>Status</h3>
+            <p>Precinct: <b>{{precinct}}</b></p>
+            <p>Ballot machine ID: <b>{{machineid}}</b></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for rec in votes %}
+                    <tr>
+                        <td>{{rec['vote']}}</td>
+                        <td>{{rec['vote_count']}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p id="messages"></p>
+    </div>
+</div>
+{% endblock %}
