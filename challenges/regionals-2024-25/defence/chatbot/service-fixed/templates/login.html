@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Val Verde Q/A Chatbot</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .container {
+            width: 60%;
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #333;
+            color: #e0e0e0;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #registrationSection {
+            display: none;
+        }
+        h1, h4 {
+            text-align: center;
+            color: #e0e0e0;
+        }
+        img {
+            display: block;
+            margin: 0 auto;
+        }
+        .large-input {
+            width: 100%;
+            height: 100px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            resize: vertical;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1><b>Val Verde Central Electoral Commission - QA Chatbot</b></h1>
+    <h4><b>Get answers to all your election questions!</b></h4>
+    <p>
+      <img
+        src="https://static.wikia.nocookie.net/val-verde/images/c/cd/Flag1.gif"
+        alt="val verde flag"
+        height="210"
+        width="220"
+      />
+    </p>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <button id="showRegisterForm">Register</button>
+        <div id="registrationSection">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="text" id="registerUsername" placeholder="Username" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <input type="text" id="registerPhone" placeholder="Phone" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+
+                <div class="checkbox-group">
+                    <label for="candidate">Are you a candidate?:</label>
+                    <input type="checkbox" id="candidate" name="candidate">
+                </div>
+
+                <textarea id="platform" name="platform" class="large-input" placeholder="Your platform" style="display: none;"></textarea>
+
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var username = document.getElementById('loginUsername').value;
+            var password = document.getElementById('loginPassword').value;
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/chat'; // Redirect to chat page on success
+                } else {
+                    response.text().then(text => alert('Login Failed: ' + text));
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var username = document.getElementById('registerUsername').value;
+            var password = document.getElementById('registerPassword').value;
+            var candidate = document.getElementById('candidate').checked;
+            var phone = document.getElementById('registerPhone').value;
+            var email = document.getElementById('registerEmail').value;
+            var platform = document.getElementById('platform').value;
+            fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&candidate=${encodeURIComponent(candidate)}&phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&platform=${encodeURIComponent(platform)}`
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/chat'; // Redirect to chat page on success
+                } else {
+                    response.text().then(text => alert('Registration Failed: ' + text));
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('showRegisterForm').addEventListener('click', function() {
+            var registrationSection = document.getElementById('registrationSection');
+            registrationSection.style.display = 'block'; // Always show the registration form
+            this.style.display = 'none'; // Hide the register button
+        });
+
+        document.getElementById('candidate').addEventListener('change', function() {
+            var platformInput = document.getElementById('platform');
+            if (this.checked) {
+                platformInput.style.display = 'block'; // Show the platform input
+            } else {
+                platformInput.style.display = 'none'; // Hide the platform input
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset=UTF-8>
+        <link rel="stylesheet" href="/static/styles.css">
+        <title>Central Electoral Commission: Voter Registry</title>
+    </head>
+    <body>
+        <img class="center" src="/static/logo.png">
+        <hr>
+        {% if user == None %}
+        <a class="text-right" href="/">Login</a>
+        {% else %}
+        <span class="text-right"><span class="bold">Welcome {{ user }}!</span>&nbsp;<a href="/">Logout</a></span>
+        {% endif %}
+        <h2 class="text-center">Voter List</h2>
+        <br>
+        <p class="text-center"><a href="/add">Add New Voter</a></p>
+        <table class="voters">
+            <tr class="voters"><th class="voters">Voter ID</th><th class="voters">Name</th><th class="voters">Date of Birth</th><th class="voters">Address</th></tr>
+            {% for voter in voters %}
+            <tr class="voters"><td class="voters">{{ voter.get_id() }}</td><td class="voters"><a href="/voter/{{ voter.get_id() }}">{{ voter.get_name() }}</a></td><td class="voters">{{ voter.get_dob() }}</td><td class="voters">{{ voter.get_address() }}</td></tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

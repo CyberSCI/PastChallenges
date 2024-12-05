@@ -1,0 +1,8 @@
+# Walkthrough
+- Parse QR code to CyberChef
+- Base64
+- Vigenere Decode with the key, `ValVerde`
+- XOR with the key, `1996` UTF-8
+
+## Reference
+[CyberChef - encrypted_mfa_solution](https://gchq.github.io/CyberChef/#recipe=Parse_QR_Code(false)From_Base64('A-Za-z0-9%2B/%3D',true,false)Vigen%C3%A8re_Decode('ValVerde')XOR(%7B'option':'UTF8','string':'1996'%7D,'Standard',false)&input=iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAAAAAAb2I2mAAACu0lEQVR42u3bQXbCMAwFQO5/6XbZTev8bwOx6WRFISWMF3qyJD%2B%2BPv16EBISEhISEhISEhISEhISEp4rfFxfP/eNvyB9L31acB8hIeFBwr%2BD0y%2B/ciwc/8rJ56afEhISbi8MImgVMlPw%2BLldXCckJDxb2H/62y3jRZhcd0JCws8SpqnbclJISEj4qcLA3xehguibPu3VO2BCQsIXC6ua99te3VbVJyQkfLYwbpFf98pWtnfj4PmWSQVCQsLXCas6UJBM9cWqNIw%2BMy8lJCS8Sxi0v4I/%2B61mujDJxpGQkHBPYVBSSueE0rJVP0AUF84ICQl3Fwal6LRKlA4Gjb8%2BSAoJCQnPEC6P%2BaQ5WJrsBdORhISERwr7tGpypCdYtslSFiEh4fbCtHsfMNPlCLaa1bIREhJuL0yTuMmS9fK%2BLy2uExISbioMwBe987lxw3Sx0nUiJCTcWRj/c7Pl6/8taMoFX0pISLipcDK0ph39yQ5eGsgJCQmPFK7kTGkhvRpN6raQhISEewqrPlbafF9endlJa0JCwj2Fya7reh563K2brKZXOEJCwp2FK338oNKdFqsmO3OEhIRnCKsnjdek75r1hamlHTAhIeFdwnSQZ5yDpWcrVs5brE9BExIS3ioMNon9zWmGViVshISERwpTQ9AXmyxo95F7vX9ISEh4lzCYQX5OwhYsZfBcQkLCg4R9/KrOggUlqjSgJn1AQkLCPYXpNY6RaYstSACX9q%2BEhIR7Ch/XV1ICCjKqpsVWrRghIeEZwrQwFXe5Fo5V/Pne%2BnkLQkLC%2B4XpbGI8krwQkcebxNn%2BISEh4e7CPreqflsVhwkJCf%2BTMG2TBUuUBMrl/SEhIeH9wuDTVFOdxkjfe8sOmJCQ8HXCvuZdHavoX02ODRESEm4q/KiLkJCQkJCQkJCQkJCQkJCQ8IzrG5wpDyP0poo/AAAAAElFTkSuQmCC)

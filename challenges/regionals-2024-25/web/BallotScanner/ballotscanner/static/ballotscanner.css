@@ -1,0 +1,101 @@
+.left               { text-align: left; }
+.right              { text-align: right; }
+
+.footer {
+    margin-top:         2rem;
+    border-radius:      7px;
+    border:             1px solid #34373c;
+    border-top:         0.1rem solid #1b1c1d;
+    font-size:          1rem;
+    text-align:         center;
+    background-color: #34373c;
+    line-height:        3rem;
+    vertical-align:     middle;
+}
+
+.navbar {
+    margin-bottom:  2rem;
+    font-weight:    bold;
+    border-radius:  7px;
+    border:         1px solid #34373c;
+}
+
+.navbar nav ul {
+    list-style-type:    none;
+    background-color: #34373c;
+    display:            block;
+    line-height:        3rem;
+    margin-bottom:      0px;
+    z-index:            50;
+}
+
+.navbar nav ul li {
+    display:            inline-block;
+    margin-bottom:      0px;
+    margin-left:        1rem;
+    vertical-align:     middle;
+}
+
+.navbar nav ul li a:hover {
+    background-color:   #f2f2f2;
+    color:              #34373c;
+}
+
+.navbar nav ul li a {
+    background-color:   #34373c;
+    color:              #f2f2f2;
+    padding:            1rem;
+    text-decoration:    none;
+    font-size:          2rem;
+    display:            block;
+}
+
+.navbar ul li.right {
+    position:           relative;
+    float:              right;
+}
+
+.navbar .home {
+    font-size: 3rem;
+}
+
+.response {
+    max-width:          90rem;
+    font-family:        monospace;
+    font-size:          1.5rem;
+    min-height:         5rem;
+}
+
+.response {
+    margin:             3rem auto;
+    color:              #f2f2f2;
+    background-color:   #34373c;
+    border:             1px solid #1b1c1d;
+    border-radius:      7px;
+    padding:            1rem;
+}
+
+
+.title {
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+input { color: #f2f2f2; }
+
+.hidden {
+    display: none;
+}
+
+.error::before { content: "⛔ "; }
+.error::after { content: " ⛔"; }
+.warn::before  { content: "⚠️ "; }
+.warn::after  { content: " ⚠️"; }
+
+#messages { font-weight: bold; }
+
+#ballotimage { display: none; }
+
+.navigation > h2 { margin-bottom: 0px; font-weight: bold; padding-top: 0.5rem; padding-left: 1.0rem; }
+p.note { margin-top: 1.5rem; }

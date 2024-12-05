@@ -1,0 +1,7 @@
+services:
+  voter-registry:
+    build: .
+    container_name: voter-registry
+    ports:
+      - "443:443"
+    restart: always

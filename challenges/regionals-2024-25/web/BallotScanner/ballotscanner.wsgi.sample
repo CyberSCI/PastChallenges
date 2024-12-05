@@ -1,0 +1,18 @@
+"""
+Add Environment variables to _ENV below
+"""
+_ENV = {
+    "SCANNER_PRECINCT": "65916",
+    "SCANNER_SERIAL":   "",
+    "TESTING_FLAG":     "",
+    "BALLOTCOUNT_FLAG": "",
+}
+
+import os
+_APP_PATH=os.path.dirname(__file__)
+
+for key in _ENV:
+    os.environ[key] = _ENV[key]
+
+from ballotscanner import create_app
+application = create_app()

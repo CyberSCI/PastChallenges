@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='milligram.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='milligram.dark2.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='ballotscanner.css') }}">
+        <title>BallotScanner :: {% block title %}{% endblock %}</title>
+        {#
+            This empty script tag is to stop flashes of unstyled content on Firefox. 
+            Yes it works. 🤷 See: https://bugzilla.mozilla.org/show_bug.cgi?id=1404468#c78
+        #}    
+        <script>/**/</script>
+        <script src="{{ url_for('static', filename='ballotscanner.js') }}" defer></script>
+    </head>
+    <body>
+        <section class="header">
+        {% block header %}{% endblock %}
+        </section>
+        <section class="content">
+            {% block content %}{% endblock %}
+        </section>
+        <section class="footer">
+            {% block footer %}{% endblock %}
+            <div class="copynotice">
+                Copyright notice would go here, 2024
+            </div>
+        </section>
+    </body>
+</html>

@@ -1,0 +1,29 @@
+services:
+  ollama:
+    image: ollama/ollama:0.3.13
+    ports:
+      - "11434:11434"
+    restart: always
+    volumes:
+      - type : bind
+        source: ./models
+        target: /models
+    environment:
+      - OLLAMA_MODELS=/models
+      - OLLAMA_DEBUG=1
+  setup-llm-model: # Just uses the cli to pull our llm model from the ollama container running
+    image: ollama/ollama:0.3.13
+    depends_on:
+      - ollama
+    entrypoint: /bin/ollama pull llama3.2:1b
+    environment:
+      - OLLAMA_HOST=ollama:11434
+      - OLLAMA_DEBUG=1
+    restart: "no"
+  chatbot:
+    build: .
+    ports:
+      - "80:80"
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=1

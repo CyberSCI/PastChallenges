@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset=UTF-8>
+        <style>
+            body { font-family: Arial, Helvetica, sans-serif; background-color: pink; }
+            .body-text { width: 80%; margin-left: auto; margin-right: auto; }
+            .center  { display: block; margin-left: auto; margin-right: auto; }            
+            .text-center { text-align: center; }
+            .intro  { text-align: center; font-size: x-large; color: purple;}
+            .reaction { text-align: center; font-size: x-large; color: red;}
+          </style>
+        <title>Cat Photo Exchange</title>
+    </head>
+    <body>
+        <img class="center" src="/static/logo.png">
+        <p class="intro">We can't get enough of cute cat photos!<br><br>
+        
+        Let's trade - you send us one and we will send you one right back! Meeooow!<br><br>
+        </p>
+
+        <form class="text-center" method="POST" action="" enctype="multipart/form-data">
+            <input type="file" name="file"> <input type="submit" value="Submit">
+        </form>
+        
+        {% if message is defined %}
+            <br><br>
+            <p class="reaction">
+            {{ message }}<br><br>
+            And here's one for you:
+            </p>
+        {% endif %}
+
+        {% if data is defined %}
+            <img class="center" src="data:image/jpeg;base64, {{ data }}" alt=""/>
+        {% endif %}
+    </body>
+</html>

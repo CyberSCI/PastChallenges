@@ -1,0 +1,22 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container form-signin">
+    <partial name="Shared/_Flashes"/>
+
+    <form method="post">
+        <h1 class="text-center mb-4">Please Login</h1>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input class="form-control" id="username" asp-for="Username">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" asp-for="Password">
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+</div>

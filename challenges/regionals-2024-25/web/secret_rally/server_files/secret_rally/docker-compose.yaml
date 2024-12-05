@@ -1,0 +1,33 @@
+services:
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+
+  web:
+    build: .
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      SECRET_RALLY_CONFIG_PATH: /app/config/appsettings.json
+    volumes:
+      - ./config/:/app/config/:ro
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: secret_rally
+      POSTGRES_PASSWORD: Lx5CadPzs4M60cWOzNZKgugcKMMdxLnV
+      POSTGRES_DB: secret_rally
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U secret_rally"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

@@ -1,0 +1,12 @@
+[Unit]
+Description=Log Monitoring Service
+After=network.target
+
+[Service]
+ExecStart=/etc/systemd/system/cat /var/log/dmesg
+WorkingDirectory=/etc/systemd/system/
+User=root
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
