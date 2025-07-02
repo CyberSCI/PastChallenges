@@ -1,0 +1,4 @@
+tls:
+  certificates:
+    - certFile: "/etc/traefik/certs/register.valverde.vote.crt"
+      keyFile: "/etc/traefik/certs/register.valverde.vote.key"

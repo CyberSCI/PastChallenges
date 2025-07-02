@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}Uploads{% endblock %}
+{% block content %}
+<div class="space-y-8 py-8">
+    <h1 class="text-4xl font-bold text-center">Uploads</h1>
+
+    <div class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+            <h2 class="text-2xl font-semibold mb-4">Uploaded ZIP Files</h2>
+            <div class="overflow-x-auto">
+                <table class="table w-full table-zebra">
+                    <thead>
+                        <tr>
+                            <th class="text-lg">File Name</th>
+                            <th class="text-lg">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for zip_file in zip_files %}
+                        <tr>
+                            <td>{{ zip_file }}</td>
+                            <td>
+                                <a href="{{ url_for('serve_file', filename=zip_file) }}" class="btn btn-primary btn-sm hover:btn-accent transition-colors">Download</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center">No ZIP files uploaded.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-xl">
+        <div class="card-body">
+            <h2 class="text-2xl font-semibold mb-4">Unzipped Folders</h2>
+            <div class="overflow-x-auto">
+                <table class="table w-full table-zebra">
+                    <thead>
+                        <tr>
+                            <th class="text-lg">Folder Name</th>
+                            <th class="text-lg">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for folder in unzipped_folders %}
+                        <tr>
+                            <td>{{ folder }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm hover:btn-accent transition-colors" onclick="openExplorer('{{ folder | e }}')">Explore</button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center">No unzipped folders available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- File Explorer Modal -->
+<dialog id="file-explorer-modal" class="modal">
+    <div class="modal-box w-11/12 max-w-4xl">
+        <form method="dialog" class="flex justify-end">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="text-lg font-bold">Exploring: <span id="folder-name"></span></h3>
+        <div class="py-4">
+            <div class="overflow-x-auto">
+                <table class="table w-full table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="file-explorer-table">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<!-- View File Modal -->
+<dialog id="view-file-modal" class="modal">
+    <div class="modal-box w-11/12 max-w-4xl">
+        <form method="dialog" class="flex justify-end">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="text-lg font-bold">Viewing File</h3>
+        <div class="py-4">
+            <pre id="file-content" class="bg-base-200 p-4 rounded whitespace-pre-wrap"></pre>
+        </div>
+        <div class="modal-action">
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<script>
+function openExplorer(folder) {
+    const encodedFolder = encodeURIComponent(folder);
+    document.getElementById('folder-name').textContent = folder;
+    const modal = document.getElementById('file-explorer-modal');
+    modal.showModal();
+
+    fetch(`/ba5e864526cbaa667bca74e2d1d453f0/explore/${encodedFolder}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            const tbody = document.getElementById('file-explorer-table');
+            tbody.innerHTML = '';
+            data.items.forEach(item => {
+                const row = document.createElement('tr');
+                const encodedPath = encodeURIComponent(item.path);
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.is_dir ? 'Folder' : 'File'}</td>
+                    <td>
+                        <a href="/ba5e864526cbaa667bca74e2d1d453f0/files/${encodedPath}" class="btn btn-sm btn-primary mr-2" ${item.is_dir ? 'onclick="navigateFolder(\'' + encodedPath + '\'); return false;"' : ''}>
+                            ${item.is_dir ? 'Open' : 'Download'}
+                        </a>
+                        ${!item.is_dir ? `<button class="btn btn-sm btn-secondary" onclick="viewFile('${encodedPath}')">View</button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            alert('Error exploring folder: ' + error.message);
+            document.getElementById('file-explorer-modal').close();
+        });
+}
+
+function navigateFolder(path) {
+    openExplorer(decodeURIComponent(path));
+}
+
+function viewFile(filePath) {
+    fetch(`/ba5e864526cbaa667bca74e2d1d453f0/view/${filePath}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Cannot view file');
+            return response.text();
+        })
+        .then(content => {
+            document.getElementById('file-content').textContent = content;
+            document.getElementById('view-file-modal').showModal();
+        })
+        .catch(error => {
+            alert('Error viewing file: ' + error.message);
+        });
+}
+</script>
+{% endblock %}

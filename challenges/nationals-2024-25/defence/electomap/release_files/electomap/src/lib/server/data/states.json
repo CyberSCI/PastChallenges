@@ -1,0 +1,853 @@
+[
+  {
+    "state": "Confluencia",
+    "districts": [
+      {
+        "name": "Zenda del Sur-Agua Serena-Alto Rosario",
+        "population": 240508,
+        "cities": [
+          {
+            "name": "Zenda del Sur",
+            "population": 198171
+          },
+          {
+            "name": "Agua Serena",
+            "population": 3984
+          },
+          {
+            "name": "Alto Rosario",
+            "population": 3798
+          },
+          {
+            "name": "Montemiel",
+            "population": 3211
+          },
+          {
+            "name": "Viento Sur",
+            "population": 3182
+          },
+          {
+            "name": "Piedraluna",
+            "population": 2600
+          },
+          {
+            "name": "Mar de Niebla",
+            "population": 2586
+          },
+          {
+            "name": "Dos Laderas",
+            "population": 2510
+          },
+          {
+            "name": "Isla del Sol",
+            "population": 2226
+          },
+          {
+            "name": "Floricanto",
+            "population": 2160
+          },
+          {
+            "name": "Nueva Rocaflor",
+            "population": 2113
+          },
+          {
+            "name": "Horizonte Pardo",
+            "population": 2054
+          },
+          {
+            "name": "San Ezequiel",
+            "population": 2010
+          },
+          {
+            "name": "Quebrada Verde",
+            "population": 1867
+          },
+          {
+            "name": "Altamira",
+            "population": 1832
+          },
+          {
+            "name": "Estrella del Este",
+            "population": 1710
+          },
+          {
+            "name": "Villasol",
+            "population": 1362
+          },
+          {
+            "name": "Naranjos Altos",
+            "population": 1344
+          },
+          {
+            "name": "Quebrada del Alba",
+            "population": 1068
+          },
+          {
+            "name": "Hierro Verde",
+            "population": 720
+          }
+        ]
+      },
+      {
+        "name": "La Jara-Mar de Zafiro",
+        "population": 268192,
+        "cities": [
+          {
+            "name": "La Jara",
+            "population": 154038
+          },
+          {
+            "name": "Mar de Zafiro",
+            "population": 114154
+          }
+        ]
+      },
+      {
+        "name": "La Esperada-Villa de Miel",
+        "population": 270045,
+        "cities": [
+          {
+            "name": "La Esperada",
+            "population": 181092
+          },
+          {
+            "name": "Villa de Miel",
+            "population": 88953
+          }
+        ]
+      },
+      {
+        "name": "Campo Verde-San Cristelo",
+        "population": 279993,
+        "cities": [
+          {
+            "name": "Campo Verde",
+            "population": 146606
+          },
+          {
+            "name": "San Cristelo",
+            "population": 133387
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "Cumbre Roja",
+    "districts": [
+      {
+        "name": "Murallas del Rio-Rutas del Este-La Jara",
+        "population": 298456,
+        "cities": [
+          {
+            "name": "Murallas del Rio",
+            "population": 166984
+          },
+          {
+            "name": "Rutas del Este",
+            "population": 123884
+          },
+          {
+            "name": "La Jara",
+            "population": 2018
+          },
+          {
+            "name": "Travesia Azul",
+            "population": 1814
+          },
+          {
+            "name": "Diamante Norte",
+            "population": 1362
+          },
+          {
+            "name": "Sierrafina",
+            "population": 1294
+          },
+          {
+            "name": "Jardines del Alba",
+            "population": 1100
+          }
+        ]
+      },
+      {
+        "name": "Villa de Miel-Bahia Sombra-Suroriente",
+        "population": 297372,
+        "cities": [
+          {
+            "name": "Villa de Miel",
+            "population": 170030
+          },
+          {
+            "name": "Bahia Sombra",
+            "population": 81295
+          },
+          {
+            "name": "Suroriente",
+            "population": 4442
+          },
+          {
+            "name": "Estrella Viva",
+            "population": 4063
+          },
+          {
+            "name": "Buenafuente",
+            "population": 3955
+          },
+          {
+            "name": "Paso de Cobre",
+            "population": 3910
+          },
+          {
+            "name": "Monte Raso",
+            "population": 3663
+          },
+          {
+            "name": "Campo Verde",
+            "population": 3514
+          },
+          {
+            "name": "Valle Encantado",
+            "population": 3375
+          },
+          {
+            "name": "Cobrealto",
+            "population": 3315
+          },
+          {
+            "name": "Sombra Larga",
+            "population": 3183
+          },
+          {
+            "name": "Galeron",
+            "population": 3017
+          },
+          {
+            "name": "Arenas de Plata",
+            "population": 2914
+          },
+          {
+            "name": "Marejada",
+            "population": 2201
+          },
+          {
+            "name": "Altamira",
+            "population": 1814
+          },
+          {
+            "name": "Flor de Cobre",
+            "population": 1527
+          },
+          {
+            "name": "Gran Cumbre",
+            "population": 1154
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "Desembocadura",
+    "districts": [
+      {
+        "name": "El Robledal-Las Gemelas-Rocafuerte",
+        "population": 224339,
+        "cities": [
+          {
+            "name": "El Robledal",
+            "population": 178119
+          },
+          {
+            "name": "Las Gemelas",
+            "population": 3902
+          },
+          {
+            "name": "Rocafuerte",
+            "population": 3807
+          },
+          {
+            "name": "Las Brisas",
+            "population": 3656
+          },
+          {
+            "name": "Santa Amalia",
+            "population": 3363
+          },
+          {
+            "name": "Orilla Serena",
+            "population": 3182
+          },
+          {
+            "name": "Selva Norte",
+            "population": 3045
+          },
+          {
+            "name": "San Aurelio",
+            "population": 2893
+          },
+          {
+            "name": "Costa Serena",
+            "population": 2844
+          },
+          {
+            "name": "La Estrella",
+            "population": 2748
+          },
+          {
+            "name": "Cielo Encendido",
+            "population": 2676
+          },
+          {
+            "name": "Mar Adentro",
+            "population": 2429
+          },
+          {
+            "name": "Rosafuerte",
+            "population": 2311
+          },
+          {
+            "name": "La Marisma",
+            "population": 2136
+          },
+          {
+            "name": "Penas Bravas",
+            "population": 1775
+          },
+          {
+            "name": "El Carbon",
+            "population": 1572
+          },
+          {
+            "name": "Encina Real",
+            "population": 1148
+          },
+          {
+            "name": "Juancaral",
+            "population": 980
+          },
+          {
+            "name": "Hierbabuena",
+            "population": 980
+          },
+          {
+            "name": "Valle de los Cedros",
+            "population": 773
+          }
+        ]
+      },
+      {
+        "name": "Dulce Encanto-La Cienaga-Claromar",
+        "population": 249530,
+        "cities": [
+          {
+            "name": "Dulce Encanto",
+            "population": 89965
+          },
+          {
+            "name": "La Cienaga",
+            "population": 83749
+          },
+          {
+            "name": "Claromar",
+            "population": 75816
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "Dona Clara",
+    "districts": [
+      {
+        "name": "Gran Mistral-Rincon Dorado-Fuenteluz",
+        "population": 284282,
+        "cities": [
+          {
+            "name": "Gran Mistral",
+            "population": 157144
+          },
+          {
+            "name": "Rincon Dorado",
+            "population": 102862
+          },
+          {
+            "name": "Fuenteluz",
+            "population": 3785
+          },
+          {
+            "name": "Tierra Mansa",
+            "population": 3754
+          },
+          {
+            "name": "Oroquieta",
+            "population": 3315
+          },
+          {
+            "name": "Miraluna",
+            "population": 3069
+          },
+          {
+            "name": "Villasol",
+            "population": 2955
+          },
+          {
+            "name": "Villa Aurea",
+            "population": 2219
+          },
+          {
+            "name": "Jardin del Alba",
+            "population": 2217
+          },
+          {
+            "name": "La Encantada",
+            "population": 1646
+          },
+          {
+            "name": "Punta Serena",
+            "population": 1316
+          }
+        ]
+      },
+      {
+        "name": "Montemiel-Parda-Sombra de Agua",
+        "population": 284283,
+        "cities": [
+          {
+            "name": "Montemiel",
+            "population": 168314
+          },
+          {
+            "name": "Parda",
+            "population": 91409
+          },
+          {
+            "name": "Sombra de Agua",
+            "population": 4304
+          },
+          {
+            "name": "Cielo Dorado",
+            "population": 3679
+          },
+          {
+            "name": "Fuente Serena",
+            "population": 3244
+          },
+          {
+            "name": "Corazon de Tierra",
+            "population": 2998
+          },
+          {
+            "name": "Vista Mar",
+            "population": 2839
+          },
+          {
+            "name": "Bellavista",
+            "population": 2706
+          },
+          {
+            "name": "Amanecer Dorado",
+            "population": 1736
+          },
+          {
+            "name": "Tintal Alto",
+            "population": 1663
+          },
+          {
+            "name": "La Providencia",
+            "population": 1391
+          }
+        ]
+      },
+      {
+        "name": "Rosedal-Monteverde",
+        "population": 292998,
+        "cities": [
+          {
+            "name": "Rosedal",
+            "population": 150631
+          },
+          {
+            "name": "Monteverde",
+            "population": 142367
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "El Dorado",
+    "districts": [
+      {
+        "name": "Arroyo del Cielo-Hierro Verde-Parda",
+        "population": 298056,
+        "cities": [
+          {
+            "name": "Arroyo del Cielo",
+            "population": 186263
+          },
+          {
+            "name": "Hierro Verde",
+            "population": 86740
+          },
+          {
+            "name": "Parda",
+            "population": 4092
+          },
+          {
+            "name": "Plenamar",
+            "population": 3698
+          },
+          {
+            "name": "Luzmarina",
+            "population": 2585
+          },
+          {
+            "name": "Loma Marina",
+            "population": 2551
+          },
+          {
+            "name": "Brisa Serena",
+            "population": 2342
+          },
+          {
+            "name": "Fuerte Brisa",
+            "population": 2141
+          },
+          {
+            "name": "Selva Vieja",
+            "population": 1989
+          },
+          {
+            "name": "El Cantaro",
+            "population": 1470
+          },
+          {
+            "name": "Estrella Alta",
+            "population": 1154
+          },
+          {
+            "name": "Colinas del Sol",
+            "population": 1130
+          },
+          {
+            "name": "Rancho Estrella",
+            "population": 1024
+          },
+          {
+            "name": "El Robledal",
+            "population": 877
+          }
+        ]
+      },
+      {
+        "name": "Barranca Sombra-La Alborada-Flor de Cobre",
+        "population": 320598,
+        "cities": [
+          {
+            "name": "Barranca Sombra",
+            "population": 134660
+          },
+          {
+            "name": "La Alborada",
+            "population": 110221
+          },
+          {
+            "name": "Flor de Cobre",
+            "population": 75717
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "Espejomar",
+    "districts": [
+      {
+        "name": "Arenas de Plata-Gran Cumbre-Palmar Sur",
+        "population": 283790,
+        "cities": [
+          {
+            "name": "Arenas de Plata",
+            "population": 150170
+          },
+          {
+            "name": "Gran Cumbre",
+            "population": 120798
+          },
+          {
+            "name": "Palmar Sur",
+            "population": 4000
+          },
+          {
+            "name": "Puebloviejo",
+            "population": 3245
+          },
+          {
+            "name": "Montura Real",
+            "population": 2801
+          },
+          {
+            "name": "Santa Bellisa",
+            "population": 1935
+          },
+          {
+            "name": "Trigal del Norte",
+            "population": 841
+          }
+        ]
+      },
+      {
+        "name": "Estrella del Este-Naranjal-Zafiralto",
+        "population": 283203,
+        "cities": [
+          {
+            "name": "Estrella del Este",
+            "population": 197177
+          },
+          {
+            "name": "Naranjal",
+            "population": 78277
+          },
+          {
+            "name": "Zafiralto",
+            "population": 2977
+          },
+          {
+            "name": "Lucero del Sur",
+            "population": 2432
+          },
+          {
+            "name": "Suenos de Mar",
+            "population": 2340
+          }
+        ]
+      },
+      {
+        "name": "Parda-Verazul-Don Aliso",
+        "population": 335891,
+        "cities": [
+          {
+            "name": "Parda",
+            "population": 177274
+          },
+          {
+            "name": "Verazul",
+            "population": 91973
+          },
+          {
+            "name": "Don Aliso",
+            "population": 66644
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "Faro Viejo",
+    "districts": [
+      {
+        "name": "San Esperado-Santa Loma-Loma Encantada",
+        "population": 229924,
+        "cities": [
+          {
+            "name": "San Esperado",
+            "population": 126361
+          },
+          {
+            "name": "Santa Loma",
+            "population": 99332
+          },
+          {
+            "name": "Loma Encantada",
+            "population": 3022
+          },
+          {
+            "name": "Costa Brava",
+            "population": 1209
+          }
+        ]
+      },
+      {
+        "name": "Isla del Sol-Galeron-Solmira",
+        "population": 229565,
+        "cities": [
+          {
+            "name": "Isla del Sol",
+            "population": 108676
+          },
+          {
+            "name": "Galeron",
+            "population": 106730
+          },
+          {
+            "name": "Solmira",
+            "population": 4997
+          },
+          {
+            "name": "El Quejigo",
+            "population": 3405
+          },
+          {
+            "name": "San Dolorosa",
+            "population": 3369
+          },
+          {
+            "name": "Mistral Bajo",
+            "population": 2388
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "Solalinda",
+    "districts": [
+      {
+        "name": "Solalinda",
+        "population": 230704,
+        "cities": [
+          {
+            "name": "Selva Clara",
+            "population": 114973
+          },
+          {
+            "name": "Rocaflor",
+            "population": 82533
+          },
+          {
+            "name": "Santelmo",
+            "population": 3897
+          },
+          {
+            "name": "Villa Esperanza",
+            "population": 3426
+          },
+          {
+            "name": "Canto del Rio",
+            "population": 3011
+          },
+          {
+            "name": "Susurro del Viento",
+            "population": 2999
+          },
+          {
+            "name": "Fuerte de Oro",
+            "population": 2983
+          },
+          {
+            "name": "Volcan de Luna",
+            "population": 2709
+          },
+          {
+            "name": "Medina del Sur",
+            "population": 2476
+          },
+          {
+            "name": "El Silencio",
+            "population": 1988
+          },
+          {
+            "name": "Valmar",
+            "population": 1840
+          },
+          {
+            "name": "Arroyo Blanco",
+            "population": 1673
+          },
+          {
+            "name": "Otonal",
+            "population": 1631
+          },
+          {
+            "name": "Villa Enramada",
+            "population": 1177
+          },
+          {
+            "name": "San Mirto",
+            "population": 1144
+          },
+          {
+            "name": "Piedramar",
+            "population": 1143
+          },
+          {
+            "name": "Sol de Rio",
+            "population": 1101
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "state": "Tierras Bajas",
+    "districts": [
+      {
+        "name": "Canaveral-Agua Serena-Loma Clara",
+        "population": 286351,
+        "cities": [
+          {
+            "name": "Canaveral",
+            "population": 125206
+          },
+          {
+            "name": "Agua Serena",
+            "population": 89379
+          },
+          {
+            "name": "Loma Clara",
+            "population": 65605
+          },
+          {
+            "name": "Valle Fertil",
+            "population": 2815
+          },
+          {
+            "name": "Flor de Loma",
+            "population": 2583
+          },
+          {
+            "name": "Valle Claro",
+            "population": 763
+          }
+        ]
+      },
+      {
+        "name": "Malpaso-Niebla Marina-Villa Hermosa",
+        "population": 286849,
+        "cities": [
+          {
+            "name": "Malpaso",
+            "population": 195343
+          },
+          {
+            "name": "Niebla Marina",
+            "population": 72730
+          },
+          {
+            "name": "Villa Hermosa",
+            "population": 4881
+          },
+          {
+            "name": "Cerro Azul",
+            "population": 3547
+          },
+          {
+            "name": "Monte Claro",
+            "population": 3404
+          },
+          {
+            "name": "Jazmin Alto",
+            "population": 3282
+          },
+          {
+            "name": "Quelonios",
+            "population": 2338
+          },
+          {
+            "name": "Selva Clara",
+            "population": 1324
+          }
+        ]
+      }
+    ]
+  }
+]

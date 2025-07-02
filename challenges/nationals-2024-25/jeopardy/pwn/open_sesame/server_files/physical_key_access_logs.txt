@@ -1,0 +1,6 @@
+2025-06-14 07:12:34 | CardID: 7e3f2c8e-1b2a-4c5d-9f6e-8a7b6c5d4e3f | Access: Granted | Door: Ballot Counting Room
+2025-06-14 09:01:55 | CardID: 9f8e7d6c-5b4a-3c2d-1e0f-9a8b7c6d5e4f | Access: Granted | Door: Ballot Counting Room
+2025-06-14 09:15:22 | CardID: 7e3f2c8e-1b2a-4c5d-9f6e-8a7b6c5d4e3f | Access: Granted | Door: Ballot Counting Room
+2025-06-14 10:00:15 | CardID: 3e2f1c4d-5b6a-7c8d-9e0f-1a2b3c4d5e6f | Access: Denied  | Door: Ballot Counting Room
+2025-06-14 10:13:12 | CardID: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6e | Access: Granted | Door: Ballot Counting Room
+2025-06-14 11:42:11 | CardID: 2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e | Access: Denied  | Door: Ballot Counting Room

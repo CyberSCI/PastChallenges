@@ -1,0 +1,2 @@
+If you wish to provide a solve script or instructions for any reason, place them here.
+This could be helpful for testers that may be stuck.

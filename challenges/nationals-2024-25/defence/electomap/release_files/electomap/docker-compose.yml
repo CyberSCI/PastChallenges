@@ -1,0 +1,75 @@
+name: electomap
+
+volumes:
+  electomap-db-data:
+    driver: local
+
+networks:
+  electomap:
+
+services:
+  app:
+    image: val-verde/electomap
+    restart: always
+    hostname: electomap.valverde.vote
+    build:
+      args:
+        - 'POSTGRES_URL=postgres://electomap:electomap@db.electomap.valverde.vote:5432/electomap'
+      context: .
+    networks:
+      - electomap
+    environment:
+      MQTT_URL: 'mqtt://mqtt.electomap.valverde.vote:1883'
+      PUBLIC_MQTT_URL: 'ws://mqtt.electomap.valverde.vote:9001/mqtt'
+      POSTGRES_URL: 'postgres://electomap:electomap@db.electomap.valverde.vote:5432/electomap'
+      ORIGIN: 'http://electomap.valverde.vote:1337'
+      PUBLIC_ORIGIN: 'http://electomap.valverde.vote:1337'
+    ports:
+      - '1337:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+      mqtt:
+        condition: service_started
+        restart: true
+    profiles:
+      - app
+
+  mqtt:
+    build:
+      context: .
+      dockerfile: ./mosquitto/Dockerfile
+    image: val-verde/electomap-mqtt
+    restart: always
+    hostname: mqtt.electomap.valverde.vote
+    networks:
+      - electomap
+    ports:
+      - '1883:1883'
+      - '9001:9001'
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:rw
+      - ./mosquitto/data:/mosquitto/data:rw
+      - ./mosquitto/log:/mosquitto/log:rw
+
+  db:
+    image: docker.io/library/postgres:14
+    restart: always
+    hostname: db.electomap.valverde.vote
+    environment:
+      POSTGRES_PASSWORD: 'electomap'
+      POSTGRES_USER: 'electomap'
+      POSTGRES_NAME: 'electomap'
+    networks:
+      - electomap
+    ports:
+      - '5432:5432'
+    volumes:
+      - electomap-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U electomap -d electomap']
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s

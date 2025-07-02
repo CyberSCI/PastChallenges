@@ -1,0 +1,18 @@
+[project]
+name = "my-campaign-pal"
+version = "0.1.0"
+description = "API to help answer all your election questions"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.12",
+    "mcp>=1.7.1",
+    "ollama>=0.4.8",
+    "pydantic>=2.11.4",
+    "uvicorn[standard]>=0.34.2",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+]

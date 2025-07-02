@@ -1,0 +1,38 @@
+[project]
+name = "server-files"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "faker>=37.0.2",
+    "httpx>=0.28.1",
+]
+
+[tool.pyright]
+venv = "."
+venvPath = ".venv"
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = [
+  # pycodestyle
+  "E",
+  # Pyflakes
+  "F",
+  # pyupgrade
+  "UP",
+  # flake8-bugbear
+  "B",
+  # flake8-simplify
+  "SIM",
+  # isort
+  "I",
+  # fastapi
+  "FAST",
+]
+extend-select = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]

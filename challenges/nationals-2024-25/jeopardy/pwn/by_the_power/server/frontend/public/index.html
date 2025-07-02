@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Frontend</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(60, 60, 120, 0.15);
+            min-width: 320px;
+            max-width: 90vw;
+            text-align: center;
+        }
+        h1 {
+            color: #2d3a4b;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        #inputString {
+            padding: 0.7rem 1rem;
+            border: 1px solid #b0bec5;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 80%;
+            max-width: 300px;
+            margin-bottom: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+        #inputString:focus {
+            border-color: #1976d2;
+        }
+        #submitButton {
+            padding: 0.7rem 2rem;
+            background: linear-gradient(90deg, #1976d2 0%, #42a5f5 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+            transition: background 0.2s, transform 0.1s;
+        }
+        #submitButton:hover {
+            background: linear-gradient(90deg, #1565c0 0%, #1e88e5 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        #resultDisplay {
+            margin-top: 2rem;
+            min-height: 2rem;
+            color: #1976d2;
+            font-size: 1.1rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Input String</h1>
+        <input type="text" id="inputString" placeholder="Enter a string" />
+        <button id="submitButton">Submit</button>
+        <div id="resultDisplay"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

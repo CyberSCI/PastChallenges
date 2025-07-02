@@ -1,0 +1,16 @@
+[project]
+name = "mcp-server-injection"
+version = "0.1.0"
+description = "MCP challenge solve server"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli]>=1.7.1",
+    "starlette>=0.46.2",
+    "uvicorn>=0.34.2",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+]

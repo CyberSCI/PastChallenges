@@ -1,0 +1,41 @@
+[project]
+name = "scanner-pwnly-solve"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "asyncpg>=0.30.0",
+    "faker>=37.3.0",
+    "httpx>=0.28.1",
+    "minio>=7.2.15",
+    "rich>=14.0.0",
+    "sqlalchemy>=2.0.41",
+    "structlog>=25.4.0",
+]
+
+
+[tool.pyright]
+venv = "."
+venvPath = ".venv"
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = [
+  # pycodestyle
+  "E",
+  # Pyflakes
+  "F",
+  # pyupgrade
+  "UP",
+  # flake8-bugbear
+  "B",
+  # flake8-simplify
+  "SIM",
+  # isort
+  "I",
+  # fastapi
+  "FAST",
+]
+extend-select = ["E501"]

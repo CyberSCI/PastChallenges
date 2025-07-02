@@ -1,0 +1,43 @@
+[project]
+name = "server-files"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+  "faker>=37.3.0",
+  "httpx>=0.28.1",
+  "paho-mqtt>=2.1.0",
+  "pyjwt>=2.10.1",
+  "structlog>=25.3.0",
+  "urllib3>=2.4.0",
+]
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.lint]
+select = [
+  # pycodestyle
+  "E",
+  # Pyflakes
+  "F",
+  # pyupgrade
+  "UP",
+  # flake8-bugbear
+  "B",
+  # flake8-simplify
+  "SIM",
+  # isort
+  "I",
+]
+extend-select = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["trashpanda", "tests"]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+include = ["**/*.py"]
+exclude = ["**/node_modules", "**/__pycache__"]
+pythonVersion = "3.12"

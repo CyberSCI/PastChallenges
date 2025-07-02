@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyberpunk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - History Stealer</title>
+    <link href="{{ url_for('static', filename='full.min.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ url_for('static', filename='tailwindcss.js') }}"></script>
+</head>
+<body class="min-h-screen">
+    <nav class="navbar bg-base-300 shadow-xl">
+        <div class="flex-1">
+            <a href="{{ url_for('uploads') }}" class="btn btn-ghost text-2xl font-bold">History Stealer</a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-2 gap-2">
+                {% if session.logged_in %}
+                    <li><a href="{{ url_for('uploads') }}" class="btn btn-sm btn-ghost">Uploads</a></li>
+                    <li><a href="{{ url_for('builder') }}" class="btn btn-sm btn-ghost">Builder</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="btn btn-sm btn-ghost">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}" class="btn btn-sm btn-ghost">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

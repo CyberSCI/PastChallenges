@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Document Version="2">
+    <Protection InputFileName="build\Desktop_Qt_6_9_1_llvm_mingw_64_bit-Release\ValVotaBallotManualEntry.exe" Options="463872" VMCodeSectionName=".UPX">
+        <Procedures>
+            <Procedure MapAddress="main" Options="0" CompilationType="2" />
+            <Procedure MapAddress="WinMainCRTStartup" Options="0" CompilationType="2" />
+            <Procedure MapAddress="MainWindow::submitVotes()" Options="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Error&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;The total number of votes entered cannot be higher than the number of eligible voters in this region!&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Votes have been submitted successfully!&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Failed to submit votes: &quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Failed to decode server message.&#x0A;If this issue persists, please notify the organizers.&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;&#x0A;Here&apos;s your flag: &quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Server error: &quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;&#x0A;If this issue persists, please notify the organizers.&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Success&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress="getRegionVoters(Region)" Options="0" CompilationType="2" />
+            <Procedure MapAddress="MainWindow::MainWindow(QWidget*)" Options="0" CompilationType="2" />
+            <Procedure MapAddress="MainWindow::setInterfaceEnabled(bool)" Options="0" CompilationType="2" />
+            <Procedure MapAddress="MainWindow::clearVotes()" Options="0" CompilationType="2" />
+            <Procedure MapAddress="MainWindow::updateRegionVoters()" Options="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;flag{b3tteR_L3arN_H0W_T0_u5E_THe_TOoLs_yOU_bOuGHt}&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress="AuthDialog::checkAuthorization()" IncludedInCompilation="0" Options="0" Folder="1" CompilationType="2" />
+            <Procedure MapAddress="AuthDialog::AuthDialog(QWidget*)" IncludedInCompilation="0" Options="0" Folder="1" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Tampering detected. The program will now terminate.&quot;' Options="0" Folder="0" CompilationType="2" />
+            <Procedure MapAddress="MainWindow::tamperExit()" Options="0" CompilationType="2" />
+            <Procedure MapAddress='string &quot;Configuration Error&quot;' Options="0" Folder="0" />
+            <Procedure MapAddress='string &quot;Configuration file not found. Please ensure ValVotaBallotManualEntry.ini exists in the configs directory.&quot;' Options="0" Folder="0" />
+            <Procedure MapAddress='string &quot;Server URL not found in configuration file.&quot;' Options="0" Folder="0" />
+        </Procedures>
+        <Messages>
+            <Message Id="0">A debugger has been detected. Debuggers are forbidden for security reasons. Please close the debugger and restart the application.</Message>
+            <Message Id="1">This application cannot run in a virtual machine.</Message>
+            <Message Id="2">File integrity could not be verified. This file might have been altered by another program. The application will now terminate.</Message>
+            <Message Id="3">A valid serial number is required to run this program. The application will now close.</Message>
+            <Message Id="4">This application is not authorized to run on this computer.</Message>
+        </Messages>
+        <Folders>
+            <Folder Name="Strings" />
+            <Folder Name="Excluded" />
+        </Folders>
+    </Protection>
+    <LicenseManager ProductCode="IPEBraoMAdc=" Algorithm="RSA" Bits="4096" PublicExp="AAEAAQ==" PrivateExp="Kj/GRZKlmfuhfYG9bo5ABrMDtQN04bsADP5mXFyyx1jQ736CaRIEInaUdiWoT90e9YM6Hc6QK/VT/m9CIrPftiN4DdNxqCwzRYHxB++sSi6BVwOTCGxL4PU9C5pez3+AHOK/t7JlqqDak8dkEXscz9sYh4lQrMp51XK4ApUFON4waYAuPsQX/HJWwzbpJLUCcwkgyPLCZxdyJlMmOHPY2Qk1B8tNK3SdOvG/gDUGfSWeEbxPlC8ohu7LjQ81OwOS4xd/ygKYBfxtmzmiB0cMA6M6FKw2s/txCKhBLH8ep+mo2z83jgZrdylt/9kaPMO4QcfkeOuFvbvjxJDpHdLIFc6PPelgHoUq86Mg6kB5Qu/6xQ1QTnNJlQONPjGCAS/EJgSBbuyjJqz+Ub53xSeJQPRgD+515OKoOVf/dYkMf6vO/MoKC557ysdgIuJjRXycAJo0yoBdh9jhdT+HxjHYnIvOFgkoTnw8T4AfiiwebzaHY/PjnYcucY+IdG9/Z6vCkAm3PkF2BLdl2qGh45n9TFzTk07C+OfGUD/fFDughb3qWKdOmEEnWgefDeyqN3jyY66F+siduJhD4ZIi7tfPforqJVcmWQZCCEDU09O7G106jSGn6O6+oV8d8zOSRCFRimZWv9lN5tWKGYK7rnWjLjCCZ2h9Aj9VOndo4Mj8JtU=" Modulus="yHRmCDVvRFFjajyogorcrLZWegtqH/x5gQS2ygg/+kjET2LfilvWDLCjoAl14ZhNl4zKVArcL1Me7XiuP8EuDi5pLocZEYLj4S7hb7aJz4geM0erRA9s3n54l9BNk+t1OuVqe1wK/Z5tGTkiniXQM75ASPsqrx+l2lBGrERr0xB/8qrCw92nPFTxHAjnENAAchU8XUA+KGZTniseVOI0PjxYdZTIza2dIqgkXIce0vKV/wsWtmGJBKOoXzzsmYtjCRtj1GE549/3itsMo1XHAR3Qlw0z4NRo+WhSFEfks3tj5H98lckO1l9Rz5yNVQxhcEu7SzB6C9q9KLFufYreO1GwGKkRH/vz+BOVsqicbRUll1iRY6UqWj4hfgnXNYsC4yfCDWmzrmFA4heGHcZubmj1zlG83U/rOdSOoA7kGuf3sEBd3Ru8xDEgf7vG/ysQul8ASocKUSfRkne/fCD72v+mg52jKh2i6tVBQD+9KEPEkiMRo6ZsqutT7rPaVqeqR8zhKiljSWuVGtq1Dx8pQ3VFr7BMv06LA7ObMKBaCCgvLGb8HztUkgMFP0PALXVT3k1Y9xz4pax0GPUyEltFvBz9gtRH7JAdktnLDrvmEUAHDZoHnwX4RrIULiAimb2G5+lrlB03H1Cgr2teyhEoz4kpUb7KyYwy7besN8EE/ik=">
+        <License Date="1892-01-01" CustomerName="DEV TEST" SerialNumber="r7Bv42rLCH5fapmsnYSYzHaytiiuHl2LrtJbNMTcxc5scEbkbYcr7812mWdxaxkd41YXxl6DHRMrxu5SGSxYZRlBIE7vFHZPcUUivSBNYHYgobhBMmm1mKL7NyuoEO2wvedAV2XLnP5Fd/36AEPzysrhOyYVK/26480DqHKXbX40Rt+qW9Y9n2j5mZpP08wMxTEgVHyOTlIJqWj1szPffj+seVzKJvtbskboyKVSyMaWmNE2pM326WXB4Fia4wnXB1yQ2OO45Lyn29q7krFIAxwN5Qaaondp/yKrHjKQM5xyt1mHlLJqYVLG07IQveu+CLPTzx+C0LMpqWowe6iUT0NIztfbzxxvAIbFSS4m2iLNaRGnoE5N+ru0hCVtq9vNgEYTr5DqfDEIf4Hjr9QGNKqj2XhUvJBVFDujuCprrMINvy2qrBGv9A7NM2m7bRGICd7Ht0A2vBzm9GvvRua/O+6Nsx5qmYwoLyV2xkBMvluAJNmP5EK+PFXrVJviL+KmF7CZW/ie/MeSey5vMU40ERjxuJFEO9QbmT8KbwlhovKJ3EmMyoBL3BZkYuY4UC875Q5O1EIwGrdhX3gXdgqteNeRS5aL5dsn7Dzo3Ts73sfcg5OATeZQ3NSDcuZAuZXiBRr2O7bRdT8x0CGYT4uUPK2bWPwiR6Ai7EH7S3V6sgk=" />
+    </LicenseManager>
+</Document>

@@ -1,0 +1,37 @@
+volumes:
+  postgres_data:
+      driver: local
+
+services:
+  vibe-management:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vibe-management
+    environment:
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      ACTIVE_KEY: ${ACTIVE_KEY}
+      POSTGRES_HOST: 127.0.0.1
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    network_mode: "host"
+    ports:
+      - 8000:8000
+    depends_on:
+      - vibe-postgres-db
+    restart: unless-stopped
+
+  vibe-postgres-db:
+    image: postgres:16.4
+    container_name: vibe-postgres-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    restart: unless-stopped

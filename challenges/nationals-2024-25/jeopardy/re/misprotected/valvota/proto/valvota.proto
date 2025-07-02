@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package valvota;
+
+option go_package = "github.com/k4yt3x/valvota/proto;proto";
+
+message SubmitVotesRequest {
+    double region = 1;
+    repeated double vote_counts = 2;
+}
+
+message SubmitVotesResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+service SubmitVotesService {
+    rpc SubmitVotes (SubmitVotesRequest) returns (SubmitVotesResponse);
+}

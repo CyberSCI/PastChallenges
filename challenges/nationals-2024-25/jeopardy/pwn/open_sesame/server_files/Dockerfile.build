@@ -1,0 +1,13 @@
+FROM ubuntu:22.04
+
+# Install necessary tools
+RUN apt-get update && apt-get install -y gcc-multilib
+
+# Set working directory
+WORKDIR /app
+
+# Copy source code into the container
+COPY door_access.c .
+
+# Command to build the binary
+CMD ["gcc", "-m32", "-fno-stack-protector", "-z", "execstack", "-no-pie", "door_access.c", "-o", "door_access"]

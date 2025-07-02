@@ -1,0 +1,27 @@
+[
+	{
+		"name": "Labour Party",
+		"short_name": "LP",
+		"leader": "Esteban de Souza"
+	},
+	{
+		"name": "Citizen's Party",
+		"short_name": "CZP",
+		"leader": "Arius Perez"
+	},
+	{
+		"name": "Green Party",
+		"short_name": "GP",
+		"leader": "Raphael Velasquez"
+	},
+	{
+		"name": "National Democratic Party",
+		"short_name": "NDP",
+		"leader": "Gen. Ramon Esperanza"
+	},
+	{
+		"name": "Val Verde Forum",
+		"short_name": "VVF",
+		"leader": "Sofia de Silva"
+	}
+]

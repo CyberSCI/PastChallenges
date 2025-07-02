@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  open_sesame_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    ports:
+      - "1337:1337"
+    command: socat TCP-LISTEN:1337,reuseaddr,fork EXEC:"/home/ctf/door_access"
+    restart: unless-stopped

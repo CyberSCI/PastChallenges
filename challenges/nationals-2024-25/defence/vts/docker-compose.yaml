@@ -1,0 +1,7 @@
+services:
+  vts:
+    build: .
+    container_name: vts
+    ports:
+      - "10000:10000"
+    restart: always

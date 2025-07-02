@@ -1,0 +1,111 @@
+services:
+
+  keycloak-db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: trMGp1Ly8f5BYpPVhNIHBC2F
+    volumes:
+      - ./instance/keycloak_db:/var/lib/postgresql/data
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    restart: unless-stopped
+    command: start --import-realm
+    environment:
+      KC_HOSTNAME: https://auth.register.valverde.vote
+      KC_HTTP_ENABLED: true
+      KC_PROXY_ADDRESS_FORWARDING: true
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: trMGp1Ly8f5BYpPVhNIHBC2F
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: Cybersci@foHIF0l
+    depends_on:
+      - keycloak-db
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak.rule=Host(`auth.register.valverde.vote`)"
+      - "traefik.http.routers.keycloak.entrypoints=websecure"
+      - "traefik.http.routers.keycloak.tls=true"
+      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+
+
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: voter_registry
+      POSTGRES_USER: voter_registry
+      POSTGRES_PASSWORD: 8eJnhmwmH4O32qpxqNThCPkN
+    volumes:
+      - ./instance/app_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U voter_registry"]
+      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+  backend:
+    build:
+      context: ./backend/VoterRegistry
+      dockerfile: VoterRegistryApi/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=voter_registry;Username=voter_registry;Password=8eJnhmwmH4O32qpxqNThCPkN"
+      PollingStationDataFile: "/data/polling_stations.json"
+      PopulationDataFile: "/data/population.json"
+      RegistrationFilePath: "/files"
+    volumes:
+      - ./data:/data:ro
+      - ./instance/app_files:/files
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.register.valverde.vote`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.services.backend.loadbalancer.server.port=8080"
+
+
+  frontend:
+    build: ./frontend/voter-registry-app
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`register.valverde.vote`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+
+
+  traefik:
+    image: traefik:v3.4.0
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik:/etc/traefik:ro
+      - ./instance/traefik_logs:/var/log/traefik
+    labels:
+      - "traefik.enable=true"
+    networks:
+      default:
+        aliases:
+          - register.valverde.vote
+          - api.register.valverde.vote
+          - auth.register.valverde.vote

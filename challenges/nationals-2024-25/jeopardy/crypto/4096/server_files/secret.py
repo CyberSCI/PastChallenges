@@ -1,0 +1,1 @@
+FLAG = b'Channel 256 was compromised, should be safe here. Badge scanner remains unpatched. Ready to exploit cybersci{on_y0ur_c0mm4nd}'

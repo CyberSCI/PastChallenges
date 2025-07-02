@@ -1,0 +1,6 @@
+apscheduler
+pycryptodome
+flask
+jsonschema
+
+beautifulsoup4

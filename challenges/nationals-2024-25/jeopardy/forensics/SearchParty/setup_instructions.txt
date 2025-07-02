@@ -1,0 +1,44 @@
+
+Setup Instructions:
+
+Prereqs:
+docker and docker-compose must be installed.
+
+Download volumes.tar.xz and docker-compose.yml and put them in a graylog folder:
+
+cybersci@cybersci-Standard-PC-Q35-ICH9-2009:~/Downloads/graylog$ ls 
+docker-compose.yml        graylog_graylog_journal.tar  graylog_os_data.tar
+graylog_graylog_data.tar  graylog_mongodb_data.tar
+
+
+I used this tool to create snapshots of all the docker-volumes for this container:
+https://github.com/junedkhatri31/docker-volume-snapshot/tree/main
+
+Install it using the instructions provided.
+
+Run:
+
+sudo docker-volume-snapshot restore graylog_graylog_data.tar graylog_graylog_data
+sudo docker-volume-snapshot restore graylog_graylog_journal.tar graylog_graylog_journal
+sudo docker-volume-snapshot restore graylog_mongodb_data.tar graylog_mongodb_data
+sudo docker-volume-snapshot restore graylog_os_data.tar graylog_os_data
+
+
+Check the volumes are imported:
+
+cybersci@cybersci-Standard-PC-Q35-ICH9-2009:~/Downloads/graylog$ sudo docker volume ls
+DRIVER    VOLUME NAME
+local     f89af67a57e857cb196bc16bb643163605cea63e7b01416d62f079bc067e06be
+local     fc6bd0b049c05d43ce01b16cc3e7ba39dd163c3f14c96655b6835402fdf02c90
+local     graylog_graylog_data
+local     graylog_graylog_journal
+local     graylog_mongodb_data
+local     graylog_os_data
+
+
+Run (from the graylog folder):
+
+sudo docker-compose up
+
+Then go to localhost:9000 in your browser and login with creds admin:admin
+

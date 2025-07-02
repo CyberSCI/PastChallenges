@@ -1,0 +1,13 @@
+services:
+  private_voting:
+    container_name: private_voting
+    build: .
+    restart: unless-stopped
+    ports:
+      - "1337:1337"
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "127.0.0.1", "1337"]
+      start_period: 5s
+      interval: 180s
+      timeout: 20s
+      retries: 3

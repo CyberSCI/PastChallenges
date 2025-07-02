@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1746915303087,
+      "tag": "0000_daily_jackal",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749348691845,
+      "tag": "0001_magical_mongu",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749353551817,
+      "tag": "0002_plain_thena",
+      "breakpoints": true
+    }
+  ]
+}

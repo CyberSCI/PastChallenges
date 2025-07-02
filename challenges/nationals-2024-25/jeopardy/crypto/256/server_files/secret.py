@@ -1,0 +1,1 @@
+FLAG = b'cybersci{reest4bl1sh_on_4096}'

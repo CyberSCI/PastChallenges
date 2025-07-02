@@ -1,0 +1,32 @@
+log:
+  level: INFO
+
+entryPoints:
+  web:
+    address: ":80"
+    forwardedHeaders: # Trust X-Forwarded-For headers from the reverse proxy
+      insecure: true
+    http: # HTTP to HTTPS redirection
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+
+  websecure:
+    address: ":443"
+    forwardedHeaders: # Trust X-Forwarded-For headers from the reverse proxy
+      insecure: true
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    filename: /etc/traefik/dynamic.yaml
+    watch: true
+
+api:
+  dashboard: true
+  insecure: true
+
+accessLog:
+  filePath: /var/log/traefik/access.log
