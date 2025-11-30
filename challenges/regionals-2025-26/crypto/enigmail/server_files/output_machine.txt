@@ -1,0 +1,2 @@
+Machine: {'rotors': 'V IV I', 'reflector': 'B', 'ring_settings': 'D H W', 'plugboard_settings': 'SU AN QM IR HF OE KC GW JB TZ'}
+Initial Positions: QYD

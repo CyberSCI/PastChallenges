@@ -1,0 +1,9 @@
+FTP SERVER MANUAL
+
+Our FTP server is available at ftp://localhost:21.
+
+NOTE: The FTP server is currently down for maintenance until we can configure better security in accordance with Novanet protocols (read: until Dave gets off his [REDACTED] and starts reading the security docs).
+
+See attached RFC 959.
+
+TODO: The rest of this manual

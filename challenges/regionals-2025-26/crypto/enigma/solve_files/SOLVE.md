@@ -1,0 +1,116 @@
+# enigma
+
+First, we must get the known plaintext that is truly being encrypted by Enigma. The encryption code does some replacements.
+
+```py
+MESSAGE = 'CYBERSCI 2026' # we don't know after this
+ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+REPLACEMENTS = {
+    ' ': 'X',
+    '0': 'ZERO',
+    '1': 'ONE',
+    '2': 'TWO',
+    '3': 'THREE',
+    '4': 'FOUR',
+    '5': 'FIVE',
+    '6': 'SIX',
+    '7': 'SEVEN',
+    '8': 'EIGHT',
+    '9': 'NINE'
+}
+
+assert MESSAGE.startswith('CYBERSCI 2026')
+
+for k, v in REPLACEMENTS.items():
+    MESSAGE = MESSAGE.replace(k, v)
+
+assert all(c in ALPHABET for c in MESSAGE)
+
+print(MESSAGE)
+```
+
+The above script outputs the real plaintext: CYBERSCIXTWOZEROTWOSIX
+
+Reading the following post provides a walkthrough of using CyberChef to crack an Enigma ciphertext using a crib:
+https://github.com/gchq/CyberChef/wiki/Enigma,-the-Bombe,-and-Typex
+
+Based on the encryption script and output, we know:
+
+- The ciphertext is: NHKIAGWPJNYIHIWBBHWMSZHRKSHJTQDUZXKBJCOUBDSCTVDKUBSTNCEUNJNUCMTNOQQCYRXQERWXZFSPXLOTXJS
+- The plaintext begins with: CYBERSCIXTWOZEROTWOSIX
+- Only three rotors are used, and only rotors 1 through 5 are possible.
+- Reflector B is used.
+
+Following the instructions in the CyberChef Wiki post, we can place the above details in a Multiple Bombe recipe and decrease the crib length one-by-one until we get promising results.
+
+Attempt 1 (Crib = CYBERSCIXTWOZEROTWOSIX):
+```
+https://gchq.github.io/CyberChef/#recipe=Multiple_Bombe('German%20Service%20Enigma%20(First%20-%203%20rotor)','EKMFLGDQVZNTOWYHXUSPAIBRCJ%3CR%5CnAJDKSIRUXBLHWTMCQGZNPYFVOE%3CF%5CnBDFHJLCPRTXVZNYEIWGAKMUSQO%3CW%5CnESOVPZJAYQUIRHXLNFTGKDCMWB%3CK%5CnVZBRGITYUPSDNHLXAWMJQOFECK%3CA','','AY%20BR%20CU%20DH%20EQ%20FS%20GL%20IP%20JX%20KN%20MO%20TZ%20VW','CYBERSCIXTWOZEROTWOSIX',0,true)&input=TkhLSUFHV1BKTllJSElXQkJIV01TWkhSS1NISlRRRFVaWEtCSkNPVUJEU0NUVkRLVUJTVE5DRVVOSk5VQ01UTk9RUUNZUlhRRVJXWFpGU1BYTE9UWEpT
+```
+
+Attempt 2 (Crib = CYBERSCIXTWOZEROTWOSI):
+```
+https://gchq.github.io/CyberChef/#recipe=Multiple_Bombe('German%20Service%20Enigma%20(First%20-%203%20rotor)','EKMFLGDQVZNTOWYHXUSPAIBRCJ%3CR%5CnAJDKSIRUXBLHWTMCQGZNPYFVOE%3CF%5CnBDFHJLCPRTXVZNYEIWGAKMUSQO%3CW%5CnESOVPZJAYQUIRHXLNFTGKDCMWB%3CK%5CnVZBRGITYUPSDNHLXAWMJQOFECK%3CA','','AY%20BR%20CU%20DH%20EQ%20FS%20GL%20IP%20JX%20KN%20MO%20TZ%20VW','CYBERSCIXTWOZEROTWOSI',0,true)&input=TkhLSUFHV1BKTllJSElXQkJIV01TWkhSS1NISlRRRFVaWEtCSkNPVUJEU0NUVkRLVUJTVE5DRVVOSk5VQ01UTk9RUUNZUlhRRVJXWFpGU1BYTE9UWEpT
+```
+
+Attempt 3 (Crib = CYBERSCIXTWOZEROTWOS):
+```
+https://gchq.github.io/CyberChef/#recipe=Multiple_Bombe('German%20Service%20Enigma%20(First%20-%203%20rotor)','EKMFLGDQVZNTOWYHXUSPAIBRCJ%3CR%5CnAJDKSIRUXBLHWTMCQGZNPYFVOE%3CF%5CnBDFHJLCPRTXVZNYEIWGAKMUSQO%3CW%5CnESOVPZJAYQUIRHXLNFTGKDCMWB%3CK%5CnVZBRGITYUPSDNHLXAWMJQOFECK%3CA','','AY%20BR%20CU%20DH%20EQ%20FS%20GL%20IP%20JX%20KN%20MO%20TZ%20VW','CYBERSCIXTWOZEROTWOS',0,true)&input=TkhLSUFHV1BKTllJSElXQkJIV01TWkhSS1NISlRRRFVaWEtCSkNPVUJEU0NUVkRLVUJTVE5DRVVOSk5VQ01UTk9RUUNZUlhRRVJXWFpGU1BYTE9UWEpT
+```
+
+Attempt 3 provides one result:
+```
+Rotors: AJDKSIRUXBLHWTMCQGZNPYFVOE, BDFHJLCPRTXVZNYEIWGAKMUSQO, ESOVPZJAYQUIRHXLNFTGKDCMWB
+Reflector: AY BR CU DH EQ FS GL IP JX KN MO TZ VW
+
+Rotor stops / Partial plugboard / Decryption preview
+SIG / CW AV BB DZ ET FN GO HH II KS LY PU RR / CYBERSCIXTWOZEROTWOLPSWBIN
+```
+
+Starting a new CyberChef recipe, we can begin by entering the results from the Multiple Bombe into an Enigma recipe:
+- The rotors
+- AAA as the rotor ring settings
+- The rotor stops as rotor initial values
+- The reflector
+- The partial plugboard
+
+This can be seen in this CyberChef recipe:
+https://gchq.github.io/CyberChef/#recipe=Enigma('3-rotor','LEYJVCNIXWPBQMDRTAKZGFUHOS','A','A','ESOVPZJAYQUIRHXLNFTGKDCMWB%3CK','A','R','AJDKSIRUXBLHWTMCQGZNPYFVOE%3CF','A','O','BDFHJLCPRTXVZNYEIWGAKMUSQO%3CW','A','C','AY%20BR%20CU%20DH%20EQ%20FS%20GL%20IP%20JX%20KN%20MO%20TZ%20VW','OQ%20AA%20CC%20ER%20FF%20HH%20KY%20MZ%20SS%20TT%20WW',true)&input=T0NJRkVGRlZWUkFaTUZLSE9IRlFVT1lQUkFUWENEQU9YT1ZPVEtSVFRNUURDVkZHSlNSS1BaWkxXTENVT0dWRFhPQVdNU01GS1RCQlVJS1ZCRVBMRUtQVlk
+
+Following the CyberChef Wiki post, we trying the next combinations on the right-hand rotor (incrementing ring setting and initial value, one-by-one). To reduce manual effort required, this was automated in `find_rotor_rings.py`:
+
+```
+Ring Settings: A A A, Initial Positions: SIG => Decrypted Text: CYBKFLAOYWKJETZQFOBDIXXANXUNBBMOGJWQPJSGTVJBCLULDXKEEPXOIKJRFPQDCRJXEZSSUNICATIONKAWCXL
+Ring Settings: A A B, Initial Positions: SIH => Decrypted Text: CYHKFLAOYWKJETZQFOBDIXXANXUNMBMOGJWQPJSGTVJBCLULDXKEEPIOIKJRFPQDCRJXEZSSUNICATIOAKAWCXL
+Ring Settings: A A C, Initial Positions: SII => Decrypted Text: CAHKFLAOYWKJETZQFOBDIXXANXUEMBMOGJWQPJSGTVJBCLULDXKEESIOIKJRFPQDCRJXEZSSUNICATIZAKAWCXL
+Ring Settings: A A D, Initial Positions: SIJ => Decrypted Text: GAHKFLAOYWKJETZQFOBDIXXANXPEMBMOGJWQPJSGTVJBCLULDXKEESIOIKJRFPQDCRJXEZSSUNICATKZAKAWCXL
+Ring Settings: A A E, Initial Positions: SIK => Decrypted Text: CYBERSCIXTWOZEROTWOLPSWBIXUNBFEAKABLEXCODEXSHOBINOFEEPXTHEXCYTERSYWXCOQMAOSBNTIONSXSAFE
+Ring Settings: A A F, Initial Positions: SIL => Decrypted Text: CYBERSCIXTWOZEROTWOLPSWBNXUNBFEAKABLEXCODEXSHOBINOKEEPXTHEXCYTERSYWXCOQMAOSBATIONSXSAFE
+Ring Settings: A A G, Initial Positions: SIM => Decrypted Text: CYBERSCIXTWOZEROTWOLPSWANXUNBFEAKABLEXCODEXSHOBINXKEEPXTHEXCYTERSYWXCOQMAOSCATIONSXSAFE
+Ring Settings: A A H, Initial Positions: SIN => Decrypted Text: CYBERSCIXTWOZEROTWOLPSXANXUNBFEAKABLEXCODEXSHOBIDXKEEPXTHEXCYTERSYWXCOQMAOICATIONSXSAFE
+Ring Settings: A A I, Initial Positions: SIO => Decrypted Text: CYBERSCIXTWOZEROTWOLPXXANXUNBFEAKABLEXCODEXSHOBLDXKEEPXTHEXCYTERSYWXCOQMANICATIONSXSAFE
+Ring Settings: A A J, Initial Positions: SIP => Decrypted Text: CYBERSCIXTWOZEROTWOLIXXANXUNBFEAKABLEXCODEXSHOULDXKEEPXTHEXCYTERSYWXCOQMUNICATIONSXSAFE
+Ring Settings: A A K, Initial Positions: SIQ => Decrypted Text: CYBERSCIXTWOZEROTWODIXXANXUNBFEAKABLEXCODEXSHLULDXKEEPXTHEXCYTERSYWXCOQSUNICATIONSXSAFE
+...
+```
+
+The decrypted text improves up until ring setting J and initial position P, then begins to deteriorate again. Therefore we will keep J/P and move on.
+
+We also take note that, according to the encryption script, there should be 10 plugboard pairs. The Bombe only output 9 pairs (with two different letters). 1 pair may still need to be entered. The Bombe plugboard output was "CW AV BB DZ ET FN GO HH II KS LY PU RR", which leaves "J M Q X" as remaining letters. Of which, there will be 1 pair and 2 unconnected.
+
+Trying all options for the final pair:
+```
+Final pair: JM => Decrypted Text: CYBERSCIBTWOZEROTWOBIXXANXUGBFEAKABLQXCODEXSHOULDXKEEPXTHPXCYZERSYWXCOQJUNICATIONSXSAQE
+Final pair: JQ => Decrypted Text: CYBERSCIOTWOZEROTWOLIXXANXUPBVEAKABLMXCODEXSHOULDXKEEPXTHLXCYTERSBXXCOJUUNICATIONSXSAME
+Final pair: JX => Decrypted Text: CYBERSCIXTWOZEROTWOLIJJANJULBFEAKRBLVJCODEJSHOULDJKEEPJTHDJCYTERSYWJCOFMUNIDATIOSSJSNYE
+Final pair: MQ => Decrypted Text: CYBERSCIXTWOZEROTWOSIXXANXUNBREAKABLEXCODEXSHOULDXKEEPXTHEXCYBERSCIXCOMMUNICATIONSXSAFE
+Final pair: MX => Decrypted Text: CYBERSCIMTWOZEROTWOVIMMANMUNBFEAKKBLEMCODEMSHOULDMKEEPMTHEMCYNERSYWMCOIXUNINATIOUSMSZFE
+Final pair: QX => Decrypted Text: CYBERSCIQTWOZEROTWOLIQQANQUNBHEAKZBLEQCODEQSHOULDQKEEPQTHEQCYTERSVJQCOQAUNIGATIOZSQSTFE
+```
+
+We can see the final decrypted text:
+CYBERSCIXTWOZEROTWOSIXXANXUNBREAKABLEXCODEXSHOULDXKEEPXTHEXCYBERSCIXCOMMUNICATIONSXSAFE
+
+Or converted back to the original:
+CYBERSCI 2026 AN UNBREAKABLE CODE SHOULD KEEP THE CYBERSCI COMMUNICATIONS SAFE

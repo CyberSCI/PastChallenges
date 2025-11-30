@@ -1,0 +1,70 @@
+services:
+  db_hr:
+    build: ./db_hr
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: GujB9YOCc1EChunii4jVE6cQ
+      MYSQL_DATABASE: hr
+      MYSQL_USER: hr
+      MYSQL_PASSWORD: hr
+    networks:
+      - db_all
+
+  db_orders:
+    build: ./db_corpo
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: okMSIYvUua7uF5u3ovB2yfoS
+      MYSQL_DATABASE: corpo
+      MYSQL_USER: corpo
+      MYSQL_PASSWORD: qkQv8bS6Qa5Yc1KVTV0bbi9a
+    networks:
+      - db_all
+      - db_orders
+
+  backend:
+    build: ./backend
+    restart: always
+    depends_on:
+      - db_orders
+    environment:
+      DB_HOST: db_orders
+      DB_NAME: corpo
+      DB_USER: corpo
+      DB_PASS: qkQv8bS6Qa5Yc1KVTV0bbi9a
+      UPLOAD_DIR: /var/www/html/uploads
+    networks:
+      - internal
+      - db_orders
+
+  frontend:
+    build: ./frontend
+    restart: always
+    depends_on:
+      - backend
+    environment:
+      BACKEND_HOST: http://backend
+      UPLOAD_DIR: /var/www/html/uploads
+    networks:
+      - front
+      - internal
+    ports:
+      - "8080:80"
+  
+  customer_bot:
+    build: ./customer_bot
+    restart: always
+    depends_on:
+      - frontend
+    environment:
+      FRONTEND_HOST: http://frontend
+      BOT_USERNAME: customer1
+      BOT_PASSWORD: Dedicator2-Villain-External
+    networks:
+      - front
+    
+networks:
+  front:
+  internal:
+  db_all:
+  db_orders:

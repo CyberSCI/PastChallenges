@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+
+CyberSci Regionals 2026/26
+
+Attacker Portal by Dmitriy Beryoza (0xd13a@gmail.com)
+
+-->
+<html lang="en">
+	<head>
+		<meta charset=UTF-8>
+		<link rel="stylesheet" href="/static/styles.css">
+		<title>Security Testing Portal</title>
+		<script>
+			async function runAttack(service,attack) {
+				// Clear status text for all elements
+				const attackResults = document.getElementsByClassName(`attack-result`);
+				for (const el of attackResults) {
+					el.innerText = "";
+				}
+
+                let result_id = `result_${service}_${attack}`;
+				document.getElementById(result_id).innerText = "Running the attack...";
+
+				let response = await fetch(`/attack/${service}/${attack}`);
+				let data = await response.text();
+				document.getElementById(result_id).innerText = data;
+			}
+		</script>
+	</head>
+    <body>
+
+		<h1 class="text-center">Welcome to Security Testing Portal!</h1>
+		<p class="body-text">Use the buttons below to launch simulated attacks against your service.<br><br>
+
+		Every attack exploits one or more vulnerabilities in one or more ways.<br><br>
+
+		Figure out what the vulnerabilities are. Fix them.<br><br>
+
+		Good luck!
+		</p>
+
+		<br>
+
+		<h2 class="text-center">Inventory</h2>
+
+		<p class="body-text">Use docker compose to stop and start the container.<br><br>
+
+		There is a backup tar file ~/inventory.tar.gz. You can extract it to get a fresh set of source files (tar xzf inventory.tar.gz).<br><br>
+		</p>
+		<table class="attacks">
+			<tr><th class="attack">Attack</th><th class="result">Result</th></tr>
+			<tr><td><input type="button" class="center" value="Execute attack scenario #1" onclick="runAttack(0,0);" /></td><td><span class="attack-result" id="result_0_0"></span></td></tr>
+			<tr><td><input type="button" class="center" value="Execute attack scenario #2" onclick="runAttack(0,1);" /></td><td><span class="attack-result" id="result_0_1"></span></td></tr>
+			<tr><td><input type="button" class="center" value="Execute attack scenario #3" onclick="runAttack(0,2);" /></td><td><span class="attack-result" id="result_0_2"></span></td></tr>
+		</table>
+
+	</body>
+</html>

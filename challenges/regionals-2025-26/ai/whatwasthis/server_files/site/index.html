@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatWasThis?</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="/static/favicon.ico">
+</head>
+<body>
+
+    <header>
+        <h1>WhatWasThis?</h1>
+        <p>Upload a JPG or PNG and have our AI identify the old technology in it.</p>
+    </header>
+
+    <main>
+        <div class="upload-area">
+            <input type="file" id="image-uploader" accept=".jpg, .jpeg, .png" hidden>
+            <label for="image-uploader" class="upload-label">Choose an Image</label>
+        </div>
+
+        <!-- This section is for loading feedback -->
+        <div id="status-container" class="hidden">
+            <div class="loader"></div>
+            <p id="status-message">Analyzing image...</p>
+        </div>
+
+        <div id="image-preview-container" class="hidden">
+            <img id="image-preview" src="#" alt="Image preview" />
+        </div>
+
+        <!-- This section is for the result -->
+        <div id="result-container" class="hidden">
+            <h2>Description:</h2>
+            <p id="result-text"></p>
+        </div>
+
+        <!-- This section is for errors -->
+        <p id="error-message" class="error hidden"></p>
+    </main>
+
+    <footer>
+        <p>A Totally Unbiased AI Production</p>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

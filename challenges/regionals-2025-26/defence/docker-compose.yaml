@@ -1,0 +1,7 @@
+services:
+  attacker:
+    build: .
+    container_name: attacker
+    ports:
+      - "80:80"
+    restart: always

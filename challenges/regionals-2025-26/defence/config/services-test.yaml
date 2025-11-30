@@ -1,0 +1,11 @@
+services:                               # Attack targets
+  - name: "Inventory"                   # Service name
+    folder: "inventory"                 # Folder where service files are located
+    file: "inventory_attacker.py"       # Attacker script file
+    class: "InventoryAttacker"          # Attacker class name
+    address: "127.0.0.1:10001"          # Address of the challenge
+    requests: 4                         # Number of requests to send (will be an equal mix of benign and malicious)
+    flags:                              # Flag for each vulnerability type
+      - "CyberSci{eval_even_sounds_like_evil}"
+      - "CyberSci{variable_shadowing_spoiled_us}"
+      - "CyberSci{guns_for_everyone!}"

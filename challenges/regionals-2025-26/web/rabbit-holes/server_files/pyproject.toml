@@ -1,0 +1,18 @@
+[project]
+name = "server-files"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "pituophis>=1.1,<2.0",
+    "pycurl>=7.45.7,<8.0.0",
+    "structlog>=25.4.0,<26.0.0",
+]
+
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+include = ["**/*.py"]
+exclude = ["**/node_modules", "**/__pycache__"]
+pythonVersion = "3.13"

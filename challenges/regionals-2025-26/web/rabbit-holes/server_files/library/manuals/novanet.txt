@@ -1,0 +1,8 @@
+NOVANET MANUAL
+
+The Novanet is a concerted effort by the world's remaining technologists to restore the world's communications and information networks to pre-calamity status. 
+It uses the Gopher protocol in communication. See attached RFC 1436.
+
+RFC Pending (if those still exist by the time it's done).
+
+TODO: The rest of this manual

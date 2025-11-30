@@ -1,0 +1,225 @@
+:root {
+    --terminal-bg: #0c0c0c;
+    --terminal-fg: #00ff41;
+    --terminal-fg-darker: #008a23;
+    --terminal-glow: rgba(0, 255, 65, 0.2);
+    --error-color: #ff4141;
+}
+
+/* Basic Reset & Body Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::selection {
+    background: var(--terminal-fg);
+    color: var(--terminal-bg);
+}
+
+body {
+    font-family: "Courier New", Courier, monospace;
+    background-color: var(--terminal-bg);
+    color: var(--terminal-fg);
+    text-shadow: 0 0 5px var(--terminal-glow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+    text-align: center;
+    overflow-x: hidden; /* Hide horizontal overflow from animations */
+}
+
+/* Scanline Overlay Effect */
+body::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.3),
+        rgba(0, 0, 0, 0.3) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Main Layout Elements */
+header,
+main,
+footer {
+    width: 100%;
+    max-width: 700px;
+    padding: 1rem;
+}
+
+main {
+    border: 2px solid var(--terminal-fg-darker);
+    box-shadow: inset 0 0 15px var(--terminal-glow);
+    padding: 1.5rem;
+}
+
+header h1 {
+    margin-bottom: 0.5rem;
+    animation: text-flicker 0.1s infinite alternate;
+}
+
+header p {
+    margin-bottom: 2rem;
+    color: var(--terminal-fg);
+}
+
+footer {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Uploader Styling */
+.upload-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: var(--terminal-fg);
+    border: 1px solid var(--terminal-fg);
+    cursor: pointer;
+    font-weight: bold;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+    position: relative; /* For the cursor */
+}
+
+.upload-label:hover {
+    background-color: var(--terminal-fg);
+    color: var(--terminal-bg);
+}
+
+/* Blinking cursor effect for the label */
+.upload-label::after {
+    content: "_";
+    animation: blink 1s step-end infinite;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+/* Hidden Utility Class */
+.hidden {
+    display: none !important;
+}
+
+/* Status Container (Loader and Message) */
+#status-container {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* CSS Loader Animation (replaces spinner) */
+.loader {
+    width: 1ch;
+    height: 1.5em;
+    background-color: var(--terminal-fg);
+    animation: blink 1s step-end infinite;
+    box-shadow: 0 0 10px var(--terminal-glow);
+}
+
+/* Image Preview Styling */
+#image-preview-container {
+    margin: 2rem 0;
+}
+
+#image-preview {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #000;
+}
+
+/* Result and Error Styling */
+#result-container {
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px solid var(--terminal-fg-darker);
+    background-color: rgba(0, 255, 65, 0.05);
+    text-align: left;
+}
+
+#result-container h2 {
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+#result-text::before {
+    content: "> ";
+}
+
+.error {
+    color: var(--error-color);
+    font-weight: bold;
+    margin-top: 1rem;
+    text-shadow: 0 0 5px rgba(255, 65, 65, 0.4);
+}
+
+/* Disabled State for Label */
+.upload-label.disabled {
+    background-color: var(--terminal-fg-darker);
+    color: var(--terminal-bg);
+    cursor: not-allowed;
+    border-color: var(--terminal-fg-darker);
+    opacity: 0.6;
+}
+.upload-label.disabled:hover {
+    background-color: var(--terminal-fg-darker);
+    color: var(--terminal-bg);
+}
+.upload-label.disabled::after {
+    display: none; /* Hide cursor when disabled */
+}
+
+/* Keyframe Animations */
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes text-flicker {
+    from {
+        text-shadow:
+            0 0 5px var(--terminal-glow),
+            0 0 7px var(--terminal-glow);
+    }
+    to {
+        text-shadow:
+            0 0 6px var(--terminal-glow),
+            0 0 8px var(--terminal-glow);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    body {
+        padding: 0.5rem;
+    }
+    main {
+        padding: 1rem;
+    }
+}

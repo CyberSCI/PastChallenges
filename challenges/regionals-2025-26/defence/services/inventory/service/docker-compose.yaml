@@ -1,0 +1,7 @@
+services:
+  inventory:
+    build: .
+    container_name: inventory
+    ports:
+      - "10001:10001"
+    restart: always
