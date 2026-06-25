@@ -1,0 +1,33 @@
+# V2 — Union-based SQLi in friend search (MEDIUM)
+#
+# Fix: switch the LIKE query to a prepared statement with a `?` placeholder
+# bound via mysqli::bind_param('s', ...). The `%` wildcards stay on PHP's
+# side of the bind so user input cannot terminate or pivot the literal.
+#
+# Apply from inside release_files/:
+#     patch -p1 < ../solve_files/patches/V2_search_sqli.diff
+#
+diff --git a/src/search.php b/src/search.php
+--- a/src/search.php
++++ b/src/search.php
+@@ -18,9 +18,17 @@ $err = null;
+
+ if ($q !== '') {
+     $db = cyspace_db();
+-    $sql = "SELECT id, username, mood FROM users WHERE username LIKE '%" . $q . "%' ORDER BY username LIMIT 50";
+-    $results = $db->query($sql);
+-    if (!$results) {
++    $stmt = $db->prepare(
++        'SELECT id, username, mood FROM users WHERE username LIKE ? ORDER BY username LIMIT 50');
++    if ($stmt) {
++        $like = '%' . $q . '%';
++        $stmt->bind_param('s', $like);
++        $stmt->execute();
++        $results = $stmt->get_result();
++        if (!$results) {
++            $err = $stmt->error;
++        }
++    } else {
+         $err = $db->error;
+     }
+ }

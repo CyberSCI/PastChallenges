@@ -1,0 +1,97 @@
+static_resources:
+  listeners:
+    - name: ingress
+      address:
+        socket_address: { address: 0.0.0.0, port_value: 8080 }
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: ingress_http
+                codec_type: AUTO
+                upgrade_configs:
+                  - upgrade_type: websocket
+                route_config:
+                  name: local_route
+                  virtual_hosts:
+                    - name: backend
+                      domains: ["*"]
+                      routes:
+                        - match: { path: "/login" }
+                          route: { cluster: auth_cluster }
+                        - match: { path: "/register" }
+                          route: { cluster: auth_cluster }
+                        - match: { path: "/.well-known/jwks.json" }
+                          route: { cluster: auth_cluster }
+                        - match: { prefix: "/ws" }
+                          route:
+                            cluster: chat_cluster
+                            timeout: 0s
+                            idle_timeout: 0s
+                        - match: { prefix: "/" }
+                          route: { cluster: frontend_cluster }
+                http_filters:
+                  - name: envoy.filters.http.jwt_authn
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
+                      providers:
+                        auth_provider:
+                          issuer: ""
+                          remote_jwks:
+                            http_uri:
+                              uri: http://auth-server:8000/.well-known/jwks.json
+                              cluster: auth_cluster
+                              timeout: 5s
+                            cache_duration: { seconds: 1 }
+                            async_fetch: {}
+                          from_cookies:
+                            - token
+                          forward: true
+                      rules:
+                        - match: { path: "/login" }
+                        - match: { path: "/register" }
+                        - match: { path: "/.well-known/jwks.json" }
+                        - match: { prefix: "/ws" }
+                          requires: { provider_name: auth_provider }
+                        - match: { prefix: "/" }
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+  clusters:
+    - name: auth_cluster
+      connect_timeout: 5s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: auth_cluster
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: auth-server, port_value: 8000 }
+
+    - name: chat_cluster
+      connect_timeout: 5s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: chat_cluster
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: chat-server, port_value: 8080 }
+
+    - name: frontend_cluster
+      connect_timeout: 5s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: frontend_cluster
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address: { address: frontend, port_value: 80 }

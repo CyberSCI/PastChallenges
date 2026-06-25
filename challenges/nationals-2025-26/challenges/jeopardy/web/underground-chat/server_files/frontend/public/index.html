@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>UNDERGROUND // secure channel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Major+Mono+Display&display=swap" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230a0a0f'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' font-family='monospace' font-size='42' fill='%2300ffd1'%3E%26%23x25BC;%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- BOOT SEQUENCE -->
+  <section id="boot" class="boot">
+    <pre id="boot-log" class="boot-log" aria-live="polite"></pre>
+  </section>
+
+  <!-- AUTH SCREEN -->
+  <section id="auth" class="auth screen hidden" aria-hidden="true">
+    <header class="brand">
+      <pre class="ascii" aria-hidden="true">
+ ██╗   ██╗███╗   ██╗██████╗ ███████╗██████╗  ██████╗ ██████╗  ██████╗ ██╗   ██╗███╗   ██╗██████╗ 
+ ██║   ██║████╗  ██║██╔══██╗██╔════╝██╔══██╗██╔════╝ ██╔══██╗██╔═══██╗██║   ██║████╗  ██║██╔══██╗
+ ██║   ██║██╔██╗ ██║██║  ██║█████╗  ██████╔╝██║  ███╗██████╔╝██║   ██║██║   ██║██╔██╗ ██║██║  ██║
+ ██║   ██║██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗██║   ██║██╔══██╗██║   ██║██║   ██║██║╚██╗██║██║  ██║
+ ╚██████╔╝██║ ╚████║██████╔╝███████╗██║  ██║╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝
+  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ 
+      </pre>
+      <h1 class="title">
+        <span class="glitch" data-text="UNDERGROUND">UNDERGROUND</span>
+        <span class="dim">// secure channel</span>
+      </h1>
+      <p class="subtitle">
+        <span class="blip">●</span> encrypted ed25519 &middot; jwt-gated &middot; zero-trust ingress
+      </p>
+    </header>
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="panel-title">root@underground:~$ <span class="cursor">_</span></span>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="login" type="button">&gt; LOGIN</button>
+        <button class="tab" data-tab="register" type="button">&gt; REGISTER</button>
+      </div>
+
+      <form id="auth-form" class="form" autocomplete="off" novalidate>
+        <label class="field">
+          <span class="label">$ handle</span>
+          <input id="username" name="username" type="text" required spellcheck="false" autocapitalize="off" placeholder="anon" />
+        </label>
+        <label class="field">
+          <span class="label">$ passphrase</span>
+          <input id="password" name="password" type="password" required spellcheck="false" placeholder="••••••••" />
+        </label>
+        <button id="submit" class="btn primary" type="submit">
+          <span class="btn-label">[ AUTHENTICATE ]</span>
+          <span class="btn-shimmer" aria-hidden="true"></span>
+        </button>
+        <p id="auth-msg" class="msg" role="status" aria-live="polite"></p>
+      </form>
+
+      <footer class="panel-footer">
+        <span>node: <em>envoy://0.0.0.0:8080</em></span>
+        <span>build: <em>0xUC.0001</em></span>
+      </footer>
+    </div>
+
+    <p class="legal">
+      &gt; unauthorized access is monitored. all packets are logged. proceed with caution.
+    </p>
+  </section>
+
+  <!-- CHAT SCREEN -->
+  <section id="chat" class="chat screen hidden" aria-hidden="true">
+    <header class="chat-header">
+      <div class="left">
+        <span class="brand-mark">▼</span>
+        <span class="brand-name">UNDERGROUND</span>
+        <span class="channel">// #the-grid</span>
+      </div>
+      <div class="right">
+        <span id="status-pill" class="pill"><span class="pulse"></span><span id="status-text">connecting…</span></span>
+        <span class="pill ghost" id="me-pill">@<span id="me">anon</span></span>
+        <button id="logout" class="btn ghost" type="button">[ LOGOUT ]</button>
+      </div>
+    </header>
+
+    <main id="messages" class="messages" aria-live="polite"></main>
+
+    <footer class="composer">
+      <span class="prompt">&gt;</span>
+      <input id="msg-input" type="text" placeholder="transmit a packet…" autocomplete="off" maxlength="2000" />
+      <button id="send" class="btn primary small" type="button">SEND ▸</button>
+    </footer>
+  </section>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

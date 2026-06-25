@@ -1,0 +1,75 @@
+<?php
+// CySpace.com - Legacy Post Signing Module
+// File: /var/www/cyspace/lib/sign_post.php
+// Recovered from a salvaged CySpace.com web server.
+// Released as part of the post-EMP "Right to Repair" disclosure act.
+//
+// This is the actual PHP module @viper92's CySpace client used to sign
+// posts and inbox-access requests under DSA. The client's private key
+// has been REDACTED for obvious reasons.
+//
+// NOTE: This module dates to the original 1999 CySpace.com codebase. The
+//       PRNG used for the per-signature nonce predates the 2008 OpenSSL
+//       hardening; we have not rotated it post-EMP because rebuilding the
+//       random subsystem from scratch on salvaged hardware is non-trivial.
+
+require_once 'dsa_params.php';   // loads $p, $q, $g
+require_once 'gmp_helpers.php';  // gmp_invert_mod, etc.
+
+// @viper92's DSA private key. REDACTED before public release.
+$PRIVATE_KEY_X = gmp_init("<REDACTED>", 16);
+
+
+/**
+ * Build the canonical signing envelope for a CySpace object (post or
+ * inbox request). See cyspace_api.txt for the byte-exact format.
+ */
+function cyspace_envelope($object_id, $timestamp, $author, $body) {
+    return $object_id . "|" . $timestamp . "|@" . $author . "|" . $body;
+}
+
+
+/**
+ * Generate a per-signature nonce k in [1, q-1].
+ *
+ * NOTE: After the EMP we lost access to /dev/urandom on the salvaged
+ *       server. We fall back to PHP's mt_rand seeded from the system
+ *       clock. This is fine in practice because nobody is going to
+ *       collect enough of @viper92's posts to find a collision. Right?
+ */
+function cyspace_generate_nonce($q) {
+    global $broken_rng_state;
+    // PRNG is seeded once per request handler from coarse wall-clock time;
+    // mt_rand() then produces 32-bit chunks that we glue together to fill
+    // ~160 bits. The seeding is shared across multiple sign() calls in
+    // the same request, which is where things get... interesting.
+    if (!isset($broken_rng_state)) {
+        mt_srand(intval(time() / 60));   // minute-resolution seed (!)
+        $broken_rng_state = true;
+    }
+    $k = gmp_init(0);
+    for ($i = 0; $i < 5; $i++) {
+        $k = gmp_or(gmp_mul($k, gmp_init(1 << 32)), gmp_init(mt_rand()));
+    }
+    return gmp_mod($k, gmp_sub($q, 1));   // k in [0, q-2]; we'll +1 below
+}
+
+
+/**
+ * DSA-sign the canonical envelope of a CySpace object.
+ * Returns [r, s] as decimal strings.
+ */
+function cyspace_sign_object($object_id, $timestamp, $author, $body) {
+    global $p, $q, $g, $PRIVATE_KEY_X;
+
+    $envelope = cyspace_envelope($object_id, $timestamp, $author, $body);
+    $h        = gmp_init(sha1($envelope), 16);
+
+    $k = gmp_add(cyspace_generate_nonce($q), gmp_init(1));   // k in [1, q-1]
+    $r = gmp_mod(gmp_powm($g, $k, $p), $q);
+    $kinv = gmp_invert($k, $q);
+    $s = gmp_mod(gmp_mul($kinv, gmp_add($h, gmp_mul($PRIVATE_KEY_X, $r))), $q);
+
+    return [gmp_strval($r), gmp_strval($s)];
+}
+?>

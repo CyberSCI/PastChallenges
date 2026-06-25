@@ -1,0 +1,53 @@
+# V5 — Insecure unserialize() of a cookie / POP gadget (HARD)
+#
+# The vulnerable sink is inside `inc/prefs_classes.php`'s
+# `theme_prefs_load_v1` helper: after stripping the "CYP1:" prefix and
+# base64-decoding the rest, it calls `@unserialize()` on the inner
+# payload. The fact that the call is wrapped in a custom "blob" format
+# at one level of indirection from prefs.php does not change the bug —
+# any cookie value `CYP1:<base64-of-serialized-POP-chain>` still
+# instantiates ProfileExporter and trips its __destruct file-read sink.
+#
+# Fix: replace the inner `unserialize()` with `json_decode()` (and
+# switch the encoder to `json_encode` for symmetric round-trip) so
+# cookie payloads can never instantiate arbitrary classes and therefore
+# cannot reach `ProfileExporter::__destruct`'s file-read sink. The
+# "CYP1:" magic and base64 wrapping stay (preserves on-disk format),
+# but the inner sink moves to a class-injection-safe parser.
+#
+# Note: on PHP 5.6, `unserialize($data, ['allowed_classes' => false])`
+# is NOT supported — the second argument is silently ignored, so the
+# json_decode swap is the only correct fix on this stack. (PHP 7+
+# supports the allow-list form; mention this in the team-facing
+# walkthrough as a stack-version trap.)
+#
+# Apply from inside release_files/:
+#     patch -p1 < ../solve_files/patches/V5_prefs_unserialize.diff
+#
+diff --git a/src/inc/prefs_classes.php b/src/inc/prefs_classes.php
+--- a/src/inc/prefs_classes.php
++++ b/src/inc/prefs_classes.php
+@@ -40,9 +40,21 @@ function theme_prefs_load_v1($cookie) {
+     if ($payload === false) {
+         return null;
+     }
+-    return @unserialize($payload);
++    $decoded = @json_decode($payload, true);
++    if (!is_array($decoded)) {
++        return null;
++    }
++    $prefs = new ThemePrefs();
++    if (isset($decoded['bgcolor']))   { $prefs->bgcolor   = (string)$decoded['bgcolor']; }
++    if (isset($decoded['textcolor'])) { $prefs->textcolor = (string)$decoded['textcolor']; }
++    if (isset($decoded['blink']))     { $prefs->blink     = (bool)$decoded['blink']; }
++    return $prefs;
+ }
+
+ function theme_prefs_save_v1($obj) {
+-    return 'CYP1:' . base64_encode(serialize($obj));
++    return 'CYP1:' . base64_encode(json_encode(array(
++        'bgcolor'   => $obj->bgcolor,
++        'textcolor' => $obj->textcolor,
++        'blink'     => $obj->blink,
++    )));
+ }

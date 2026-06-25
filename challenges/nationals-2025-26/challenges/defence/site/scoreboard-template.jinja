@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% if not competition_finished %}
+    	<meta http-equiv="refresh" content="30">
+		{% endif %}
+		<meta charset=UTF-8>
+		<style>
+			body { font-family: Arial, Helvetica, sans-serif; }
+			table { border-collapse: collapse; width: 50%; margin-left: auto; margin-right: auto; }
+            th { padding: 8px; color: white; background-color: black; }
+			td { text-align: left; padding: 8px; }
+            tr:nth-child(odd) { background-color: Lightgray; }
+			
+			.center  { display: block; margin-left: auto; margin-right: auto; }			
+			.chart-center { display: flex; justify-content: center; }
+			.text-center { text-align: center; }
+		</style>
+		<title>CyberSci Nationals 2026</title>
+		<link rel="icon" type="image/ico" href="static/favicon.ico">
+		<script src="static/d3.v7.min.js"></script>
+		<script src="static/scoreboard.js"></script>
+	</head>
+    <body>
+		<img class="center" src="static/cybersci.png">
+		<h1 class="text-center">CyberSci Nationals 2026</h1>
+		<h2 class="text-center">{{ banner }}</h2>
+		<div class="chart-center" id="chart"></div>
+<script>
+
+scores = [
+{% for score in chart_scores %}
+{"team":{{ score.team_id }},"date":new Date({{ score.time }}),"score":{{ score.score }}},
+{% endfor %}
+];
+
+chart = LineChart(scores, {
+  x: d => d.date,
+  y: d => d.score,
+  z: d => d.team,
+  yLabel: "Scores",
+  width: 1000,
+  height: 500,
+  color: i => colors[i % colors.length],
+  xDomain: [new Date({{ start_time }}), new Date({{ end_time }})],
+  labels: [
+{% for team in teams %}
+{{ team.get_name()|tojson }},
+{% endfor %}
+  ]
+});
+
+var targetDiv = document.getElementById('chart');
+targetDiv.appendChild(chart);
+</script>
+		<br>
+		<br>
+		<table>
+			<tr>
+				<th>Place</th>
+				<th>Team</th>
+				<th>Score</th>
+			</tr>
+			{% for score in competition_scores %}
+			<tr>
+				<td class="text-center">{% if score.place==1 %}&#x1F947;{% endif %}{% if score.place==2 %}&#x1F948;{% endif %}{% if score.place==3 %}&#x1F949;{% endif %}{{ score.place }}</td>
+				<td><a href="team{{ score.team_id }}.html">{{ score.team_name|e }}</a></td>
+				<td class="text-center">{{ score.score }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<br>
+		<br>
+		<br>
+		<br>
+		
+		<img class="center" src="static/sponsors.png">
+    </body>
+</html>
+    

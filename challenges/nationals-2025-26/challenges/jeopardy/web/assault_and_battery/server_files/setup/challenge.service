@@ -1,0 +1,23 @@
+[Unit]
+Description=Assault and Battery
+After=network.target 
+
+[Service]
+User=vpcadmin
+Group=vpcadmin
+
+WorkingDirectory=/home/vpcadmin/challenge
+
+ExecStart=/home/vpcadmin/.nix-profile/bin/devenv up
+
+Restart=always 
+RestartSec=5s
+
+StandardOutput=journal
+StandardError=journal
+
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+

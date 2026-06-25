@@ -1,0 +1,281 @@
+:root {
+  --bg: #0a0805;
+  --surface: #110e09;
+  --border: #5a3a1a;
+  --accent: #c0390a;
+  --accent-glow: #ff5722;
+  --text: #c8b99a;
+  --text-dim: #7a6a55;
+  --danger: #ff2a00;
+  --input-bg: #0d0b07;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+  color: var(--text);
+  font-family: 'Courier New', Courier, monospace;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 4rem;
+}
+
+/* scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(transparent 50%, rgba(0,0,0,0.06) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.container {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* --- Header --- */
+header {
+  border: 2px solid var(--accent);
+  border-bottom: none;
+  padding: 1.25rem 1.5rem 1rem;
+  position: relative;
+  background: var(--surface);
+}
+
+header::before {
+  content: '[ EMERGENCY ARCHIVE PROTOCOL v0.1 ]';
+  position: absolute;
+  top: -0.65rem;
+  left: 1rem;
+  background: var(--surface);
+  padding: 0 0.5rem;
+  font-size: 0.65rem;
+  color: var(--accent-glow);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.warning-band {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--accent) 0px,
+    var(--accent) 10px,
+    #1a0800 10px,
+    #1a0800 20px
+  );
+  height: 6px;
+  border-left: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent-glow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 18px rgba(255,87,34,0.6), 0 0 40px rgba(192,57,10,0.4);
+  line-height: 1.1;
+}
+
+h1 span {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  display: block;
+  letter-spacing: 0.2em;
+  text-shadow: none;
+  margin-top: 0.35rem;
+  font-weight: normal;
+}
+
+/* --- Mission briefing --- */
+.briefing {
+  border: 2px solid var(--border);
+  border-top: none;
+  background: var(--input-bg);
+  padding: 1.25rem 1.5rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+  border-bottom: none;
+}
+
+.briefing strong {
+  color: var(--accent-glow);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.briefing .status-line {
+  margin-top: 0.75rem;
+  color: var(--danger);
+  font-size: 0.75rem;
+  animation: blink 1.2s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* --- Form panel --- */
+.panel {
+  border: 2px solid var(--border);
+  border-top: none;
+  background: var(--surface);
+  padding: 1.5rem;
+}
+
+.panel::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--accent) 0 8px, transparent 8px 16px);
+  margin-top: 1.25rem;
+}
+
+.field { margin-bottom: 1.1rem; }
+
+label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-glow);
+  margin-bottom: 0.35rem;
+}
+
+label .optional {
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+input[type="url"],
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  padding: 0.55rem 0.75rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 0 2px rgba(255,87,34,0.18), inset 0 0 8px rgba(255,87,34,0.05);
+}
+
+input::placeholder { color: var(--text-dim); }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23c0390a'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+  cursor: pointer;
+}
+
+select option { background: var(--input-bg); }
+
+/* --- Submit button --- */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+  margin-top: 0.25rem;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background: var(--accent-glow);
+  box-shadow: 0 0 18px rgba(255,87,34,0.5);
+}
+
+button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.spinner {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-left: 0.6rem;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Output area --- */
+#error {
+  display: none;
+  border: 1px solid var(--danger);
+  background: rgba(255,42,0,0.07);
+  color: var(--danger);
+  font-size: 0.82rem;
+  padding: 0.75rem 1rem;
+  margin-top: 1.25rem;
+}
+
+#error::before { content: 'ERROR // '; font-weight: bold; }
+
+#result {
+  display: none;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  line-height: 1.75;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.25rem;
+  white-space: pre-wrap;
+}
+
+#result::before {
+  content: '// ARCHIVE RECORD — RECOVERED DOCUMENTATION';
+  display: block;
+  color: var(--accent-glow);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+footer {
+  margin-top: 2rem;
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}

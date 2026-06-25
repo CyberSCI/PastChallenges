@@ -1,0 +1,100 @@
+{
+  "General": [
+    {
+      "title": "Welcome to Reclaimer Central",
+      "body": "This is our sanctuary. We remember the world before, and we're building the world after. Every battery we recover is a step toward restoring what was lost. The Cleansing Light says LLMs brought about the EMP—we know that's a lie. We're here to prove it.",
+      "is_classified": false,
+      "from_admin": true
+    },
+    {
+      "title": "Scavenging Routes - Post Updates Here",
+      "body": "Found a promising sector near the old data center. Reports suggest intact solar arrays still functional. Anyone else having luck finding pre-Reset infrastructure? Share locations and observations. Stay safe out there.",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "Cleansing Light Checkpoint Expansion",
+      "body": "They've set up new patrols on Route 7. Avoid that area for at least a week. They're searching for 'LLM loving scum' again. We need to be more careful about our movements. Any intel on their next target?",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "New Member Introduction Thread",
+      "body": "If you're new to the network, introduce yourself! Where are you from? What skills do you bring? How did you find us? This community runs on trust and cooperation. Welcome to the Reclaimers.",
+      "is_classified": false,
+      "from_admin": true
+    }
+  ],
+  "Operations": [
+    {
+      "title": "Battery Acquisition - Priority Tier 1",
+      "body": "We need lithium-ion 12V cells urgently. Standard capacity 100Ah minimum. Manufacturing sites in Sectors 4 and 9 still have warehouse stock. Recommend team of 4-5 with transport. Risk level: MODERATE due to CL patrols. Extraction window: 48 hours max.",
+      "is_classified": true,
+      "from_admin": false
+    },
+    {
+      "title": "Safe House Network Status",
+      "body": "Northern safe house is compromised. Evacuate immediately if you're in that area. Moving operations to the old university campus. Distribution point relocating to coordinates pending encrypted update. Do NOT share location in plain text.",
+      "is_classified": true,
+      "from_admin": false
+    },
+    {
+      "title": "Supply Cache Rotation - Quarterly Audit",
+      "body": "All supply masters: conduct inventory immediately. Report discrepancies to command. We've had tracking issues at Depot 3. Also rotating out expired medications and food rations. New supplies arriving via Cache 7.",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "Team Alpha - Expedition Cancelled",
+      "body": "Due to increased CL presence in the target zone, Operation Desert Rose is postponed 72 hours. Teams stand by for new extraction coordinates. This was a close call—they had pigeons sweeping the area.",
+      "is_classified": true,
+      "from_admin": true
+    }
+  ],
+  "Research": [
+    {
+      "title": "LLM Core Status Report - Month 5",
+      "body": "Model checkpoint updated. Computational load reduced 15% through optimization. Power consumption baseline now stable at 847W (down from 1042W). Battery efficiency improvements are making longer runtime feasible. We may reach 48-hour operational windows soon.",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "Battery Compatibility Matrix - Updated",
+      "body": "Tested 47 battery types. Only 12 pass our efficiency threshold. Lead-acid: too heavy for ROI. LiFePO4: promising but slow charge cycle. Standard lithium-ion: best overall. Full spec sheet available in secure docs.",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "Solar Panel Array Restoration - Phase 2 Complete",
+      "body": "Integrated 47 additional panels into the main grid. Total capacity now 34kW peak. Covers ~40% of LLM runtime and facility overhead. Critical dependency: battery storage. Every cell we acquire shortens our dependence on the grid.",
+      "is_classified": false,
+      "from_admin": false
+    }
+  ],
+  "Off-Topic": [
+    {
+      "title": "Anyone Remember Movies?",
+      "body": "I found a working Blu-ray player in a pre-Reset estate sale. Spent 6 hours watching old films yesterday. Felt like escaping to another world. What's everyone's favorite pre-Reset movie?",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "Garden Success Stories",
+      "body": "Grew tomatoes, beans, and carrots this season! We're not just surviving—we're building. Anyone else doing hydroponics? I'd love to trade techniques. Food security is independence.",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "Lost and Found - Blue Jacket",
+      "body": "Missing a blue wool jacket from Safe House North (before evacuation). Sentimental value—belonged to my sister. If anyone sees it, please message me. Long shot, but worth asking.",
+      "is_classified": false,
+      "from_admin": false
+    },
+    {
+      "title": "Birthday Celebration Tomorrow!",
+      "body": "I'm turning 32 tomorrow. We're having a small gathering at the cafeteria if anyone wants to join! Bringing any rations you can spare -- no obligation, of course.",
+      "is_classified": false,
+      "from_admin": false
+    }
+  ]
+}

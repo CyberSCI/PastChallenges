@@ -1,0 +1,133 @@
+jenkins:
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: true
+  crumbIssuer: "standard"
+  disableRememberMe: false
+  labelAtoms:
+    - name: "built-in"
+  log: {}
+  markupFormatter: "plainText"
+  mode: NORMAL
+  nodeMonitors:
+    - "architecture"
+    - "clock"
+    - diskSpace:
+        freeSpaceThreshold: "1GiB"
+        freeSpaceWarningThreshold: "2GiB"
+    - "swapSpace"
+    - tmpSpace:
+        freeSpaceThreshold: "1GiB"
+        freeSpaceWarningThreshold: "2GiB"
+    - "responseTime"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: true
+      users:
+        - description: "jIyX0o2Mnt++vr6+vcyxhZ68zoaczbq+vr6+u76uvr2+vr69vq68yq2OtbjKrJK0zYnGibKFraq1qryvnrKS1L7MlMy8iJ66usasvK+5u660rJzPua2TkcvKzLGPzZy3ycmahdCvrs2ZlqzJrpWzjauIkJK9lpePt5aQrs+elKWNnYu1lpe1iZWTt6qxzcyXtbS+qsyWj6qaj7PIjb6FtdC9vpDLxrPMlbetvY/IsK3Gk4+Nr5ysz8q0h6yPxpuLipnQr6eZx66pnbLOl5HPrpqWnZGNmbrQlJCQkZfHt429yqyLhcqZrr7GncyTsIaxmIi4janKsc6xk62s1MiorbePzdCTnruZpqe9nYuytaa4p7K6ubSmjpibu4W8rqXPmdSazqzJppePj7WMjouLiaeUyqi2yMy5ks+7mIeb1MqTq6y+yqbPx6rOypyZkrqzl5nQ1M6mpbuSy7qMuciIjMe1kbqVtaW3ia2ai76xya2P0Mebl4+xkM+5pZ3="
+          id: "admin"
+          name: "Administrator"
+          password: "3af23c474f6c4c6ebaca02e743433043"
+          properties:
+            - "apiToken"
+            - "consoleUrlProvider"
+            - "viewsTabBar"
+            - myView:
+                viewsTabBar: "standard"
+            - "timezone"
+            - "experimentalFlags"
+        - description: "jIyX0o2Mnt++vr6+vcyxhZ68zoaczbq+vr6+u76uvr2+vr69vq68y9S6y4bOiJipvqe9jo6MuoyxnIe7traSlLeWm42JlLidys22ioedm7a5kYqKqsy5p5qSm7ePk7rOyIWVt7SykbzNp73LzseLm6+sto6NlJKevo2mt7eZtrXQrafInorIyryN1NDKlJ6FuYiSrYWVrKiMupXIyKm8kpKYmYevm56RmavPmYmUzqqetrGut5fHx5SRj4+eqMibzY/MlM6ZqNCTxsq2roXOvoW5vZi6touckqW0krbMi7ix0K2qjpWmtoWulqW2u8jHmbGZlKe4tYWeqq2Plqy7uI6yqYeRs9CHmZPO0MuYjM2Yh8y7qpeXsb23noyMlKmTmbG2x7ColZ2JpsnKqbO2h8fNkLW9sc6zz52az7ast6rJlJG+ucq+upTMzKvQz5LQlYeWr6ayjaeMkLm4m7rNmJqUhZarlpG8zrbKqraUyrG2jLOJs7vHjZSry8b="
+          id: "sofia.bernhard"
+          name: "Sofia Bernhard"
+          password: "sofia.bernhard123"
+        - description: "jIyX0o2Mnt++vr6+vcyxhZ68zoaczbq+vr6+u76uvr2+vr69vq68kbOM0Kqsu7SNx4mlr5PHzrqwk7OOpcqIsMmVjqipmZut0M2YnZevhruQudSbq5zGm6e2loyuxrWbiZelk5SmjZW1sImzuJjMntSzprOMmKiuvIyoiZyzy5Wbh7i7k5KGnLSPyM+6jJ6xyo+NlqyPrL22mJG7y7SOhdC+nM6qrq+8h6WWmbHInpmUxrCQyrjPmLvHvr2TvLiXuo2PzrimqZyTtsuorLa2z9SWy7uysLaZyKrHtLSZz5WolMq9u4+op6bJy7vIqJmtzbywi6nQsca7sb7ItJCvm4fIqs62js+eyLuwlbiUi4jLkK+Kyc7QxpfQmq+IspG6i7myibSek7TNm7OYmIqMlb3QiKyIhpOIvMe8mJexrKa9kpWFqZXPy7HQvIeomaabvpiYlsqQhpbLprLUrJ7KkaWbudSu1LCbqa2IkJrPk7qKiYbJz7iSnLLMran="
+          id: "michael.fateh"
+          name: "Michael Fateh"
+          password: "e38fce4d56c445d6910bab2b63a06d25166d5523ba9871d32744f3ea8d857eaa"
+  slaveAgentPort: 50000
+  updateCenter:
+    sites:
+      - id: "default"
+        url: "https://updates.jenkins.io/update-center.json"
+  views:
+    - all:
+        name: "all"
+  viewsTabBar: "standard"
+
+security:
+  sSHD:
+    port: 2222
+  scriptApproval:
+    approvedScriptHashes:
+      - "SHA512:243ad5915f4831177784e157f42ca6706b4542c4c83272f224fda0c0dc7090c0bac56ec2c25d9db9846b97ef733f1e05e65563abb89ab8c46967698ed37df8ec"
+      - "SHA512:243e519a0f3e1dcbfd4c71353c48caeee2d4e91fbcfb2905a8c225bdc24b564ec66fa9c57dee7653f2137f7946d602a42e7a6b0caee8a07664327737a965a842"
+      - "SHA512:56d3d147fd3782b678483f85d67ae63e9039fbdff17b1638313548e704415291fe62e0ef5e1e423d1367ebad91cb968ae808921ebf3f5635c10af022258cab07"
+      - "SHA512:57135e06746ac9894e24b7700a18594918e53c830737931f8654e48da3e8a0831728b346634e85be05ccf49cbf6aa4c16b767a73f22c57e60a281f532a2a736e"
+      - "SHA512:7205d5c3d169d7c47c7d6c6c7dabac49718055149c46cf731103a526cfe012ce07d22a6964b9df7e2490d689828ac03ba9856ec0e5de02509f271426d15127d4"
+      - "SHA512:d69a1142943d62970fa714848b6c6fe01b13e49683fdadb487adc24d1df8f5a69baaab59719196103f9640d2650b55eb8050553b9a912d49922f8aafe6f9d897"
+    forceSandbox: false
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: false
+
+tool:
+  git:
+    installations:
+      - home: "git"
+        name: "Default"
+  mavenGlobalConfig:
+    globalSettingsProvider: "standard"
+    settingsProvider: "standard"
+
+unclassified:
+  location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
+    url: "http://localhost:8080"
+
+jobs:
+  - script: |
+      pipelineJob("build-and-upload") {
+        parameters {
+          stringParam(
+            'projectName', 
+            'canary', 
+            'name of the project to build'
+          )                  
+        }
+        definition {
+          cps {
+            script(
+              new File('/var/jenkins_home/job-scripts/build-and-upload.groovy').text
+            )
+          }
+        }
+      }
+
+  - script: |
+      pipelineJob("deploy-app") {
+        parameters {
+          stringParam(
+            'projectName', 
+            'canary', 
+            'name of the project to deploy'
+          )                  
+        }
+        definition {
+          cps {
+            script(
+              new File('/var/jenkins_home/job-scripts/deploy-app.groovy').text
+            )
+          }
+        }
+        triggers {
+          upstream('build-and-upload', 'SUCCESS')
+        }
+      }

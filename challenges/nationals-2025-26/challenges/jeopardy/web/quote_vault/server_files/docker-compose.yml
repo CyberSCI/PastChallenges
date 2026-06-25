@@ -1,0 +1,16 @@
+services:
+  ocr-rotator:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: ocr-rotator:latest
+    container_name: ocr-rotator
+    ports:
+      - "8080:8080"
+    tmpfs:
+      - /data:size=512m,mode=1777
+    environment:
+      # Set to 1 to log the chosen folder name and real flag to container stdout.
+      # Useful during development / playtesting; turn off for real deployments.
+      OCR_DEBUG: "1"
+    restart: unless-stopped

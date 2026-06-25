@@ -1,0 +1,25 @@
+[Unit]
+Description=Rust in Peace FreeDOS QEMU Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/qemu-system-i386 \
+  -drive file=%h/freedos.img,format=raw,if=ide,bus=0,unit=0 \
+  -drive file=%h/floppy-a.img,if=floppy,index=0,format=raw \
+  -drive file=%h/floppy-b.img,if=floppy,index=1,format=raw \
+  -drive file=%h/drive-d.img,if=ide,bus=0,unit=1,format=raw \
+  -drive file=%h/drive-e.img,if=ide,bus=1,unit=0,format=raw \
+  -drive file=%h/drive-f.img,if=ide,bus=1,unit=1,format=raw \
+  -nographic \
+  -serial telnet:0.0.0.0:7000,server,nowait \
+  -boot c
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+KillMode=control-group
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

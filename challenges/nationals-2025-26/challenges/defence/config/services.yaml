@@ -1,0 +1,67 @@
+services:
+  - name: "Peak Science"
+    folder: "peak_science"
+    file: "peak_science_attacker.py"
+    class: "PeakScienceAttacker"
+    address: "10.0.2.91:1010"
+    description: >
+      Greatness has been achieved. The work of a life is there,
+      in front of you. As perfect as it is, no need to change it.
+    vulns: 3
+    requests:
+      per_tick: 10
+      schedule:
+        - tick: 0
+          set: [1, 1, 1, 3, 3, -1, -1, -1, -3, -3]
+        - tick: 100
+          set: [1, 3, 2, 2, 2, -1, -3, -2, -2, -2]
+
+  - name: "CySpace"
+    folder: "cyspace"
+    file: "cyspace_attacker.py"
+    class: "CyspaceAttacker"
+    address: "10.0.2.92:80"
+    description: >
+      "CySpace": a pre-EMP social site whose last scrape was found on a dusty backup. 
+      The local community of Val Verde-adjacent survivors spun it back up on recovered hardware.
+    vulns: 5
+    requests:
+      per_tick: 10
+      schedule:
+        - tick: 0
+          set: [1, 2, 3, 4, 5, -1, -2, -3, -4, -5]
+
+  - name: "Deployment Hell"
+    folder: "deployment_hell"
+    file: "attacker.py"
+    class: "DeploymentHellAttacker"
+    address: "10.0.2.93:2222"
+    description: >
+      Even in the apocalypse, we still have to keep shipping!
+    vulns: 5
+    requests:
+      per_tick: 10
+      schedule:
+        - tick: 0
+          set: [1, 2, 3, 4, 4, -1, -2, -3, -4, -4]
+        - tick: 30
+          set: [1, 2, 3, 4, 5, -1, -2, -3, -4, -5]
+
+  - name: "Banking Service"
+    folder: "banking"
+    file: "banking_attacker.py"
+    class: "BankingAttacker"
+    address: "10.0.2.94:10001"
+    description: >
+      It's about time that we restored banking services for everyone. 
+      We have created the Earth's first meteor-proof bank!
+    vulns: 5
+    requests:
+      per_tick: 10
+      schedule:
+        - tick: 0
+          set: [1, 1, 2, 5, 5, -1, -1, -2, -5, -5]
+        - tick: 30
+          set: [1, 2, 3, 3, 5, -1, -2, -3, -3, -5]
+        - tick: 60
+          set: [1, 2, 3, 4, 5, -1, -2, -3, -4, -5]

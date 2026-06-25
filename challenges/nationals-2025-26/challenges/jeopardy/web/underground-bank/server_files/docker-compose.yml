@@ -1,0 +1,23 @@
+services:
+  graphql:
+    build: ./graphql
+    environment:
+      - NODE_ENV=production
+      - FLAG=CyberSci{json_is_such_a_l33t_format}
+    restart: unless-stopped
+
+  server:
+    build: ./server
+    environment:
+      - FLAG=CyberSci{what_ev3n_is_a_graph_query_language}
+    expose:
+      - "8000"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - server
+    restart: unless-stopped

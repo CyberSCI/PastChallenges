@@ -1,0 +1,13 @@
+Makefile
+Makefile.in
+.deps
+*.rc
+doomsday
+*.cfg
+*.exe
+*.desktop
+*.txt
+!CMakeLists.txt
+*.metainfo.xml
+tags
+TAGS

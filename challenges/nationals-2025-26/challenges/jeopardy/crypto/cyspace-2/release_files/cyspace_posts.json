@@ -1,0 +1,402 @@
+[
+  {
+    "post_id": "00001",
+    "timestamp": 1752058002,
+    "author": "viper92",
+    "body": "the packet headers on the eastern relay look manually crafted. someone knows what they're doing",
+    "r": 411195791826573620848236134670954008663596148168,
+    "s": 33844342365465344075197804736707830090650545389
+  },
+  {
+    "post_id": "00002",
+    "timestamp": 1752257070,
+    "author": "viper92",
+    "body": "hot take: dial-up is actually fine. we built this network on vibes and phone line",
+    "r": 717650732055600703742050498116958925263280344121,
+    "s": 836542240629775183672950997551200197092500681145
+  },
+  {
+    "post_id": "00003",
+    "timestamp": 1752272567,
+    "author": "viper92",
+    "body": "found a working 486 in the rubble downtown. she boots :)",
+    "r": 131030179357182629474008731454219882430311764806,
+    "s": 1136197600974339924404840481026523473433753721889
+  },
+  {
+    "post_id": "00004",
+    "timestamp": 1752334623,
+    "author": "viper92",
+    "body": "there are people out there using the network for things they shouldn't. stay safe",
+    "r": 264069331067995428602845067534281837768355931975,
+    "s": 878501198667252482434307188056584921576513867060
+  },
+  {
+    "post_id": "00005",
+    "timestamp": 1752342943,
+    "author": "viper92",
+    "body": "happy to report CySpace.com is back. the 1999 codebase is running on a pentium II",
+    "r": 45699322927133190480198861554759366723695005806,
+    "s": 377834456094073093211349818046330129666742923745
+  },
+  {
+    "post_id": "00006",
+    "timestamp": 1752520861,
+    "author": "viper92",
+    "body": "new rule: all comms signed. if it doesn't have a sig i don't trust it. FIPS 186 or bust",
+    "r": 645375727596929505005202693761659903448944373690,
+    "s": 618649105934395473079795467224409424734346971839
+  },
+  {
+    "post_id": "00007",
+    "timestamp": 1753038041,
+    "author": "viper92",
+    "body": "cyberspace feels different now. quieter. miss the spam honestly",
+    "r": 878345306953860063622854223231458780584056784844,
+    "s": 898192311363156023456167277500203546399588316144
+  },
+  {
+    "post_id": "00008",
+    "timestamp": 1753044319,
+    "author": "viper92",
+    "body": "reminder: DO NOT use WEP. yes i know it's the only option on the salvaged APs. still no",
+    "r": 210564849949230137202947796361967541330062889715,
+    "s": 700311173679727692838363873952576770265954296278
+  },
+  {
+    "post_id": "00009",
+    "timestamp": 1753109215,
+    "author": "viper92",
+    "body": "the ham radio operators deserve more credit. they kept us connected when nothing else worked",
+    "r": 409808806044229279781386053130169751930037916912,
+    "s": 1153081201612860726300537172463495587364997608745
+  },
+  {
+    "post_id": "00010",
+    "timestamp": 1753286633,
+    "author": "viper92",
+    "body": "the radio tower on mont-royal is back. picked up a signal last night. not sure who",
+    "r": 121634740427800122573860559357323929884895921876,
+    "s": 490163666439373413634971652347945697234168058410
+  },
+  {
+    "post_id": "00011",
+    "timestamp": 1753431072,
+    "author": "viper92",
+    "body": "CySpace is growing fast. saw 80 users online last night. record since the EMP",
+    "r": 746727232521577975845869216393266754217445506910,
+    "s": 802207333625752336966670478003270266912822564412
+  },
+  {
+    "post_id": "00012",
+    "timestamp": 1753585349,
+    "author": "viper92",
+    "body": "running apache 1.3 on a rescued pentium MMX. it's fine. everything is fine",
+    "r": 524777765968308318974261519700728895365799952888,
+    "s": 1125619091870392044191616585734384723428570505087
+  },
+  {
+    "post_id": "00013",
+    "timestamp": 1753626391,
+    "author": "viper92",
+    "body": "trading: 28.8 baud modem + power supply. want: canned food or batteries. DM me",
+    "r": 960843158937224339551406046238807417609026593794,
+    "s": 690683921629401529377372469115965497287089191798
+  },
+  {
+    "post_id": "00014",
+    "timestamp": 1753727222,
+    "author": "viper92",
+    "body": "someone left a ZIP disk in the public terminal. it had a key on it. reported it",
+    "r": 857694975822278560345753378247792136784263080080,
+    "s": 684005455897373865410584666639225739817034059804
+  },
+  {
+    "post_id": "00015",
+    "timestamp": 1753913172,
+    "author": "viper92",
+    "body": "last message for a while. going dark. you know why",
+    "r": 230416040740471121479362092461838555174575602986,
+    "s": 421414117366271922238659155546499200556245102467
+  },
+  {
+    "post_id": "00016",
+    "timestamp": 1754005411,
+    "author": "viper92",
+    "body": "signal analysis on the eastern dial-up relay is showing anomalies. not natural noise",
+    "r": 133219011716859003141649180062427702947069089443,
+    "s": 725810195623452375190685497830295914142073162368
+  },
+  {
+    "post_id": "00017",
+    "timestamp": 1754101162,
+    "author": "viper92",
+    "body": "upgraded the modem from 14.4 to 33.6. felt like installing fibre. incredible",
+    "r": 62003666968611451432650266971255509986104748104,
+    "s": 785382864488295672264285108084812098617723405735
+  },
+  {
+    "post_id": "00018",
+    "timestamp": 1754132957,
+    "author": "viper92",
+    "body": "wrote a perl script to monitor the modem line. found something weird in the noise",
+    "r": 180217487656969492129957765756055693985834118149,
+    "s": 855050653942752476631303789303326790748388987921
+  },
+  {
+    "post_id": "00019",
+    "timestamp": 1754653826,
+    "author": "viper92",
+    "body": "DM me if you need help getting your old PC online. done 12 setups this month",
+    "r": 893813554831489888542532046793513404369938814577,
+    "s": 555025631626250471339837827669007018782434928459
+  },
+  {
+    "post_id": "00020",
+    "timestamp": 1754707214,
+    "author": "viper92",
+    "body": "three different IPs hit my gopher server in the last hour. unusual",
+    "r": 346902998848649941231141423273428240485361886990,
+    "s": 990739510035875732519536795622189117676229363941
+  },
+  {
+    "post_id": "00021",
+    "timestamp": 1754734034,
+    "author": "viper92",
+    "body": "keeping my head down. less said the better. stay safe out there",
+    "r": 358113339458343789362181953914692725476185826974,
+    "s": 1015362619994440321553433158482261116436679958952
+  },
+  {
+    "post_id": "00022",
+    "timestamp": 1754778903,
+    "author": "viper92",
+    "body": "first time checking messages in 3 days. the aol session cut out twice. worth it",
+    "r": 244033586640145619256736688690272184616609350822,
+    "s": 576580955488490103834612253403748192635253862991
+  },
+  {
+    "post_id": "00023",
+    "timestamp": 1754848976,
+    "author": "viper92",
+    "body": "scored a laser printer at the old university. toner cartridges are gold right now",
+    "r": 1153826438623451919248011476199579898380491320737,
+    "s": 839844442174558247971592061990787798334633018966
+  },
+  {
+    "post_id": "00024",
+    "timestamp": 1754856702,
+    "author": "viper92",
+    "body": "if anyone has a copy of netscape 4 on floppies please DM me immediately",
+    "r": 1191651530858232061996541685632365766336677846528,
+    "s": 223159449349420699227263169200691022837651110788
+  },
+  {
+    "post_id": "00025",
+    "timestamp": 1754862329,
+    "author": "viper92",
+    "body": "power grid section C is back. that means three more relay nodes are online",
+    "r": 979669434445680499188951567479685710714183252214,
+    "s": 49001587316462784595507560720426884754974832475
+  },
+  {
+    "post_id": "00026",
+    "timestamp": 1755477081,
+    "author": "viper92",
+    "body": "anyone else notice the dial-up traffic spike at 03:00 UTC every night? not random",
+    "r": 579653087007205622841740181526181741056001241735,
+    "s": 478341893741116238017430914225574810184806486746
+  },
+  {
+    "post_id": "00027",
+    "timestamp": 1755551319,
+    "author": "viper92",
+    "body": "comms discipline matters. sign everything. verify everything. trust nothing",
+    "r": 104199404281144974222335947996761544877440235741,
+    "s": 1137041045745882566227237586058621284116465029788
+  },
+  {
+    "post_id": "00028",
+    "timestamp": 1756154290,
+    "author": "viper92",
+    "body": "trading a working serial mouse for literally anything useful. please",
+    "r": 903419634030021122334955202148153286601621873448,
+    "s": 780650742711316791619102402213677607575478776487
+  },
+  {
+    "post_id": "00029",
+    "timestamp": 1756304452,
+    "author": "viper92",
+    "body": "tip: if you're on a salvaged dial-up line, check your connection recording for anomalies",
+    "r": 338891097751823897183760888494283834263268523117,
+    "s": 121515730061796690743577458822368179292638848737
+  },
+  {
+    "post_id": "00030",
+    "timestamp": 1756516780,
+    "author": "viper92",
+    "body": "if you're reading this, the network is still up. small victories",
+    "r": 1155522236308320281864594481958193697443515735011,
+    "s": 338239387073235250764490081077162943983649142202
+  },
+  {
+    "post_id": "00031",
+    "timestamp": 1756783361,
+    "author": "viper92",
+    "body": "CYBERSPACE IS BACK. first post. never thought i'd see this again",
+    "r": 41727228210643215048935767361093771739840214401,
+    "s": 1122972133996430702057573066403150424435507703985
+  },
+  {
+    "post_id": "00032",
+    "timestamp": 1756862119,
+    "author": "viper92",
+    "body": "old crypto is everywhere now. DES, RC4, MD5. the auditors are gonna have a field day",
+    "r": 1190237838698606880271909811882402114377371390888,
+    "s": 984629081328792757552499684669721532339061769934
+  },
+  {
+    "post_id": "00033",
+    "timestamp": 1756947012,
+    "author": "viper92",
+    "body": "finally got PGP working on the salvaged thinkpad. took a week. no regrets",
+    "r": 374055766383079413191454304134098726917259376867,
+    "s": 97114829509481500929308431053715384197740981311
+  },
+  {
+    "post_id": "00034",
+    "timestamp": 1757000183,
+    "author": "viper92",
+    "body": "posting from a public terminal at the library. it's a 386. life is good",
+    "r": 951139492753995577194145090321215964792134652827,
+    "s": 863313414518223393241397319541855357726610169375
+  },
+  {
+    "post_id": "00035",
+    "timestamp": 1757006107,
+    "author": "viper92",
+    "body": "can't stop thinking about how we took 100mbps for granted. unreal",
+    "r": 247149874554425405241728340755177995782521410744,
+    "s": 64362018103746731940533597087953181982441878175
+  },
+  {
+    "post_id": "00036",
+    "timestamp": 1757109714,
+    "author": "viper92",
+    "body": "new post coming soon. been compiling intel. things are moving out there",
+    "r": 105449981474880789657296660578567109528809568022,
+    "s": 1136136265672303522949325277801147613272015778353
+  },
+  {
+    "post_id": "00037",
+    "timestamp": 1757220678,
+    "author": "viper92",
+    "body": "anyone else getting packet loss on the eastern backbone? constant dropouts since tuesday",
+    "r": 813109504631184163363470615605016332909913811046,
+    "s": 303276116041480542838907363415921933656398335681
+  },
+  {
+    "post_id": "00038",
+    "timestamp": 1757295436,
+    "author": "viper92",
+    "body": "the EMP took everything but the Tamagotchis somehow survived. the cockroaches of tech",
+    "r": 857694975822278560345753378247792136784263080080,
+    "s": 816973597148782201337587286227658408826152177930
+  },
+  {
+    "post_id": "00039",
+    "timestamp": 1757407613,
+    "author": "viper92",
+    "body": "remember when we complained about 56k? i would kill for 56k right now",
+    "r": 301822372643594887197779414971060446972952302984,
+    "s": 371512192947153016516301369415819785393033305875
+  },
+  {
+    "post_id": "00040",
+    "timestamp": 1757560895,
+    "author": "viper92",
+    "body": "someone is scanning the entire 10.0.0.0/8 range. don't know who. watching it",
+    "r": 373525708020974226155108089229596181590655439531,
+    "s": 1200915613853555960067528882186638894446931148106
+  },
+  {
+    "post_id": "00041",
+    "timestamp": 1757583976,
+    "author": "viper92",
+    "body": "found a cache of ZIP disks in a storage unit. contents: mostly memes. worth it",
+    "r": 1133020294459278563431190874686831955911384029906,
+    "s": 251572342817633692428939355081595779724177180018
+  },
+  {
+    "post_id": "00042",
+    "timestamp": 1757789958,
+    "author": "viper92",
+    "body": "just found out the library has a gopher server. going back to 1993 i guess",
+    "r": 249883789962267444570525419915683031462025083996,
+    "s": 247643389648087775429851520077513111389045915180
+  },
+  {
+    "post_id": "00043",
+    "timestamp": 1758158567,
+    "author": "viper92",
+    "body": "got a sun sparc running again. she's slow but she's mine",
+    "r": 143556348046231024015127082494945644619097077218,
+    "s": 344605090935655616172890395210932859559350352666
+  },
+  {
+    "post_id": "00044",
+    "timestamp": 1758631150,
+    "author": "viper92",
+    "body": "shoutout to whoever is keeping the usenet backbone alive. you are a hero",
+    "r": 493706351574092010061840076616658199034141115373,
+    "s": 903316071243439406117178207295131548340892430738
+  },
+  {
+    "post_id": "00045",
+    "timestamp": 1758670625,
+    "author": "viper92",
+    "body": "the remnant doesn't make mistakes twice. keep your keys rotated",
+    "r": 489151920066324498688404040970061769421705530739,
+    "s": 617065571958211970597584512285500106447886944220
+  },
+  {
+    "post_id": "00046",
+    "timestamp": 1758848525,
+    "author": "viper92",
+    "body": "lol my CyberKinz is still alive. glitch survived the EMP on a dead battery somehow",
+    "r": 829137436234256913791231725881495544183177564095,
+    "s": 675407669335156666744962992602926936003745748818
+  },
+  {
+    "post_id": "00047",
+    "timestamp": 1758902121,
+    "author": "viper92",
+    "body": "anyone remember geocities? asking for a friend (me). trying to rebuild my page",
+    "r": 1121407852168017348485858045321842989776406918252,
+    "s": 352274280789252007138290167937531479557992197371
+  },
+  {
+    "post_id": "00048",
+    "timestamp": 1758942191,
+    "author": "viper92",
+    "body": "the remnant is real. i've seen the traffic. encrypted but the pattern is there",
+    "r": 304704927722856478430715901064649932818959491715,
+    "s": 98462978411062049406356240680426126105279214567
+  },
+  {
+    "post_id": "00049",
+    "timestamp": 1759101307,
+    "author": "viper92",
+    "body": "does anyone have a patch for the 1999 SSL vuln or are we all just living dangerously",
+    "r": 514161614915812008666929397041419748692937120472,
+    "s": 663183395794096796739715016920796278580269009322
+  },
+  {
+    "post_id": "00050",
+    "timestamp": 1759410374,
+    "author": "viper92",
+    "body": "the latency on this connection is something else. 1200ms ping. classic",
+    "r": 508724420820730987516485053593518836055865172892,
+    "s": 307569547436666162247720487981078219285968729617
+  }
+]

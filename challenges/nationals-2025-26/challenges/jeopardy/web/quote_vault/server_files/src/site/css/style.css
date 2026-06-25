@@ -1,0 +1,360 @@
+/* QuoteVault — post-Strike skin
+ *
+ * Aesthetic target: a tiny pre-Strike weblog still running on salvaged
+ * 2003-era hardware. Kubrick-blue header, cream body, narrow fixed-width
+ * column, sidebar widgets, underlined blue links.
+ */
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  background: #d5d6d7;
+  color: #333;
+  line-height: 1.55;
+  font-size: 13px;
+}
+
+/* The whole layout is a 760-wide centered page, like every blog template
+ * from the Movable Type / b2 / WP-Kubrick era. */
+.page {
+  width: 760px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-left: 1px solid #b9b9b9;
+  border-right: 1px solid #b9b9b9;
+  box-shadow: 0 0 0 1px #fff inset;
+}
+
+/* ---- Banner --------------------------------------------------------- */
+
+.banner {
+  background: #73a0c5;
+  background-image: linear-gradient(#86b2d4, #5d8bb1);
+  color: #fff;
+  padding: 36px 30px 22px;
+  border-bottom: 6px solid #4f7396;
+}
+.banner .brand {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #fff;
+  text-shadow: 1px 1px 0 #4f7396;
+}
+.banner .brand a { color: #fff; text-decoration: none; }
+.banner .tagline {
+  font-style: italic;
+  font-size: 12px;
+  color: #eaf2fa;
+  margin: 4px 0 0;
+}
+
+/* ---- Main nav (horizontal strip under the banner) -------------------- */
+
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: #f3efe7;
+  border-bottom: 1px solid #c9c1ad;
+  border-top: 1px solid #fff;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.nav li {
+  display: inline-block;
+  border-right: 1px dotted #b9b09a;
+}
+.nav a {
+  display: inline-block;
+  padding: 6px 14px;
+  color: #555;
+  text-decoration: none;
+}
+.nav a:hover, .nav a[aria-current="page"] {
+  background: #ddd3bb;
+  color: #333;
+}
+
+/* ---- Two-column layout (main + sidebar) ----------------------------- */
+
+.layout {
+  display: flex;
+  background: #fff;
+}
+main {
+  flex: 1;
+  padding: 18px 24px 24px;
+  min-width: 0;
+}
+aside.sidebar {
+  width: 220px;
+  background: #faf6ea;
+  border-left: 1px solid #e6dec6;
+  padding: 18px 14px 24px;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 11px;
+  color: #555;
+}
+aside.sidebar .widget { margin-bottom: 22px; }
+aside.sidebar h3 {
+  font-family: Verdana, sans-serif;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #6b5d3a;
+  border-bottom: 1px solid #d2c79a;
+  padding: 0 0 3px;
+  margin: 0 0 8px;
+}
+aside.sidebar ul {
+  list-style: square;
+  margin: 0;
+  padding-left: 18px;
+  color: #888;
+}
+aside.sidebar li { margin: 2px 0; }
+aside.sidebar p { margin: 4px 0; font-size: 11px; line-height: 1.45; }
+aside.sidebar .small { color: #888; font-size: 10px; }
+
+/* ---- Headings & post content ---------------------------------------- */
+
+main h1 {
+  font-family: Georgia, serif;
+  font-size: 22px;
+  color: #336699;
+  margin: 0 0 4px;
+  letter-spacing: 0.2px;
+}
+main h2 {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  color: #4f7396;
+  margin: 22px 0 6px;
+  border-bottom: 1px dotted #c9c1ad;
+  padding-bottom: 2px;
+}
+main h3 {
+  font-family: Georgia, serif;
+  font-size: 14px;
+  color: #4f7396;
+  margin: 14px 0 4px;
+}
+main p { margin: 0.6em 0; }
+
+.post-meta {
+  font-size: 10px;
+  font-family: Verdana, sans-serif;
+  color: #999;
+  font-style: italic;
+  margin: 0 0 10px;
+  letter-spacing: 0.2px;
+}
+.post-meta a { color: #888; }
+
+.lede {
+  font-size: 13px;
+  color: #555;
+  margin: 0 0 14px;
+  font-style: italic;
+}
+
+.placeholder { color: #999; font-style: italic; }
+.hint { color: #888; font-size: 11px; font-family: Verdana, sans-serif; }
+
+/* ---- Links (early-2000s underlined blue/purple) --------------------- */
+
+a {
+  color: #336699;
+  text-decoration: underline;
+}
+a:visited { color: #663399; }
+a:hover { color: #cc0000; }
+
+/* ---- Hero (homepage only) ------------------------------------------- */
+
+.hero h1 {
+  font-size: 26px;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+
+/* ---- Quotes / blockquotes ------------------------------------------- */
+
+blockquote, .quote {
+  background: #fffbe6;
+  border: 1px solid #e6d889;
+  border-left: 6px solid #d9c25e;
+  padding: 10px 14px;
+  margin: 10px 0 14px;
+  font-style: italic;
+  font-family: Georgia, serif;
+  color: #4a3f1d;
+}
+blockquote p, .quote p { margin: 0; }
+blockquote cite, .quote cite {
+  display: block;
+  margin-top: 6px;
+  font-style: normal;
+  color: #8a7c4a;
+  font-size: 11px;
+  font-family: Verdana, sans-serif;
+}
+
+/* ---- Three-up callouts (homepage) ----------------------------------- */
+
+.three-up {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0 4px;
+}
+.three-up article {
+  background: #fafafa;
+  padding: 8px 10px 10px;
+  border: 1px solid #d8d8d8;
+  border-top: 2px solid #b6c9dc;
+}
+.three-up h3 {
+  margin: 0 0 4px;
+  font-size: 13px;
+}
+.three-up p {
+  margin: 0;
+  color: #555;
+  font-size: 11px;
+  font-family: Verdana, sans-serif;
+  font-style: normal;
+}
+
+/* ---- Forms ---------------------------------------------------------- */
+
+#search-form, #verify-form {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0 12px;
+}
+#search-form input, #verify-form input {
+  flex: 1;
+  font-family: Verdana, sans-serif;
+  font-size: 12px;
+  padding: 4px 6px;
+  border: 1px solid #aaa;
+  background: #fff;
+  color: #333;
+}
+#search-form input:focus, #verify-form input:focus {
+  outline: 1px solid #336699;
+  outline-offset: -1px;
+  background: #f8fbff;
+}
+#search-form button, #verify-form button {
+  font-family: Verdana, sans-serif;
+  font-size: 11px;
+  background: #e8e8e8;
+  background-image: linear-gradient(#f6f6f6, #d8d8d8);
+  color: #333;
+  border: 1px solid #888;
+  border-top-color: #ccc;
+  border-left-color: #ccc;
+  padding: 4px 14px;
+  cursor: pointer;
+}
+#search-form button:hover, #verify-form button:hover {
+  background-image: linear-gradient(#fff, #d0d0d0);
+}
+
+/* ---- Buttons / call-to-action links --------------------------------- */
+
+.button {
+  display: inline-block;
+  background: #e8e8e8;
+  background-image: linear-gradient(#f6f6f6, #d8d8d8);
+  color: #333;
+  padding: 4px 12px;
+  border: 1px solid #888;
+  border-top-color: #ccc;
+  border-left-color: #ccc;
+  font-family: Verdana, sans-serif;
+  font-size: 11px;
+  text-decoration: none;
+}
+.button:hover {
+  background-image: linear-gradient(#fff, #d0d0d0);
+  text-decoration: none;
+}
+
+/* ---- Gallery grid --------------------------------------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+}
+.card-grid img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #aaa;
+  background: #f0f0f0;
+}
+.card-grid a {
+  display: block;
+  border: 1px solid #c8c0a8;
+  padding: 4px;
+  background: #fffdf3;
+  text-decoration: none;
+}
+.card-grid .placeholder {
+  display: block;
+  padding: 18px 6px;
+  text-align: center;
+  font-size: 10px;
+  font-family: Verdana, sans-serif;
+  color: #888;
+  background: #f0eedd;
+  border: 1px dashed #c8c0a8;
+}
+
+/* ---- Code ----------------------------------------------------------- */
+
+code {
+  background: #f3eecf;
+  border: 1px solid #d8cf95;
+  padding: 0 4px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 11px;
+  color: #5a4a14;
+}
+
+/* ---- Footer --------------------------------------------------------- */
+
+.footer {
+  background: #404040;
+  background-image: linear-gradient(#555, #333);
+  color: #c8c8c8;
+  padding: 10px 20px;
+  font-size: 11px;
+  font-family: Verdana, sans-serif;
+  text-align: center;
+  border-top: 1px solid #222;
+}
+.footer a { color: #cfd9e2; }
+.footer .hit-counter {
+  display: inline-block;
+  background: #000;
+  color: #66ff66;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  padding: 1px 5px;
+  margin-left: 4px;
+  border: 1px solid #222;
+  letter-spacing: 2px;
+}

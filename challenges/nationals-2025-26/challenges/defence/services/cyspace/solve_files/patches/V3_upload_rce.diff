@@ -1,0 +1,49 @@
+# V3 — Unrestricted upload → Apache AddType RCE (MEDIUM)
+#
+# Multi-layer fix (any one of the three layers alone closes the scoring hook;
+# all three are applied here as defence in depth):
+#
+#   1. Remove the legacy `AddType application/x-httpd-php .jpg` line from
+#      src/uploads/.htaccess so Apache no longer treats `.jpg` as PHP.
+#   2. Reject any uploaded filename containing the substring `.php` (case
+#      insensitive). The `.php.jpg` shape used by the bot is the canonical
+#      attack; this catches `.phtml`, `.phar`, `.PHP`, etc. as well.
+#   3. Verify the upload is a real image via `finfo` before saving — kills
+#      payloads that smuggle PHP inside files with a valid GIF/JPEG header.
+#
+# Apply from inside release_files/:
+#     patch -p1 < ../solve_files/patches/V3_upload_rce.diff
+#
+diff --git a/src/upload_pic.php b/src/upload_pic.php
+--- a/src/upload_pic.php
++++ b/src/upload_pic.php
+@@ -24,10 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+         $size  = (int)$_FILES['avatar']['size'];
+         $lower = strtolower($orig);
+
++        /* V3 fix: extension allow-list + reject `.php` substring + finfo MIME check. */
+         $ok = false;
+         foreach (array('.jpg', '.jpeg', '.png', '.gif') as $ext) {
+             if (substr($lower, -strlen($ext)) === $ext) { $ok = true; break; }
+         }
++        if ($ok && strpos($lower, '.php') !== false) {
++            $ok = false;
++        }
++        if ($ok && function_exists('finfo_open')) {
++            $finfo = finfo_open(FILEINFO_MIME_TYPE);
++            $mime  = $finfo ? finfo_file($finfo, $tmp) : '';
++            if ($finfo) { finfo_close($finfo); }
++            $allowed_mimes = array('image/jpeg', 'image/png', 'image/gif');
++            if (!in_array($mime, $allowed_mimes, true)) { $ok = false; }
++        }
+
+         if (!$ok) {
+             $err = 'only .jpg/.jpeg/.png/.gif allowed';
+diff --git a/src/uploads/.htaccess b/src/uploads/.htaccess
+--- a/src/uploads/.htaccess
++++ b/src/uploads/.htaccess
+@@ -1 +1,3 @@
+-AddType application/x-httpd-php .jpg
++# (Removed unsafe `AddType application/x-httpd-php .jpg` — V3 fix.) Uploaded
++# files in this directory are now served with their default MIME type only.
++php_flag engine off

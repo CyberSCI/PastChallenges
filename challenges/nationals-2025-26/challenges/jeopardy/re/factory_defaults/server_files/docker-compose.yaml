@@ -1,0 +1,9 @@
+name: factory_defaults
+services:
+  factory_defaults:
+    build: .
+    container_name: factory_defaults
+    ports:
+      - "80:80"
+      - "5038:5038"
+    restart: always

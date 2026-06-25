@@ -1,0 +1,60 @@
+[project]
+name = "assault-and-battery"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "argon2-cffi>=25.1.0",
+  "bcrypt>=5.0.0",
+  "cryptography>=46.0.5",
+  "django>=6.0.2",
+  "django-rest-knox>=5.0.2",
+  "django-structlog>=10.0.0",
+  "django-stubs-ext>=5.2.9",
+  "django-types>=0.23.0",
+  "djangorestframework>=3.16.1",
+  "djangorestframework-stubs>=3.16.8",
+  "gitignore-filter>=0.2.3",
+  "gunicorn>=26.0.0",
+  "httpx>=0.28.1",
+  "opensearch-py>=3.1.0",
+  "orjson>=3.11.9",
+  "pyjwt>=2.11.0",
+  "pyotp>=2.9.0",
+  "python-jsonpath>=2.0.2",
+]
+
+[tool.pyright]
+venvPath = ".devenv/state"
+venv = "venv"
+include = ["**/*.py"]
+exclude = ["**/node_modules", "**/__pycache__"]
+pythonVersion = "3.13"
+reportAny = false
+reportIncompatibleVariableOverride = false
+
+[tool.ruff]
+indent-width = 4
+line-length = 80
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+[tool.ruff.lint]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+extend-select = ["E501"]
+select = ["E", "F", "UP", "B", "SIM", "I", "DJ"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["reclaimer_central", "auth", "tests"]
+
+[dependency-groups]
+dev = ["faker>=40.5.1", "pytest>=9.0.2", "pytest-django>=4.12.0"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "reclaimer_central.settings"
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["tests.py", "test_*.py"]

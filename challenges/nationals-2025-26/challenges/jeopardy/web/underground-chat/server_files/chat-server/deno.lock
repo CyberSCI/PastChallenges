@@ -1,0 +1,21 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:cookie@^1.1.1": "1.1.1",
+    "npm:jwt-decode@4": "4.0.0"
+  },
+  "npm": {
+    "cookie@1.1.1": {
+      "integrity": "sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ=="
+    },
+    "jwt-decode@4.0.0": {
+      "integrity": "sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA=="
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:cookie@^1.1.1",
+      "npm:jwt-decode@4"
+    ]
+  }
+}

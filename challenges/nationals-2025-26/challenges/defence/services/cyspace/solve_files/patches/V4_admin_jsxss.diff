@@ -1,0 +1,34 @@
+# V4 — Admin reflected XSS in JS-string context (HARD)
+#
+# Fix: replace `addslashes(...)` with `json_encode(...)` for context-aware
+# encoding. `json_encode` returns a quoted JSON string that is also a valid
+# JS string literal, so the surrounding `'...'` quoting is removed.
+#
+# JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT escape the
+# characters that could otherwise terminate the surrounding `<script>` block
+# or break HTML parsing if the value were ever reflected into HTML context
+# as well (`<` → `\u003C`, `>` → `\u003E`, `'` → `\u0027`, `"` → `\u0022`).
+#
+# `htmlspecialchars` is NOT a correct fix here — the JS-string context needs
+# JS-aware encoding, not HTML-aware encoding (see solve_files/README.md and
+# patches/OVERPATCH_naive_htmlspecialchars.diff for the lesson).
+#
+# Apply from inside release_files/:
+#     patch -p1 < ../solve_files/patches/V4_admin_jsxss.diff
+#
+diff --git a/src/admin/notes.php b/src/admin/notes.php
+--- a/src/admin/notes.php
++++ b/src/admin/notes.php
+@@ -39,7 +39,11 @@ require __DIR__ . '/../inc/header.php';
+ <script>
+ /* highlight a search term across the notes panel.
+    pass ?highlight=foo to use. legacy admin convenience feature. */
+-var HIGHLIGHT = '<?php echo addslashes(isset($_GET['highlight']) ? (string)$_GET['highlight'] : ''); ?>';
++var HIGHLIGHT = <?php
++    $_h = isset($_GET['highlight']) ? (string)$_GET['highlight'] : '';
++    echo json_encode($_h,
++        JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
++?>;
+ function applyHighlight() {
+     if (!HIGHLIGHT) { return; }
+     var notes = document.getElementsByTagName('p');

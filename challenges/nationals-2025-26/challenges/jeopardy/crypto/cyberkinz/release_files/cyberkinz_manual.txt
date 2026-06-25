@@ -1,0 +1,78 @@
+=========================================
+ CyberKinz v1.0 - Registration Manual
+=========================================
+
+Congratulations on your new CyberKinz!
+
+To register your pet on CyberKinz.com, locate the registration key printed
+on the tag attached to your CyberKinz unit. Enter this key on the website
+or present it to the CyberKinz.com terminal over `nc`.
+
+
+REGISTRATION KEY FORMAT
+-----------------------
+All CyberKinz registration keys are encoded in hexadecimal. When decoded,
+each key contains a fixed-width "Registration Card" record encrypted for
+secure transmission.
+
+The plaintext record is exactly the following byte layout (newlines are
+single 0x0A bytes; field values are ASCII, left-justified, padded with
+0x20 spaces to the indicated width):
+
+    +--------+-------------------------------------------+
+    | Offset | Field                                     |
+    +--------+-------------------------------------------+
+    | 0      | "CYBERKINZ_REGISTRATION_CARD_v1" + "\n"   |
+    | 31     | "PET_NAME......: " + <16 bytes> + "\n"    |
+    | 64     | "USERNAME......: " + <16 bytes> + "\n"    |
+    | 97     | "PASSWORD......: " + <16 bytes> + "\n"    |
+    | 130    | "SERIAL........: " + <16 bytes> + "\n"    |
+    | 163    | "ISSUED........: " + <10 bytes> + "\n"    |
+    |        |   (date in YYYY-MM-DD format)             |
+    | 190    | "END_OF_RECORD" + "\n"                    |
+    +--------+-------------------------------------------+
+
+Total record length: 204 bytes.
+
+
+FACTORY TEST KEY (key0.txt)
+---------------------------
+Every manufacturing batch includes a factory quality-control test card
+with fixed, publicly-documented credentials. Its encrypted key is shipped
+as key0.txt. The plaintext of the test card is always:
+
+    CYBERKINZ_REGISTRATION_CARD_v1
+    PET_NAME......: FACTORY_TEST
+    USERNAME......: TESTUSER
+    PASSWORD......: TESTPASS
+    SERIAL........: 0000000000000000
+    ISSUED........: 2025-01-01
+    END_OF_RECORD
+
+(Field values are space-padded to exactly 16 bytes as shown.)
+This card cannot be used to log in - it exists for diagnostic purposes only.
+
+
+LOGIN
+-----
+Connect with `nc <host> <port>`. The server prompts for username and
+password. On success, your CyberKinz profile is unlocked.
+
+
+IMPORTANT
+---------
+Keep your registration key safe. Each key is unique to your unit. Do NOT
+share keys from the same manufacturing batch - see "Known Issues" below.
+
+
+KNOWN ISSUES (post-EMP advisory)
+--------------------------------
+Following the EMP, CyberKinz Corp. has had difficulty sourcing a reliable
+hardware random number generator for our key encryption module. Customers
+who suspect their batch RNG was degraded should contact support. Multiple
+keys from the same factory batch may share encryption parameters.
+
+
+=========================================
+ CyberKinz Corp. - Post-EMP Division
+=========================================

@@ -1,0 +1,33 @@
+services:
+  auth-server:
+    build: ./auth-server
+    restart: always
+    expose:
+      - "8000"
+
+  chat-server:
+    build: ./chat-server
+    restart: always
+    environment:
+      - FLAG=CyberSci{zero_trust_means_zer0_trust}
+    expose:
+      - "8080"
+
+  frontend:
+    build: ./frontend
+    restart: always
+    expose:
+      - "80"
+
+  envoy:
+    image: envoyproxy/envoy:v1.38-latest
+    restart: always
+    depends_on:
+      - auth-server
+      - chat-server
+      - frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml:ro
+    command: ["-c", "/etc/envoy/envoy.yaml", "--log-level", "info"]

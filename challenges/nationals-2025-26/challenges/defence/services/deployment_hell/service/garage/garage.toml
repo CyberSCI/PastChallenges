@@ -1,0 +1,25 @@
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+db_engine = "lmdb"
+
+replication_factor = 1
+
+rpc_bind_addr = "[::]:3901"
+rpc_secret = "062f2fd3f6b4128f0badb5f410c95fdfc1fe3198ffc56fe1809c356a33a8d9f8"
+rpc_public_addr = "127.0.0.1:3901"
+# secret_file = "/var/lib/garage/meta/rpc_secret"
+
+[s3_api]
+s3_region = "garage"
+api_bind_addr = "[::]:3900"
+root_domain = ".s3.deployment-hell.thegreatreset.ca"
+
+[s3_web]
+bind_addr = "[::]:3903"
+root_domain = ".web.deployment-hell.thegreatreset.ca"
+index = "index.html"
+
+[admin]
+api_bind_addr = "0.0.0.0:3902"
+admin_token = "TwwNqC750U8iK9AVmOkUAkJ2ylbH4FtN8y7dDxXvpLM="
+metrics_token = "2qQzzs2iOY0w+AsD/g/7df5WvC2eKVGg6ERwJS1FjMY="

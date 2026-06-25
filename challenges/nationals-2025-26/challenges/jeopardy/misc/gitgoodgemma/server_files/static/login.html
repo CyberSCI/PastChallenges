@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitGoodGemma — Operator Authentication</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    header::before { content: '[ OPERATOR AUTHENTICATION ]'; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>
+        GitGoodGemma
+        <span>Operator Authentication Required</span>
+      </h1>
+    </header>
+
+    <div class="warning-band"></div>
+
+    <div class="briefing">
+      <p>
+        <strong>Access Restricted.</strong> This terminal requires operator credentials.
+        Unauthorized access attempts are logged and reported.
+      </p>
+      <p class="status-line">&#9632; AWAITING CREDENTIALS — STANDBY</p>
+    </div>
+
+    <div class="panel">
+      <form id="form">
+        <div class="field">
+          <label for="username">Operator ID</label>
+          <input id="username" type="text" placeholder="operator" required>
+        </div>
+        <div class="field">
+          <label for="password">Access Code</label>
+          <input id="password" type="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" id="btn">Authenticate</button>
+      </form>
+
+      <div id="error"></div>
+    </div>
+
+    <footer>GitGoodGemma &mdash; Local Archive Agent &mdash; All operations performed on-device</footer>
+  </div>
+
+  <script>
+    const form = document.getElementById('form');
+    const btn = document.getElementById('btn');
+    const errorBox = document.getElementById('error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = 'Authenticating<span class="spinner"></span>';
+
+      try {
+        const resp = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('username').value.trim(),
+            password: document.getElementById('password').value,
+          }),
+        });
+        const data = await resp.json();
+        if (data.msg) {
+          errorBox.textContent = data.detail ?? JSON.stringify(data);
+          errorBox.style.display = 'block';
+        }
+      } catch (err) {
+        errorBox.textContent = 'Network error: ' + err.message;
+        errorBox.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Authenticate';
+      }
+    });
+  </script>
+</body>
+</html>

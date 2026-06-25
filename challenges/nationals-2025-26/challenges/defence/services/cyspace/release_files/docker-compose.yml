@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    image: cyspace-web:latest
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    environment:
+      CYSPACE_DB_HOST: db
+      CYSPACE_DB_NAME: cyspace
+      CYSPACE_DB_USER: cyspace
+      CYSPACE_DB_PASS: cyspace_pw_change_me
+    volumes:
+      - uploads:/var/www/html/uploads
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10.5
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pw_change_me
+      MYSQL_DATABASE: cyspace
+      MYSQL_USER: cyspace
+      MYSQL_PASSWORD: cyspace_pw_change_me
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01_init.sql:ro
+      - dbdata:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  uploads:
+  dbdata:

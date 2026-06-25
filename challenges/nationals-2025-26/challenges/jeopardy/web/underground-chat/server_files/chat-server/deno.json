@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "cookie": "npm:cookie@^1.1.1",
+    "jwt-decode": "npm:jwt-decode@^4.0.0"
+  }
+}

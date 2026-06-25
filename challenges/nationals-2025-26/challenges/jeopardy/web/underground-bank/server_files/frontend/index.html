@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UNDERGROUND://BANK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+<!-- Background FX -->
+<div class="scanlines"></div>
+<div class="vignette"></div>
+<canvas id="matrix"></canvas>
+
+<!-- Top status bar -->
+<header class="status-bar">
+  <div class="brand">
+    <span class="logo">▚</span>
+    <span class="brand-name" data-glitch="UNDERGROUND//BANK">UNDERGROUND//BANK</span>
+  </div>
+  <div class="status-cluster">
+    <span class="led led-green"></span><span class="status-text">NODE: LIVE</span>
+    <span class="sep">::</span>
+    <span class="status-text" id="clock">--:--:--</span>
+    <span class="sep">::</span>
+    <span class="status-text" id="session">SESSION: <b>ANON</b></span>
+    <button id="logoutBtn" class="ghost-btn" hidden>DISCONNECT</button>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<!-- Toast container -->
+<div id="toasts" class="toasts"></div>
+
+<!-- =================== TEMPLATES =================== -->
+
+<template id="tpl-auth">
+  <section class="auth-shell">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="title">/dev/ttyS0 — secure-channel</span>
+      </div>
+      <div class="terminal-body">
+        <pre class="ascii-art">
+   ██╗   ██╗ ██████╗     ██████╗  █████╗ ███╗   ██╗██╗  ██╗
+   ██║   ██║██╔════╝     ██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝
+   ██║   ██║██║  ███╗    ██████╔╝███████║██╔██╗ ██║█████╔╝ 
+   ██║   ██║██║   ██║    ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ 
+   ╚██████╔╝╚██████╔╝    ██████╔╝██║  ██║██║ ╚████║██║  ██╗
+    ╚═════╝  ╚═════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝</pre>
+        <p class="boot-line">&gt; initializing crypt0-link... <span class="ok">OK</span></p>
+        <p class="boot-line">&gt; routing through 7 hops... <span class="ok">OK</span></p>
+        <p class="boot-line">&gt; awaiting credentials_</p>
+
+        <div class="tabs">
+          <button class="tab active" data-tab="login">[ LOGIN ]</button>
+          <button class="tab" data-tab="register">[ REGISTER ]</button>
+        </div>
+
+        <form id="loginForm" class="auth-form active">
+          <label>USERNAME
+            <input type="text" name="username" autocomplete="username" required placeholder="root@nullzone" />
+          </label>
+          <label>PASSWORD
+            <input type="password" name="password" autocomplete="current-password" required placeholder="**********" />
+          </label>
+          <button type="submit" class="neon-btn">&gt; AUTHENTICATE</button>
+        </form>
+
+        <form id="registerForm" class="auth-form">
+          <label>NEW HANDLE
+            <input type="text" name="username" required placeholder="ghost_in_the_shell" />
+          </label>
+          <label>PASSPHRASE
+            <input type="password" name="password" required placeholder="**********" />
+          </label>
+          <button type="submit" class="neon-btn alt">&gt; FORGE_IDENTITY</button>
+        </form>
+      </div>
+    </div>
+    <p class="hint">// tip: nothing here is regulated. operate at your own risk.</p>
+  </section>
+</template>
+
+<template id="tpl-dashboard">
+  <section class="dashboard">
+
+    <div class="grid">
+      <article class="panel panel-account">
+        <header class="panel-header">
+          <h2>ACCOUNT</h2><span class="blink">●</span>
+        </header>
+        <div class="panel-body account-body">
+          <div class="kv"><span>HANDLE</span><b id="acctHandle">--</b></div>
+          <div class="kv"><span>STATUS</span><b class="ok">AUTHENTICATED</b></div>
+        </div>
+      </article>
+
+      <article class="panel panel-request">
+        <header class="panel-header">
+          <h2>REQUEST_MONEY</h2><span class="tag">MUTATION</span>
+        </header>
+        <div class="panel-body">
+          <form id="requestForm" class="stack">
+            <label>FROM_HANDLE
+              <input type="text" name="request_from" required placeholder="target_user" />
+            </label>
+            <label>AMOUNT
+              <input type="number" name="amount" step="0.01" min="0.01" required placeholder="0.00" />
+            </label>
+            <button type="submit" class="neon-btn small">&gt; TRANSMIT</button>
+          </form>
+        </div>
+      </article>
+
+      <article class="panel panel-webhook">
+        <header class="panel-header">
+          <h2>WEBHOOK_HOOK</h2><span class="tag warn">HTTPS_ONLY</span>
+        </header>
+        <div class="panel-body">
+          <form id="webhookForm" class="stack">
+            <label>CALLBACK_URL
+              <input type="url" name="webhook" required placeholder="https://your-endpoint.io/hook" />
+            </label>
+            <button type="submit" class="neon-btn small alt">&gt; BIND_HOOK</button>
+          </form>
+          <p class="hint">// fires on every incoming request</p>
+        </div>
+      </article>
+
+      <article class="panel panel-inbox">
+        <header class="panel-header">
+          <h2>INCOMING_REQUESTS</h2>
+          <button id="refreshBtn" class="ghost-btn">⟳ REFRESH</button>
+        </header>
+        <div class="panel-body">
+          <div id="requestsList" class="requests-list">
+            <p class="empty">// scanning ledger ...</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</template>
+
+<script src="/app.js"></script>
+</body>
+</html>

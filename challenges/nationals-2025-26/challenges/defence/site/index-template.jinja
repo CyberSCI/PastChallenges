@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset=UTF-8>
+		<style>
+			body { font-family: Arial, Helvetica, sans-serif; }
+			table { border-collapse: collapse; width: 50%; margin-left: auto; margin-right: auto; }
+			th { padding: 8px; color: white; background-color: black; }
+			td { text-align: left; padding: 8px; }
+			tr:nth-child(odd) { background-color: Lightgray; }
+			
+			.limit { display: block; width: 70%; margin-left: auto; margin-right: auto; }
+			.center  { display: block; margin-left: auto; margin-right: auto; }			
+			.chart-center { display: flex; justify-content: center; }
+			.text-center { text-align: center; }
+			.backstory { font-style: italic; font-weight: bold; }
+
+			.conf-title-container { margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
+			.conf-title-text { text-align: center;  position: relative;  font-size: 300%; }
+		</style>
+		<title>CyberSci Nationals 2026</title>
+		<link rel="icon" type="image/ico" href="static/favicon.ico">
+	</head>
+	<body>
+		<img class="center" src="static/cybersci.png">
+		<span class="limit">
+		<h1 class="text-center">CyberSci Nationals 2026</h1>
+		<h2 class="text-center">Welcome to the Defence Competition!</h2>
+
+<h3>Description</h3>
+
+<p>"Defence" (or "blue team") competition is a security contest where teams defend services against an onslaught of automated exploitation attempts. Automated "benign" (i.e. "good," "well-intentioned") requests are also sent to services to make sure legitimate users continue to be served. The goal is to make as many malicious requests as possible fail, while letting the benign requests through.</p>
+
+<p>Teams are rewarded with points for failing malicious requests and letting the good requests succeed. On the flip side, successful malicious requests and failed benign requests are penalized by point subtraction. The team that accumulates the most points wins.</p>
+
+<p>Unlike the Attack/Defence competitions, there is no need to attack other teams' services. You will only have access to your own service instances and nothing else.</p>
+
+<p>This contest intends to test your abilities as a "defender," a valuable professional skill that gets undeservingly little attention in security competitions.</p>
+
+<h3>Setup</h3>
+
+<p>The competition setup consists of a <i>Scoreboard server</i> and <i>team subnets</i>.</p>
+
+<p>Each team has access to its own subnet, which contains a set of machines with <i>vulnerable services</i> and an <i>attack bot</i> machine.</p>
+
+<p>Services are written in various programming languages and will be available in source code or compiled form. Most services run in a separate Docker container.</p> 
+
+<p>Each service has one or more vulnerabilities. They are not disclosed, and you are responsible for finding and mitigating them.</p>
+
+<p>You will have full <b>sudo</b> rights to all vulnerable machines but no access to the attack bot.</p>
+
+<p>The competition preparation starts at <b><span id="prep_start"></span></b>. You will have <b>{{ prep_minutes }}</b> minutes to analyze the vulnerable services and start fixing them. The competition begins at <b><span id="start_time"></span></b> and runs until <b><span id="end_time"></span></b>.</p>
+
+<script>
+document.getElementById("prep_start").innerHTML = new Date({{ prep_start }}).toLocaleTimeString();
+document.getElementById("start_time").innerHTML = new Date({{ start_time }}).toLocaleTimeString();
+document.getElementById("end_time").innerHTML   = new Date({{ end_time }}).toLocaleTimeString();
+</script>
+
+<h3>During competition</h3>
+
+<p>Competition time is divided into regular time intervals called <i>"ticks."</i> The tick lasts <b>{{ tick_length }}</b> seconds.</p>
+
+<p>During each tick, the bot will send a mix of benign and malicious requests to all services. Your goal is to defend the vulnerable services by making the malicious requests fail while letting benign requests execute successfully.</p>
+
+<p>A malicious request is one specifically exploiting a vulnerability in the service. It is making the service behave in an unintended way. A request that triggers an error by design (for example, by attempting to log in with an unknown username) is considered benign.</p>
+
+<p>Every teams's progress will be shown on the scoreboard, and the team's page that is linked from it. We will show you the number of requests of every type during every tick. Note that an individual "request" may mean one or more HTTP request/response pairs, or a conversation with a terminal application, depending on a specific service.</p> 
+
+<h3>Scoring</h3>
+
+<p>Requests will be scored as follows:</p>
+
+<ul>
+<li>Successful benign request - <b>+{{ successful_benign_points }} points</b></li>
+<li>Failed benign request - <b>-{{ failed_benign_points }} points</b></li>
+<li>Successful malicious request - <b>-{{ successful_malicious_points }} points</b></li>
+<li>Failed malicious request - <b>+{{ failed_malicious_points }} points</b></li>
+<li>Service down - <b>-{{ down_points }} point for either malicious or benign request</b></li>
+</ul>
+
+<p>Scores for every vulnerability in every service are capped at upper bound of <b>{{ score_cap }}</b> points. This is done in order to prevent teams that fixed a service early from accumulating points forever, and to make it possible for others to catch up to them.</p>
+
+<p>Scores are also capped at lower bound of <b>{{ negative_score_cap }}</b> points (times the number of services). This is done to prevent scores dipping too much into the negative territory when the services or VMs for the team are broken.</p>
+
+<h3>Rules of conduct:</h3>
+
+<ul>
+<li>You may use any software or install it on vulnerable machines if it does not require a paid license and is otherwise immediately available to everyone. For example, a free version of Burp is ok, but a paid version is not. Software that is free but is not immediately open to anyone (e.g. has a wailing list to get access) is not allowed. We do this to avoid giving an unfair advantage to teams with better financing or otherwise better equipped.</li>
+<br>
+<li>It is preferable to fix the vulnerabilities in services, but blocking malicious requests is a valid strategy too.</li>
+<br>
+<li>Do not try to attack other teams or the scoreboard. You will spoil the competition for everyone and get disqualified.</li>
+<br>
+<li>Do not try to exploit the attack bot - if it goes down, it will take time to bring it back up, and the delay will cost you points.</li>
+<br>
+<li>Be careful not to break the attack bot by delaying its requests or sending it responses that may make it fail - any breakdown of the bot will cost you points.</li>
+<br>
+<li>When you are in doubt or need tech support - ask the moderators!</li>
+</ul>
+		<br>
+		<br>
+		<div class="conf-title-container">
+			<img src="static/great-reset.jpg">&nbsp;&nbsp;&nbsp;
+			<h1 class="conf-title-text">The Great Reset</h1>
+		</div>
+		<br>
+		<br>
+
+		<p class="backstory">In 2025, a giant meteor exploded upon entering Earth's atmosphere. In the aftermath of the resulting electromagnetic pulse (EMP), all active modern electronic devices were either destroyed, crippled, or rendered inert.</p>
+
+		<p class="backstory">We spent a year recovering. We scavenged, scoured, hacked, and scraped together what we had lost: communications networks, data centers, personal computers, mobile devices, so many things we took for granted. Where we couldn't recover, we improvised, digging through archives and museums and junkyards. It was a beautiful display of human creativity and collaboration, true innovation at play.</p>
+
+		<p class="backstory">Now that humanity has mitigated total societal collapse, however, some have decided that this is a zero-sum game. Agents operate in the shadows, beyond mere bandits and script kiddies. Attacks against our new infrastructure have almost tripled in the last few months, and rumours abound that some have managed to resurrect powerful AIs. On top of that, we're still trying to work out old tech that, to us, is new all over again.</p>
+
+		<p class="backstory">Welcome to post-apocalypse Canada. We might already be at cyber war . . . again.</p>
+
+		<br>
+		<br>
+
+<h3>Available services:</h3>
+
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Address</th>
+				<th>Description</th>
+			</tr>
+			{% for target in targets %}
+			<tr>
+				<td class="text-center">{{ target.get_name()|e }}</td>
+				<td class="text-center">{{ target.get_address()|e }}</td>
+				<td>{{ target.get_description()|e }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+		<br>
+		<br>
+
+<p class="text-center"><b><a class="center" href="scoreboard.html">Proceed to the Scoreboard</a></b></p>
+
+		<br>
+		<br>
+		<h2 class="text-center">Good luck!</h2>
+		<br>
+		<br>
+
+		</span>
+		<img class="center" src="static/sponsors.png">
+
+	</body>
+</html>

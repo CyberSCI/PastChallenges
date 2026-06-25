@@ -1,0 +1,7 @@
+services:
+  heat-exchange:
+    build: .
+    container_name: heat-exchange
+    restart: always
+    ports:
+      - "1010:1010"

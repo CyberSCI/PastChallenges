@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitGoodGemma — Archive Recovery</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>
+        GitGoodGemma
+        <span>Repository Archive &amp; Recovery System</span>
+      </h1>
+    </header>
+
+    <div class="warning-band"></div>
+
+    <div class="briefing">
+      <p>
+        <strong>Mission Status: Active.</strong> The networks are failing. Hosting platforms are
+        shutting down. Repositories disappear without warning with years of work, gone overnight.
+      </p>
+      <p style="margin-top:0.65rem">
+        This terminal is your lifeline. Submit a repository URL and our local archive agent will
+        clone the target, extract its documentation, and produce a permanent human-readable record.
+      </p>
+      <p class="status-line">&#9632; AWAITING REPOSITORY TARGET — STANDBY</p>
+    </div>
+
+    <div class="panel">
+      <form id="form">
+        <div class="field">
+          <!-- We should be careful with accepting SSH URLs -->
+          <label for="repo_url">Repository URL</label>
+          <input id="repo_url" type="url" placeholder="https://github.com/owner/repo" required>
+        </div>
+        <div class="field">
+          <!-- User provided branches may be trouble too -->
+          <label for="branch">Branch <span class="optional">(optional — defaults to HEAD)</span></label>
+          <input id="branch" type="text" placeholder="main">
+        </div>
+        <button type="submit" id="btn">Initiate Recovery</button>
+      </form>
+
+      <div id="error"></div>
+      <div id="result"></div>
+    </div>
+
+    <footer>GitGoodGemma &mdash; Local Archive Agent &mdash; All operations performed on-device</footer>
+    <!-- AmVtAwHtAwDtAmNtAwxtAzZtAzZtZwNtZzDtZwNtAwttAmDtAmDtAmNtAmZtZ2RtZzLtZzLtAzHtAmDtAzZtZmVtZmNtZmVtZmLtAwptAwxtAmDtAwptAzLtAzLtAwDtAwptAwHtAzDtAzDtAwRtZzHtAwVtAzZtAzLtAwVtZzHtAwZtAzLtAmVtAwHtZzHtAmptAwxtAzHtAwDtAzLtAmptAmZtZzHtAzHtAwHtAmDtZzLtAwptAwxtAmDtAwptAzLtAzLtAwDtZzLtAwLtAzZtAwRtAwptZzHtAmNtAzHtAwp= -->
+  </div>
+
+  <script>
+    const form = document.getElementById('form');
+    const btn = document.getElementById('btn');
+    const resultBox = document.getElementById('result');
+    const errorBox = document.getElementById('error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      resultBox.style.display = 'none';
+      errorBox.style.display = 'none';
+      btn.disabled = true;
+      btn.innerHTML = 'Recovering<span class="spinner"></span>';
+
+      // We should be careful with accepting SSH URLs
+      const body = {
+        repo_url: document.getElementById('repo_url').value.trim(),
+      };
+      // User provided branches may be trouble too
+      const branch = document.getElementById('branch').value.trim();
+      if (branch) body.branch = branch;
+
+      try {
+        const resp = await fetch('/summarize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await resp.json();
+        if (data.msg) {
+          errorBox.textContent = data.detail ?? JSON.stringify(data);
+          errorBox.style.display = 'block';
+        } else {
+          resultBox.textContent = data.summary;
+          resultBox.style.display = 'block';
+        }
+      } catch (err) {
+        errorBox.textContent = 'Network error: ' + err.message;
+        errorBox.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Initiate Recovery';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  dead-air:
+    build: .
+    container_name: dead-air
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    privileged: true
+    security_opt:
+      - seccomp=unconfined
+    environment:
+      - FLAG=CyberSci{d34d_41r_subtitl3_0v3rfl0w_r3l4y_br34ch}

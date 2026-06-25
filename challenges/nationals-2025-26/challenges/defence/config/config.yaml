@@ -1,0 +1,13 @@
+start_time: "2026-06-13 14:00:00+00:00"
+duration: 240
+prep_minutes: 30
+tick_length: 120
+server: "https://defence.thegreatreset.ca:65500"
+site_folder: "/var/www/html"
+score_cap: 100
+negative_score_cap: -25
+successful_benign_points: 1
+failed_benign_points: 1
+successful_malicious_points: 1
+failed_malicious_points: 1
+down_points: 1

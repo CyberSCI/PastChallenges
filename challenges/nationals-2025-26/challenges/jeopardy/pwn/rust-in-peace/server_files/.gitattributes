@@ -1,0 +1,6 @@
+drive-d.img filter=lfs diff=lfs merge=lfs -text
+drive-e.img filter=lfs diff=lfs merge=lfs -text
+drive-f.img filter=lfs diff=lfs merge=lfs -text
+floppy-a.img filter=lfs diff=lfs merge=lfs -text
+floppy-b.img filter=lfs diff=lfs merge=lfs -text
+freedos.img filter=lfs diff=lfs merge=lfs -text

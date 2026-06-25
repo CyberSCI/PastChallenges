@@ -1,0 +1,32 @@
+[project]
+name = "attacker"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+  "beautifulsoup4>=4.14.3",
+  "boto3[crt]>=1.43.14",
+  "cryptography>=48.0.0",
+  "faker>=40.19.1",
+  "httpx>=0.28.1",
+  "paramiko>=5.0.0",
+  "playwright>=1.60.0",
+  "python-jenkins>=1.8.3",
+  "pyyaml>=6.0.3",
+  "structlog>=26.1.0",
+]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+include = ["**/*.py"]
+exclude = ["**/node_modules", "**/__pycache__"]
+pythonVersion = "3.13"
+
+[tool.ruff.lint.isort]
+known-first-party = ["siege", "tests"]
+
+[dependency-groups]
+dev = [
+    "debugpy>=1.8.20",
+]

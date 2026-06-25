@@ -1,0 +1,16 @@
+FROM alpine:latest
+
+ENV PYTHONUNBUFFERED=1
+RUN apk add --update --no-cache curl jq python3 py3-pip aws-cli bash uv \
+  && ln -sf python3 /usr/bin/python
+
+WORKDIR /garage
+
+COPY garage/uv.lock garage/pyproject.toml ./
+
+RUN uv sync --frozen
+
+COPY garage/.python-version garage/garage.toml garage/init.py ./
+COPY jenkins/casc/jenkins.yaml jenkins.yaml
+
+ENTRYPOINT [ "uv", "run", "init.py" ]

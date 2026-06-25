@@ -1,0 +1,55 @@
+name: deployment-hell
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: jenkins/Dockerfile
+      args:
+        DOCKER_GID: ${DOCKER_GID:-999}
+    group_add:
+      - "999"
+    ports:
+      - "2222:2222"
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./apps:/var/jenkins_home/apps/
+      - ./jenkins/scripts/:/var/jenkins_home/job-scripts
+      - ./jenkins/casc/:/var/jenkins_home/casc_configs
+      - shared:/shared
+    restart: unless-stopped
+    depends_on:
+      garage-init:
+        condition: service_completed_successfully
+
+  garage:
+    image: dxflrs/garage:v2.3.0
+    container_name: garage
+    restart: unless-stopped
+    volumes:
+      - ./garage/garage.toml:/etc/garage.toml
+      - garage_data:/var/lib/garage/data
+      - garage_meta:/var/lib/garage/meta
+    ports:
+      - "3900:3900"
+      - "3901:3901"
+      - "3902:3902"
+      - "3903:3903"
+
+  garage-init:
+    build:
+      context: .
+      dockerfile: garage/Dockerfile.init
+    volumes:
+      - shared:/shared
+    depends_on:
+      - garage
+
+volumes:
+  garage_data:
+  garage_meta:
+  jenkins_home:
+  shared:

@@ -1,0 +1,76 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@1571.1580.v18e46842c125">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@2.2277.v00573e73ddf1"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@2.2277.v00573e73ddf1">
+      <jobProperties/>
+      <triggers/>
+      <parameters>
+        <string>projectName</string>
+      </parameters>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>projectName</name>
+          <description>name of the project to build</description>
+          <defaultValue>canary</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@4331.v9d06ed4658ff">
+    <script>pipeline {
+  agent any
+  parameters {
+    string(
+      name: &apos;projectName&apos;,
+      defaultValue: &apos;canary&apos;,
+      description: &apos;name of the project to build&apos;
+    )
+  }
+  stages {
+    stage(&quot;Load Credentials&quot;) {
+      steps {
+        script {
+          def creds = readFile(&apos;/shared/garage-creds.env&apos;).trim().split(&apos;\\n&apos;).collectEntries {
+            def parts = it.split(&apos;=&apos;, 2)
+            [(parts[0]): parts[1]]
+          }
+          env.AWS_ACCESS_KEY_ID = creds[&apos;AWS_ACCESS_KEY_ID&apos;]
+          env.AWS_SECRET_ACCESS_KEY = creds[&apos;AWS_SECRET_ACCESS_KEY&apos;]
+          env.AWS_ENDPOINT_URL = creds[&apos;AWS_ENDPOINT_URL&apos;]
+          env.AWS_DEFAULT_REGION = creds[&apos;AWS_DEFAULT_REGION&apos;]
+          env.PROJECT_NAME = params.projectName
+        }
+      }
+    }
+    stage(&apos;Build&apos;) {
+      steps {
+        sh &quot;docker build -t ${PROJECT_NAME}:latest /var/jenkins_home/apps/${PROJECT_NAME}&quot;
+      }
+    }
+    stage(&apos;Save &amp; Upload&apos;) {
+      steps {
+        sh &apos;&apos;&apos;
+          docker save ${PROJECT_NAME}:latest -o /tmp/${PROJECT_NAME}.tar
+          aws s3 cp /tmp/${PROJECT_NAME}.tar s3://docker-images/${PROJECT_NAME}.tar \\
+            --endpoint-url $AWS_ENDPOINT_URL
+          rm -f /tmp/${PROJECT_NAME}.tar
+        &apos;&apos;&apos;
+      }
+    }
+  }
+}
+</script>
+    <sandbox>false</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

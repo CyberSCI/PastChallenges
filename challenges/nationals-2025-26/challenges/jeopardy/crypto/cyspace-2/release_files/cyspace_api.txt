@@ -1,0 +1,107 @@
+=====================================================
+ CySpace.com Developer API v0.9 (beta)
+ Authentication: DSA / FIPS 186-1 (1994) + SHA-1
+ Rebuilt post-EMP from original 1999 source archive
+=====================================================
+
+ABOUT THE AUTHENTICATION SCHEME
+---------------------------------
+CySpace.com's signing infrastructure predates elliptic-curve cryptography.
+It uses the Digital Signature Algorithm (DSA) as standardised in FIPS 186-1
+(August 1994) - the first federal digital signature standard, published
+before SHA-256 existed. The hash function is SHA-1 (FIPS 180-1, 1995).
+
+Both standards were already considered legacy before the EMP. Post-EMP,
+they were the best options available from the salvaged 1999 source archive.
+The domain parameters (p, q, g) in cyspace_params.py were generated to
+FIPS 186-1 specs: 1024-bit p, 160-bit q.
+
+CANONICAL SIGNING ENVELOPE
+--------------------------
+CySpace.com does NOT sign raw post bodies. Every signed object - public
+posts as well as inbox-access requests - is canonicalized into a fixed
+"envelope" string before being hashed.
+
+The envelope format is:
+
+    <object_id>|<unix_timestamp>|@<author>|<body>
+
+Field rules:
+  - object_id        ASCII, no '|' character
+  - unix_timestamp   ASCII decimal seconds since 1970-01-01T00:00:00Z
+  - @<author>        username with the leading '@' included
+  - body             the post or request body as raw UTF-8 bytes
+  - separator        a single '|' (0x7C) byte; appears exactly 3 times
+
+The envelope is encoded as UTF-8 and fed into SHA-1 to produce the message
+digest H(m). DSA (r, s) is then computed in the standard way over H(m).
+
+Example (a public post):
+    Object ID:   00042
+    Timestamp:   1751673600
+    Author:      @viper92
+    Body:        patch a tire, patch a network, same energy
+
+  Envelope (the exact byte string fed to SHA-1):
+    00042|1751673600|@viper92|patch a tire, patch a network, same energy
+
+
+PUBLIC POSTS FEED
+-----------------
+The file `cyspace_posts.json` is a snapshot of @viper92's public timeline.
+Each entry is an object:
+
+    {
+      "post_id":   "<string>",
+      "timestamp": <integer unix seconds>,
+      "author":    "@viper92",
+      "body":      "<utf-8 string>",
+      "r":         <DSA r as integer>,
+      "s":         <DSA s as integer>
+    }
+
+To verify any post: rebuild its envelope per the rules above, compute
+SHA-1, and verify (r, s) under @viper92's public key y from
+`cyspace_params.py`.
+
+
+INBOX ACCESS ENDPOINT
+---------------------
+To access a user's private inbox, send a DSA-signed request envelope to
+the server.
+
+Protocol (over TCP):
+  1. Connect to the server.
+  2. Server sends: "CySpace.com API Ready\n"
+  3. Client sends the request envelope (one line, no trailing newline
+     within the envelope itself):
+       INBOX-<request_id>|<unix_timestamp>|@viper92|INBOX_REQUEST
+     Followed by a single '\n' as a line terminator (the '\n' is NOT
+     part of the envelope and is NOT hashed).
+  4. Client sends the DSA signature of the envelope (two lines):
+       r=<integer>
+       s=<integer>
+  5. The server reconstructs the envelope EXACTLY as described in
+     "CANONICAL SIGNING ENVELOPE" above, hashes it with SHA-1, and
+     verifies (r, s) under @viper92's public key y.
+  6. If valid, the server returns the contents of @viper92's private
+     inbox (which contains the flag).
+  7. If invalid, the server returns: "SIGNATURE VERIFICATION FAILED"
+
+
+SIGNATURE REQUIREMENTS
+-----------------------
+- Hash function:   SHA-1
+- Signed message:  the canonical envelope (NOT the raw body)
+- Signature:       standard DSA (r, s) using @viper92's private key x
+- Parameters:      p, q, g as defined in cyspace_params.py
+- Object ID rules: for inbox requests, use a fresh "INBOX-<random>" id;
+                   the server does not enforce uniqueness, only signature
+                   validity.
+
+
+NOTE
+----
+The server does not validate <request_id> or <unix_timestamp> contents -
+only that the (r, s) pair verifies under @viper92's public key over the
+exact envelope you sent. The signature is the only access control.

@@ -1,0 +1,3 @@
+[submodule "challenges/defence/siege"]
+	path = challenges/defence/siege
+	url = https://github.com/0xd13a/siege.git

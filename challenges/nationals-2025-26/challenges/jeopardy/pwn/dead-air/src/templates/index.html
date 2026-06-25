@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RELAY STATION #7 // Canadian Recovery Network</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#050505;
+    color:#00ff41;
+    font-family:'Courier New',Courier,monospace;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:24px 12px;
+    position:relative;
+    overflow-x:hidden;
+  }
+  body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,.18) 0px,
+      rgba(0,0,0,.18) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events:none;
+    z-index:9999;
+  }
+  @keyframes flicker{
+    0%,100%{opacity:1}
+    92%{opacity:1}
+    93%{opacity:.7}
+    94%{opacity:1}
+    96%{opacity:.8}
+    97%{opacity:1}
+  }
+  body{animation:flicker 4s infinite}
+  .container{
+    width:100%;
+    max-width:860px;
+    border:1px solid #00ff41;
+    padding:24px;
+    margin-top:8px;
+    position:relative;
+  }
+  .hdr{text-align:center;margin-bottom:18px}
+  .hdr pre{
+    font-size:.78rem;
+    line-height:1.25;
+    color:#00ff41;
+    display:inline-block;
+    text-align:left;
+  }
+  .hdr .sub{color:#008f11;font-size:.85em;margin-top:4px}
+  .status{margin:12px 0;font-size:.9em}
+  .status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+  .status .on{background:#00ff41;box-shadow:0 0 6px #00ff41}
+  .status .warn{background:#ffaa00;box-shadow:0 0 6px #ffaa00}
+  .status span{display:block;margin:3px 0}
+  .desc{
+    color:#00cc33;
+    font-size:.88em;
+    line-height:1.6;
+    margin:14px 0;
+    border-left:2px solid #00ff41;
+    padding-left:12px;
+  }
+  .upload{
+    margin:20px 0;
+    padding:16px;
+    border:1px dashed #00ff41;
+  }
+  .upload label{display:block;margin-bottom:8px}
+  input[type=file]{color:#00ff41;font-family:inherit;margin:8px 0}
+  button{
+    background:transparent;
+    color:#00ff41;
+    border:1px solid #00ff41;
+    padding:8px 24px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:1em;
+    transition:all .15s;
+  }
+  button:hover{background:#00ff41;color:#050505}
+  .error{color:#ff4444;font-weight:bold;margin:10px 0}
+  .success{color:#00ff41;font-weight:bold;margin:10px 0}
+  .foot{
+    margin-top:22px;
+    font-size:.75em;
+    color:#444;
+    text-align:center;
+    line-height:1.7;
+  }
+  .foot a{color:#00aaff;text-decoration:none}
+  .foot a:hover{text-decoration:underline}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .blink{animation:blink 1.2s step-end infinite}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="hdr">
+<pre>
+ ╔═══════════════════════════════════════════════════════════╗
+ ║              CANADIAN RECOVERY NETWORK                   ║
+ ║          Relay Station #7  ──  Ottawa Sector             ║
+ ║      Subtitle Processing &amp; Broadcast Captioning          ║
+ ╚═══════════════════════════════════════════════════════════╝
+</pre>
+    <div class="sub">&gt;&gt; Emergency Broadcast Captioning Service &lt;&lt;</div>
+  </div>
+
+  <div class="status">
+    <span><span class="dot on"></span>SYSTEM STATUS: <b>OPERATIONAL</b></span>
+    <span><span class="dot on"></span>UPLINK: CONNECTED — LATENCY 847 ms</span>
+    <span><span class="dot warn"></span>MEDIA ENGINE: <b>VLC 0.9.4 "Grishenko"</b> (Pre-EMP Legacy Build)</span>
+    <span><span class="dot on"></span>SUBTITLE DEMUXER: LOADED</span>
+  </div>
+
+  <div class="desc">
+    This terminal accepts subtitle files for broadcast captioning across the
+    Canadian Recovery Network.  Uploaded subtitles are parsed by the relay
+    station's legacy media engine and queued for overlay onto emergency
+    broadcast transmissions.<br><br>
+    Supported formats: <b>.srt .sub .ssa .ass .rt .vtt .smi .txt</b>
+  </div>
+
+  <div class="upload">
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <label>SELECT SUBTITLE FILE FOR PROCESSING:</label>
+      <input type="file" name="file" accept=".srt,.sub,.ssa,.ass,.rt,.txt,.smi,.vtt">
+      <br>
+      <button type="submit">&gt;&gt; PROCESS &amp; RELAY &lt;&lt;</button>
+    </form>
+  </div>
+
+  {% if error %}
+  <div class="error">[!] {{ error }}</div>
+  {% endif %}
+
+  {% if success %}
+  <div class="success">[+] {{ success }}</div>
+  {% endif %}
+
+  <div class="foot">
+    <p>Relay Station Subtitle Processor&ensp;|&ensp;Legacy Build v0.9.4 "Grishenko"</p>
+    <p>[ <a href="/download/bin/vlc">Download VLC Binary</a> ]
+       &ensp;|&ensp;
+       [ <a href="/download/lib/vlc/demux/libsubtitle_plugin.so">Download Subtitle Plugin</a> ]
+    </p>
+    <p style="color:#2a2a2a;margin-top:8px">
+      WARNING: This system uses pre-EMP software recovered from archive.
+      Report vulnerabilities to CRN-CERT immediately.
+    </p>
+    <p class="blink" style="color:#00ff41;margin-top:10px">█</p>
+  </div>
+
+</div>
+
+</body>
+</html>

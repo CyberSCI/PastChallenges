@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IPBX-AMI Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #f0f5f5;
+      --surface:  #e2ecec;
+      --border:   #a4c0c4;
+      --text:     #1a2c2e;
+      --muted:    #5a8088;
+      --green:    #007870;
+      --yellow:   #a06800;
+      --red:      #b82828;
+      --blue:     #006878;
+      --purple:   #005868;
+      --glow:     rgba(0, 120, 112, 0.20);
+      --glow-dim: rgba(0, 120, 112, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'VT323', 'Courier New', monospace;
+      font-size: 16px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      text-shadow: none;
+    }
+
+    /* CRT scanlines */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.04) 0px,
+        rgba(0, 0, 0, 0.04) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* CRT vignette */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center,
+        transparent 55%,
+        rgba(0,0,0,0.18) 100%
+      );
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    /* ── Header ─────────────────────────────────────────── */
+    header {
+      background: var(--surface);
+      border-bottom: 2px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 12px var(--glow-dim);
+    }
+
+    header .logo {
+      font-size: 28px;
+      font-weight: normal;
+      color: var(--green);
+      letter-spacing: 3px;
+      text-shadow: 0 0 4px var(--glow);
+    }
+
+    header .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+
+    header .status-pill {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--green);
+      padding: 2px 10px;
+      font-size: 18px;
+      color: var(--green);
+      text-shadow: none;
+      letter-spacing: 2px;
+    }
+
+    .dot {
+      width: 8px; height: 8px;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 9px; height: 16px;
+      background: var(--green);
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    /* ── Main layout ─────────────────────────────────────── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 220px 1fr 270px;
+      gap: 2px;
+      background: var(--border);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .panel {
+      background: var(--bg);
+      padding: 16px;
+      overflow: auto;
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: normal;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--green);
+      text-shadow: none;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .panel-title::before { content: '[ '; }
+    .panel-title::after  { content: ' ]'; }
+
+    /* ── System info ─────────────────────────────────────── */
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid #c4d8dc;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+
+    .info-label { color: var(--muted); font-size: 15px; }
+
+    .info-value {
+      font-family: 'VT323', 'Courier New', monospace;
+      font-size: 15px;
+      color: var(--text);
+    }
+
+    .info-value.highlight { color: var(--green); text-shadow: none; }
+
+    /* ── Network diagram ─────────────────────────────────── */
+    #panel-network {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #network-svg {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+    }
+
+    .node-label {
+      fill: #1a2c2e;
+      font-size: 12px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+
+    .node-ext {
+      fill: #5a8088;
+      font-size: 11px;
+      text-anchor: middle;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+
+    .link-idle {
+      stroke: #a4c0c4;
+      stroke-width: 1.5;
+    }
+
+    .link-call-up {
+      stroke: #007870;
+      stroke-width: 2.5;
+      stroke-dasharray: 6 3;
+      animation: dash 1s linear infinite;
+      filter: drop-shadow(0 0 2px #007870);
+    }
+
+    .link-call-ring {
+      stroke: #a06800;
+      stroke-width: 2;
+      stroke-dasharray: 4 4;
+      animation: dash 0.6s linear infinite;
+      filter: drop-shadow(0 0 2px #a06800);
+    }
+
+    @keyframes dash {
+      to { stroke-dashoffset: -18; }
+    }
+
+    .pbx-label {
+      fill: #007870;
+      font-size: 14px;
+      font-weight: 700;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      font-family: 'VT323', 'Courier New', monospace;
+      letter-spacing: 2px;
+    }
+
+    .pbx-sub {
+      fill: #5a8088;
+      font-size: 10px;
+      text-anchor: middle;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+
+    /* ── Right column ─────────────────────────────────────── */
+    #right-col {
+      display: flex;
+      flex-direction: column;
+      background: var(--border);
+      gap: 2px;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    #panel-channels {
+      background: var(--bg);
+      padding: 12px 16px;
+      flex-shrink: 0;
+    }
+
+    #panel-extensions {
+      background: var(--bg);
+      padding: 12px 16px;
+      flex-shrink: 0;
+    }
+
+    #panel-eventlog {
+      background: var(--bg);
+      padding: 12px 16px;
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Channel cards ────────────────────────────────────── */
+    .channel-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      animation: slide-in 0.2s ease-out;
+      box-shadow: inset 0 0 8px var(--glow-dim);
+    }
+
+    .channel-card:last-child { margin-bottom: 0; }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .channel-name {
+      font-family: 'VT323', 'Courier New', monospace;
+      font-size: 15px;
+      color: var(--purple);
+      text-shadow: none;
+      margin-bottom: 3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .channel-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .no-channels {
+      color: var(--muted);
+      font-size: 15px;
+      padding: 3px 0;
+    }
+
+    /* ── Extension rows ───────────────────────────────────── */
+    .ext-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 0;
+      border-bottom: 1px solid #c4d8dc;
+    }
+
+    .ext-row:last-child { border-bottom: none; }
+
+    .ext-num {
+      font-family: 'VT323', 'Courier New', monospace;
+      font-size: 15px;
+      color: var(--blue);
+      width: 36px;
+      flex-shrink: 0;
+    }
+
+    .ext-name { flex: 1; font-size: 16px; letter-spacing: 1px; }
+
+    .badge {
+      font-size: 14px;
+      font-weight: normal;
+      padding: 1px 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-family: 'VT323', 'Courier New', monospace;
+    }
+
+    .badge::before { content: '['; }
+    .badge::after  { content: ']'; }
+
+    .badge-idle    { color: var(--green);  text-shadow: none; }
+    .badge-inuse   { color: var(--yellow); text-shadow: none; }
+    .badge-unavail { color: var(--red);    text-shadow: none; }
+
+    /* ── Event log ────────────────────────────────────────── */
+    #event-log-entries {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .log-entry {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      padding: 3px 0;
+      border-bottom: 1px solid #0a1a00;
+      font-size: 14px;
+      animation: fade-in 0.2s ease-out;
+    }
+
+    .log-entry:last-child { border-bottom: none; }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .log-time {
+      color: var(--muted);
+      font-family: 'VT323', 'Courier New', monospace;
+      flex-shrink: 0;
+      font-size: 13px;
+    }
+
+    .log-time::before { content: '>'; margin-right: 2px; }
+
+    .log-msg { flex: 1; }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 2px solid var(--border);
+      padding: 6px 20px;
+      display: flex;
+      gap: 24px;
+      font-size: 16px;
+      color: var(--muted);
+      flex-shrink: 0;
+      box-shadow: 0 -2px 12px var(--glow-dim);
+      letter-spacing: 1px;
+    }
+
+    footer span { display: flex; align-items: center; gap: 5px; }
+
+    /* scrollbar retro */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    /* ── Tab nav ─────────────────────────────────────────────── */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .tab {
+      padding: 6px 20px;
+      font-family: 'VT323', 'Courier New', monospace;
+      font-size: 16px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .tab:hover { color: var(--green); }
+
+    .tab.active {
+      color: var(--green);
+      border-bottom: 2px solid var(--green);
+    }
+
+    /* ── Install page ────────────────────────────────────────── */
+    #page-install {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 48px;
+      background: var(--bg);
+    }
+
+    .install-title {
+      font-size: 26px;
+      color: var(--green);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .install-subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .install-section { margin-bottom: 22px; }
+
+    .install-section-title {
+      color: var(--green);
+      font-size: 18px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .install-section-title::before { content: '>> '; }
+
+    .install-line {
+      display: flex;
+      gap: 16px;
+      padding: 3px 0;
+    }
+
+    .install-key {
+      color: var(--muted);
+      width: 160px;
+      flex-shrink: 0;
+      font-size: 15px;
+    }
+
+    .install-val { color: var(--text); font-size: 15px; }
+
+    .install-val.cred {
+      color: var(--purple);
+      letter-spacing: 2px;
+      font-size: 16px;
+    }
+
+    .install-code {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      margin: 8px 0;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .install-code .cmd     { color: var(--green); }
+    .install-code .comment { color: var(--muted); }
+    .install-code .kw      { color: var(--blue);  }
+
+    .install-note {
+      border-left: 3px solid var(--yellow);
+      padding: 8px 14px;
+      margin: 12px 0;
+      color: var(--yellow);
+      font-size: 15px;
+    }
+
+    .install-warn {
+      border: 1px solid var(--red);
+      padding: 10px 14px;
+      margin: 16px 0;
+      color: var(--red);
+      font-size: 15px;
+    }
+
+    .install-warn::before { content: '[!] '; }
+
+    .install-body {
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────── -->
+<header>
+  <div>
+    <div class="logo">[ IPBX-AMI ]<span class="cursor"></span></div>
+    <div class="subtitle">// MANAGEMENT CONSOLE v1.0.0</div>
+  </div>
+  <div class="status-pill">
+    <div class="dot"></div>
+    SYSTEM ONLINE
+  </div>
+</header>
+
+<!-- ── Tab nav ─────────────────────────────────────────────── -->
+<nav>
+  <div class="tab active" onclick="showPage('dashboard')">Dashboard</div>
+  <div class="tab"        onclick="showPage('install')">Setup Guide</div>
+</nav>
+
+<!-- ── Main ───────────────────────────────────────────────── -->
+<main id="main-dashboard">
+
+  <!-- System Info (left) -->
+  <div class="panel" id="panel-sysinfo">
+    <div class="panel-title">System Info</div>
+    <div class="info-row">
+      <span class="info-label">VERSION</span>
+      <span class="info-value">1.0.0</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">UPTIME</span>
+      <span class="info-value highlight" id="uptime">—</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">ACTIVE CALLS</span>
+      <span class="info-value highlight" id="active-calls">0</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">REG PEERS</span>
+      <span class="info-value" id="reg-peers">—</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">PROTOCOL</span>
+      <span class="info-value">SIP/2.0</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">TRANSPORT</span>
+      <span class="info-value">UDP/TCP</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">AMI PORT</span>
+      <span class="info-value">5038</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">SIP PORT</span>
+      <span class="info-value">5060</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">HOSTNAME</span>
+      <span class="info-value">pbx-01.local</span>
+    </div>
+    <div class="info-row">
+      <span class="info-label">SERIAL</span>
+      <span class="info-value" style="font-size:13px; color: var(--muted)">PBX-A1B2C3D4</span>
+    </div>
+  </div>
+
+  <!-- Network Diagram (center) -->
+  <div class="panel" id="panel-network">
+    <div class="panel-title" style="width:100%">Phone Network</div>
+    <svg id="network-svg" viewBox="0 0 560 400" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Background grid -->
+      <defs>
+        <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+          <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#c4d8dc" stroke-width="0.8"/>
+        </pattern>
+      </defs>
+      <rect width="560" height="400" fill="url(#grid)" rx="0"/>
+
+      <!-- Dynamic layers (JS-managed) -->
+      <g id="svg-idle-links"></g>
+      <g id="svg-call-links"></g>
+
+      <!-- PBX node (static center) -->
+      <g transform="translate(245,160)">
+        <rect x="0" y="0" width="70" height="50" rx="0"
+              fill="#e2ecec" stroke="#007870" stroke-width="2"/>
+        <line x1="6" y1="14" x2="64" y2="14" stroke="#a4c0c4" stroke-width="1"/>
+        <line x1="6" y1="22" x2="64" y2="22" stroke="#a4c0c4" stroke-width="1"/>
+        <line x1="6" y1="30" x2="64" y2="30" stroke="#a4c0c4" stroke-width="1"/>
+        <circle cx="58" cy="10"  r="2" fill="#007870"/>
+        <circle cx="58" cy="18" r="2" fill="#a06800"/>
+        <circle cx="58" cy="26" r="2" fill="#007870"/>
+        <text class="pbx-label" x="35" y="42">PBX</text>
+      </g>
+      <text class="pbx-sub" x="280" y="222">pbx-01.local</text>
+
+      <!-- Dynamic phone nodes (JS-managed) -->
+      <g id="svg-nodes"></g>
+
+      <!-- Legend (static) -->
+      <g transform="translate(14, 350)">
+        <rect x="0" y="0" width="10" height="10" fill="none" stroke="#007870" stroke-width="1.5"/>
+        <text x="15" y="9" style="fill:#5a8088; font-size:11px; font-family:'VT323',monospace">IDLE</text>
+
+        <rect x="50" y="0" width="10" height="10" fill="none" stroke="#a06800" stroke-width="1.5"/>
+        <text x="65" y="9" style="fill:#5a8088; font-size:11px; font-family:'VT323',monospace">IN USE</text>
+
+        <rect x="115" y="0" width="10" height="10" fill="none" stroke="#b82828" stroke-width="1.5" stroke-dasharray="3 1.5"/>
+        <text x="130" y="9" style="fill:#5a8088; font-size:11px; font-family:'VT323',monospace">N/A</text>
+
+        <line x1="168" y1="5" x2="188" y2="5" stroke="#007870" stroke-width="2" stroke-dasharray="4 2"/>
+        <text x="192" y="9" style="fill:#5a8088; font-size:11px; font-family:'VT323',monospace">UP</text>
+
+        <line x1="218" y1="5" x2="238" y2="5" stroke="#a06800" stroke-width="2" stroke-dasharray="3 3"/>
+        <text x="242" y="9" style="fill:#5a8088; font-size:11px; font-family:'VT323',monospace">RING</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Right column -->
+  <div id="right-col">
+
+    <!-- Active Channels -->
+    <div id="panel-channels">
+      <div class="panel-title">Active Channels</div>
+      <div id="channels-list"></div>
+    </div>
+
+    <!-- Extensions -->
+    <div id="panel-extensions">
+      <div class="panel-title">Extensions</div>
+      <div id="extensions-list"></div>
+    </div>
+
+    <!-- Event Log -->
+    <div id="panel-eventlog">
+      <div class="panel-title">Event Log</div>
+      <div id="event-log-entries"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- ── Install / Setup Guide page ─────────────────────────── -->
+<div id="page-install">
+
+  <div class="install-title">IPBX-AMI — Quick Install Guide</div>
+  <div class="install-subtitle">// v1.0.0 · Revision 3 · Initial Deployment Reference</div>
+
+  <!-- Requirements -->
+  <div class="install-section">
+    <div class="install-section-title">System Requirements</div>
+    <div class="install-line"><span class="install-key">ARCHITECTURE</span><span class="install-val">x86_64</span></div>
+    <div class="install-line"><span class="install-key">CPU</span><span class="install-val">2+ cores recommended</span></div>
+    <div class="install-line"><span class="install-key">RAM</span><span class="install-val">512 MB minimum / 1 GB recommended</span></div>
+    <div class="install-line"><span class="install-key">OS</span><span class="install-val">Linux 5.x+  (Debian 11 / Ubuntu 22.04 tested)</span></div>
+    <div class="install-line"><span class="install-key">PORTS</span><span class="install-val">5038/TCP (AMI)  ·  5060/UDP (SIP)  ·  5061/TCP (TLS-SIP)</span></div>
+    <div class="install-line"><span class="install-key">IPC</span><span class="install-val">POSIX shared memory  /ipbx_ami  (auto-created on first run)</span></div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="install-section">
+    <div class="install-section-title">Step 1 — Install Binaries</div>
+    <div class="install-code">
+      <span class="comment"># copy pre-compiled binaries to system paths</span><br>
+      <span class="cmd">$ sudo cp server   /usr/local/sbin/ipbx-server</span><br>
+      <span class="cmd">$ sudo cp consumer /usr/local/sbin/ipbx-consumer</span><br>
+      <span class="cmd">$ sudo chmod 750 /usr/local/sbin/ipbx-server \</span><br>
+      <span class="cmd">                 /usr/local/sbin/ipbx-consumer</span>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="install-section">
+    <div class="install-section-title">Step 2 — Configure systemd Services</div>
+    <div class="install-code">
+      <span class="comment"># /etc/systemd/system/ipbx-server.service</span><br>
+      <span class="kw">[Unit]</span><br>
+      Description=IPBX AMI Server<br>
+      After=network.target<br><br>
+      <span class="kw">[Service]</span><br>
+      ExecStart=/usr/local/sbin/ipbx-server<br>
+      Restart=on-failure<br>
+      RestartSec=3<br><br>
+      <span class="kw">[Install]</span><br>
+      WantedBy=multi-user.target
+    </div>
+    <div class="install-code">
+      <span class="comment"># /etc/systemd/system/ipbx-consumer.service</span><br>
+      <span class="kw">[Unit]</span><br>
+      Description=IPBX AMI Consumer<br>
+      After=ipbx-server.service<br><br>
+      <span class="kw">[Service]</span><br>
+      ExecStart=/usr/local/sbin/ipbx-consumer<br>
+      Restart=on-failure<br>
+      RestartSec=3<br><br>
+      <span class="kw">[Install]</span><br>
+      WantedBy=multi-user.target
+    </div>
+    <div class="install-code">
+      <span class="cmd">$ sudo systemctl daemon-reload</span><br>
+      <span class="cmd">$ sudo systemctl enable --now ipbx-server ipbx-consumer</span><br>
+      <span class="cmd">$ sudo systemctl status ipbx-server ipbx-consumer</span>
+    </div>
+  </div>
+
+  <!-- Step 3 — credentials -->
+  <div class="install-section">
+    <div class="install-section-title">Step 3 — Initial Login</div>
+    <div class="install-body">
+      The AMI management interface listens on port <span style="color:var(--green)">5038/TCP</span>.
+      Connect with any TCP client — the server sends a banner (<code>IPBX-AMI/1.0</code>)
+      upon connection.<br>
+      Authentication requires an <span style="color:var(--blue)">AUTH</span> packet whose value field contains
+      <span style="color:var(--purple)">base64(user:pass)</span>.  The server responds with
+      <span style="color:var(--green)">CONT_ACK</span> on success or
+      <span style="color:var(--red)">CONT_ERROR</span> on failure.
+    </div>
+    <div class="install-line">
+      <span class="install-key">DEFAULT USER</span>
+      <span class="install-val cred">admin</span>
+    </div>
+    <div class="install-line">
+      <span class="install-key">DEFAULT PASS</span>
+      <span class="install-val cred">s3cr3t_pbx</span>
+    </div>
+    <div class="install-note">
+      These are factory defaults shared across all IPBX-1000 units.
+      Change the password before connecting the system to any network.
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="install-section">
+    <div class="install-section-title">Step 4 — Verify Installation</div>
+    <div class="install-body">
+      After both services are running, send a
+      <span style="color:var(--blue)">STATUS / SYS_INFO</span> packet (mtype=0x04, ptype=0x30).
+      A well-formed response confirms the server and consumer are communicating correctly.
+    </div>
+    <div class="install-code">
+      <span class="comment"># expected SYS_INFO response fields</span><br>
+      version=1.0.0<br>
+      uptime=&lt;seconds since boot&gt;<br>
+      active_calls=&lt;n&gt;<br>
+      registered_peers=&lt;n&gt;<br>
+      serial=IPBX-1000
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="install-section">
+    <div class="install-section-title">Step 5 — Extension Configuration</div>
+    <div class="install-body">
+      Extensions register over SIP on port 5060.  The default dial plan is flat —
+      all extensions can reach one another directly.  Use
+      <span style="color:var(--blue)">STATUS / EXT_STATUS</span> (ptype=0x32, value=extension number) and
+      <span style="color:var(--blue)">STATUS / CHAN_LIST</span> (ptype=0x31) to inspect live state via the AMI.
+    </div>
+    <div class="install-line"><span class="install-key">SIP REGISTRAR</span><span class="install-val">pbx-01.local:5060</span></div>
+    <div class="install-line"><span class="install-key">AUTH METHOD</span><span class="install-val">SIP Digest  (per-extension credentials in sip.conf)</span></div>
+    <div class="install-line"><span class="install-key">CODEC ORDER</span><span class="install-val">G.722 > G.711u > G.711a</span></div>
+    <div class="install-line"><span class="install-key">VOICEMAIL</span><span class="install-val">enabled — query per extension via ptype=0x33</span></div>
+  </div>
+
+  <div class="install-warn">
+    Factory default credentials are identical on every IPBX-1000 shipped from the factory.<br>
+    Deploying without changing them exposes full AMI control to anyone with network access.
+  </div>
+
+</div>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer>
+  <span>AMI:5038</span>
+  <span>SIP:5060</span>
+  <span>TLS:5061</span>
+  <span id="footer-calls" style="margin-left:auto"></span>
+</footer>
+
+<script>
+// ── Page switching ────────────────────────────────────────────
+function showPage(page) {
+  const tabs    = document.querySelectorAll('.tab');
+  const dashboard = document.getElementById('main-dashboard');
+  const install   = document.getElementById('page-install');
+  const isDash = page === 'dashboard';
+  dashboard.style.display = isDash ? '' : 'none';
+  install.style.display   = isDash ? 'none' : 'block';
+  tabs[0].classList.toggle('active',  isDash);
+  tabs[1].classList.toggle('active', !isDash);
+}
+
+// ── Constants ────────────────────────────────────────────────
+const PBX_X = 280, PBX_Y = 185;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+// Extensions: id, name, SVG position, current state
+const EXTS = [
+  { id: '1001', name: 'Alice',   x: 280, y: 60,  state: 'idle' },
+  { id: '1002', name: 'Bob',     x: 460, y: 150, state: 'idle' },
+  { id: '1003', name: 'Charlie', x: 400, y: 330, state: 'idle' },
+  { id: '1004', name: 'Dave',    x: 160, y: 330, state: 'idle' },
+  { id: '1005', name: 'Eve',     x: 100, y: 150, state: 'unavail' },
+];
+
+// Active calls list
+let activeCalls = [];
+let channelSeq = 1;
+
+// Event log entries
+let eventLog = [];
+
+// Uptime: server has been running for a random 1–48h before page load
+const bootTime = Date.now() - (1 + Math.random() * 47) * 3600 * 1000;
+
+// ── Helpers ──────────────────────────────────────────────────
+function getExt(id) { return EXTS.find(e => e.id === id); }
+
+function isBusy(extId) {
+  return activeCalls.some(c => c.from === extId || c.to === extId);
+}
+
+function idleExts() {
+  return EXTS.filter(e => e.state === 'idle' && !isBusy(e.id));
+}
+
+function fmtSec(totalSec) {
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+}
+
+function fmtUptime(ms) {
+  const s = Math.floor(ms / 1000);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${h}h ${m}m ${sec}s`;
+  if (m > 0) return `${m}m ${sec}s`;
+  return `${sec}s`;
+}
+
+function nowHMS() {
+  return new Date().toLocaleTimeString('en-US', { hour12: false });
+}
+
+function svgEl(tag, attrs) {
+  const el = document.createElementNS(SVG_NS, tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  return el;
+}
+
+// ── Call lifecycle ────────────────────────────────────────────
+function initiateCall(fromId, toId) {
+  const s = channelSeq++;
+  const call = {
+    id: 'c' + s,
+    channel: `SIP/${fromId}-${String(s).padStart(8, '0')}`,
+    from: fromId,
+    to: toId,
+    state: 'ringing',
+    startTime: Date.now(),
+    answeredAt: null,
+  };
+  activeCalls.push(call);
+  getExt(fromId).state = 'inuse';
+  getExt(toId).state   = 'inuse';
+  addLog('ring', `${getExt(fromId).name} (${fromId}) -> ${getExt(toId).name} (${toId}) ringing`);
+  render();
+
+  // Answer after 1.5–5s
+  const answerDelay = 1500 + Math.random() * 3500;
+  setTimeout(() => answerCall(call.id), answerDelay);
+}
+
+function answerCall(callId) {
+  const call = activeCalls.find(c => c.id === callId);
+  if (!call) return;
+  call.state      = 'up';
+  call.answeredAt = Date.now();
+  addLog('up', `${call.from} <-> ${call.to} connected`);
+  render();
+
+  // Hang up after 6–28s
+  const hangupDelay = 6000 + Math.random() * 22000;
+  setTimeout(() => hangupCall(call.id), hangupDelay);
+}
+
+function hangupCall(callId) {
+  const call = activeCalls.find(c => c.id === callId);
+  if (!call) return;
+  const dur = fmtSec(Math.floor((Date.now() - call.startTime) / 1000));
+  getExt(call.from).state = 'idle';
+  getExt(call.to).state   = 'idle';
+  activeCalls = activeCalls.filter(c => c.id !== callId);
+  addLog('drop', `${call.from} <-> ${call.to} ended (${dur})`);
+  render();
+}
+
+// ── Simulation tick ───────────────────────────────────────────
+function simTick() {
+  const idle = idleExts();
+
+  // Possibly start a new call (max 2 concurrent)
+  if (activeCalls.length < 2 && idle.length >= 2 && Math.random() < 0.65) {
+    const pool = [...idle].sort(() => Math.random() - 0.5);
+    initiateCall(pool[0].id, pool[1].id);
+  }
+
+  // Eve registration toggling
+  const eve = getExt('1005');
+  if (!isBusy('1005')) {
+    if (eve.state === 'unavail' && Math.random() < 0.15) {
+      eve.state = 'idle';
+      addLog('reg', '1005 Eve registered');
+      render();
+    } else if (eve.state === 'idle' && Math.random() < 0.07) {
+      eve.state = 'unavail';
+      addLog('unreg', '1005 Eve unreachable');
+      render();
+    }
+  }
+}
+
+// ── Event log ─────────────────────────────────────────────────
+function addLog(type, msg) {
+  eventLog.unshift({ type, msg, t: nowHMS() });
+  if (eventLog.length > 40) eventLog.pop();
+}
+
+// ── Render: SVG ───────────────────────────────────────────────
+function renderSVG() {
+  const idleGroup  = document.getElementById('svg-idle-links');
+  const callGroup  = document.getElementById('svg-call-links');
+  const nodesGroup = document.getElementById('svg-nodes');
+
+  idleGroup.innerHTML  = '';
+  callGroup.innerHTML  = '';
+  nodesGroup.innerHTML = '';
+
+  // Idle links: each non-unavail extension to PBX center
+  for (const ext of EXTS) {
+    if (ext.state === 'unavail') continue;
+    idleGroup.appendChild(svgEl('line', {
+      class: 'link-idle',
+      x1: ext.x, y1: ext.y, x2: PBX_X, y2: PBX_Y,
+    }));
+  }
+
+  // Call links
+  for (const call of activeCalls) {
+    const f = getExt(call.from), t = getExt(call.to);
+    callGroup.appendChild(svgEl('line', {
+      class: call.state === 'up' ? 'link-call-up' : 'link-call-ring',
+      x1: f.x, y1: f.y, x2: t.x, y2: t.y,
+    }));
+  }
+
+  // Phone nodes
+  for (const ext of EXTS) {
+    let rectFill, rectStroke, rectExtra = {}, dotChar, dotColor, labelColor;
+
+    if (ext.state === 'idle') {
+      rectFill   = '#eef4f4';
+      rectStroke = '#007870';
+      dotChar    = '●'; dotColor = '#007870';
+      labelColor = '#1a2c2e';
+    } else if (ext.state === 'inuse') {
+      rectFill   = '#f4f0e8';
+      rectStroke = '#a06800';
+      dotChar    = '●'; dotColor = '#a06800';
+      labelColor = '#1a2c2e';
+    } else {
+      rectFill   = '#f4e8e8';
+      rectStroke = '#b82828';
+      rectExtra  = { 'stroke-dasharray': '4 2' };
+      dotChar    = '✕'; dotColor = '#b82828';
+      labelColor = '#5a8088';
+    }
+
+    const g = svgEl('g', { transform: `translate(${ext.x},${ext.y})` });
+
+    const rect = svgEl('rect', {
+      x: '-22', y: '-22', width: '44', height: '44',
+      fill: rectFill, stroke: rectStroke, 'stroke-width': '2', ...rectExtra,
+    });
+    g.appendChild(rect);
+
+    const phoneGlyph = svgEl('text', { y: '-3', class: 'node-label' });
+    if (ext.state === 'unavail') phoneGlyph.setAttribute('style', 'fill:#5a8088');
+    phoneGlyph.textContent = '☎';
+    g.appendChild(phoneGlyph);
+
+    const dot = svgEl('text', { y: '12', class: 'node-label', style: `font-size:9px;fill:${dotColor}` });
+    dot.textContent = dotChar;
+    g.appendChild(dot);
+
+    nodesGroup.appendChild(g);
+
+    // Name label below node
+    const nameEl = svgEl('text', {
+      class: 'node-label', x: ext.x, y: ext.y + 34, style: `fill:${labelColor}`,
+    });
+    nameEl.textContent = ext.name;
+    nodesGroup.appendChild(nameEl);
+
+    // Extension number
+    const extEl = svgEl('text', { class: 'node-ext', x: ext.x, y: ext.y + 46 });
+    extEl.textContent = ext.id;
+    nodesGroup.appendChild(extEl);
+  }
+}
+
+// ── Render: channels panel ────────────────────────────────────
+function renderChannels() {
+  const el = document.getElementById('channels-list');
+  if (activeCalls.length === 0) {
+    el.innerHTML = '<div class="no-channels">-- NO ACTIVE CHANNELS --</div>';
+    return;
+  }
+  el.innerHTML = activeCalls.map(call => {
+    const stateColor = call.state === 'up' ? 'var(--green)' : 'var(--yellow)';
+    const stateAnim  = call.state === 'ringing' ? 'animation:pulse 0.8s infinite' : '';
+    const stateLabel = call.state === 'up' ? '[UP]' : '[RING]';
+    const elapsed    = call.answeredAt
+      ? `<span style="color:var(--muted);margin-left:8px">${fmtSec(Math.floor((Date.now() - call.answeredAt) / 1000))}</span>`
+      : '';
+    return `<div class="channel-card">
+      <div class="channel-name">${call.channel}</div>
+      <div class="channel-meta">
+        <span>TEL ${call.from} > ${call.to}</span>
+        <span style="margin-left:auto;color:${stateColor};${stateAnim}">${stateLabel}</span>
+        ${elapsed}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Render: extensions panel ──────────────────────────────────
+function renderExtensions() {
+  const el = document.getElementById('extensions-list');
+  el.innerHTML = EXTS.map(ext => {
+    const [cls, lbl] = ext.state === 'idle'
+      ? ['badge-idle',    'IDLE']
+      : ext.state === 'inuse'
+        ? ['badge-inuse',   'IN USE']
+        : ['badge-unavail', 'N/A'];
+    return `<div class="ext-row">
+      <span class="ext-num">${ext.id}</span>
+      <span class="ext-name">${ext.name}</span>
+      <span class="badge ${cls}">${lbl}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── Render: event log ─────────────────────────────────────────
+function renderEventLog() {
+  const el = document.getElementById('event-log-entries');
+  if (eventLog.length === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:15px">-- NO EVENTS --</div>';
+    return;
+  }
+  const styles = {
+    ring:  { color: 'var(--yellow)' },
+    up:    { color: 'var(--green)'  },
+    drop:  { color: 'var(--red)'    },
+    reg:   { color: 'var(--green)'  },
+    unreg: { color: 'var(--red)'    },
+  };
+  el.innerHTML = eventLog.map(e => {
+    const s = styles[e.type] || { color: 'var(--muted)' };
+    return `<div class="log-entry">
+      <span class="log-time">${e.t}</span>
+      <span class="log-msg" style="color:${s.color}">${e.msg}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── Render: footer ────────────────────────────────────────────
+function renderFooter() {
+  const up   = activeCalls.filter(c => c.state === 'up').length;
+  const ring = activeCalls.filter(c => c.state === 'ringing').length;
+  const el   = document.getElementById('footer-calls');
+  if (up + ring === 0) {
+    el.textContent = '-- NO ACTIVE CALLS --';
+    el.style.color = 'var(--muted)';
+  } else {
+    const parts = [];
+    if (up)   parts.push(`[UP: ${up}]`);
+    if (ring) parts.push(`[RING: ${ring}]`);
+    el.textContent = parts.join('  ');
+    el.style.color = 'var(--green)';
+    el.style.textShadow = 'none';
+  }
+}
+
+// ── Render: sysinfo counters ──────────────────────────────────
+function renderSysInfo() {
+  document.getElementById('active-calls').textContent =
+    activeCalls.length;
+  document.getElementById('reg-peers').textContent =
+    EXTS.filter(e => e.state !== 'unavail').length;
+}
+
+// ── Full render pass ──────────────────────────────────────────
+function render() {
+  renderSVG();
+  renderChannels();
+  renderExtensions();
+  renderEventLog();
+  renderFooter();
+  renderSysInfo();
+}
+
+// ── Timers ────────────────────────────────────────────────────
+// 1 s clock: uptime + refresh channel durations
+setInterval(() => {
+  document.getElementById('uptime').textContent = fmtUptime(Date.now() - bootTime);
+  renderChannels();
+}, 1000);
+
+// 4 s simulation tick
+setInterval(simTick, 4000);
+
+// ── Boot sequence ─────────────────────────────────────────────
+addLog('reg', 'SIP stack initialized');
+addLog('reg', 'AMI connected · 192.168.1.10:5038');
+render();
+
+// Kick off first call quickly so the dashboard isn't empty
+setTimeout(simTick, 800);
+</script>
+
+</body>
+</html>

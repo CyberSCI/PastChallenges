@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@apollo/server": "npm:@apollo/server@^5.5.1",
+    "jose": "npm:jose@^6.2.3"
+  }
+}

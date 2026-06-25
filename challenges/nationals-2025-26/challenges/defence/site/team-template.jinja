@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% if not competition_finished %}
+    	<meta http-equiv="refresh" content="30">
+		{% endif %}
+		<meta charset=UTF-8>
+		<style>
+			body { font-family: Arial, Helvetica, sans-serif; }
+			table { border-collapse: collapse; width: 90%; margin-left: auto; margin-right: auto; }
+            th { padding: 8px; color: white; background-color: black; text-align: center; }
+			td { text-align: left; padding: 8px; text-align: center; }
+            tr:nth-child(odd) { background-color: Lightgray; }
+			
+			.center  { display: block; margin-left: auto; margin-right: auto; }			
+			.chart-center { display: flex; justify-content: center; }
+			.text-center { text-align: center; }
+			.disabled { color:grey; filter: grayscale(100%) opacity(20%) }
+			.capped { color:grey; }
+			.emojis {color: black; background-color: white; }
+			.bottom-line { border-bottom: 1px solid black;}
+			.left-line { border-left: 1px solid black;}
+			.right-line { border-right: 1px solid black;}
+			a, a:visited, a:hover, a:active { color: inherit; }
+		</style>
+		<title>CyberSci Nationals 2026 - {{ team_name|e }}</title>
+		<link rel="icon" type="image/ico" href="static/favicon.ico">
+	</head>
+    <body>
+		<img class="center" src="static/cybersci.png">
+		<h1 class="text-center">CyberSci Nationals 2026 - {{ team_name|e }}</h1>
+		<h2 class="text-center">{{ banner }}</h2>
+		
+		<p class="text-center"><b>Legend:</b> benign requests: &#x1F607; - successful, <span class="disabled">&#x1F607;</span> - failed; malicious requests: &#x1F608; - successful, <span class="disabled">&#x1F608;</span> - failed; &#x1F480; - service down; &#x1F60E; - score cap reached; <b>"-"</b> - bot not communicating; <span class="capped">/<i>number</i></span> - score not counted due to cap</p>
+		
+		<table>
+			<tr>
+				<th rowspan="2">Time</th>
+				<th rowspan="2">Tick</th>
+				{% for target in targets %}
+					<th colspan="7"><a href="#" title="Address: {{ target.get_address()|e }}&#10;Description: {{ target.get_description()|e }}">{{ target.get_name()|e }}</a></th>
+				{% endfor %}				
+				<th rowspan="2">Score</th>
+			</tr>		
+			<tr class="bottom-line">
+				{% for target in targets %}
+					<th class="emojis">&#x1F607;</th>
+					<th class="emojis"><span class="disabled">&#x1F607;</span></th>
+					<th class="emojis">&#x1F608;</th>
+					<th class="emojis"><span class="disabled">&#x1F608;</span></th>
+					<th class="emojis">&#x1F480;</th>
+					<th class="emojis">&#x1F60E;</th>
+					<th class="emojis left-line right-line"><b>&Sigma;</b></th>
+					
+				{% endfor %}				
+			</tr>
+			{% for score in team_scores %}
+			<tr>
+				<td><script>document.write(new Date({{ score.time }}).toLocaleString());</script></td>
+				<td class="right-line"><b>{{ score.tick }}</b></td>
+				{% for res in score.get_ordered_target_scores() %}
+
+					<td>{% if res.empty_result %}-{% else %}{{ "{}".format(res.benign_success_count)     if res.benign_success_count > 0 }}{% endif %}
+					{% if (not res.empty_result) and (res.ignored_benign_successes > 0) %}&nbsp;<span class="capped">/{{ "{}".format(res.ignored_benign_successes) }}</span>{% endif %}</td>
+
+					<td>{% if res.empty_result %}-{% else %}{{ "{}".format(-res.benign_failure_count)    if res.benign_failure_count > 0 }}{% endif %}</td>
+					<td>{% if res.empty_result %}-{% else %}{{ "{}".format(-res.malicious_success_count) if res.malicious_success_count > 0 }}{% endif %}</td>
+
+					<td>{% if res.empty_result %}-{% else %}{{ "{}".format(res.malicious_failure_count)  if res.malicious_failure_count > 0 }}{% endif %}
+					{% if (not res.empty_result) and (res.ignored_malicious_failures > 0) %}&nbsp;<span class="capped">/{{ "{}".format(res.ignored_malicious_failures) }}</span>{% endif %}</td>
+
+					<td>{% if res.empty_result %}-{% else %}{{ "{}".format(-res.service_down_count)      if res.service_down_count > 0 }}{% endif %}</td>
+					
+					<td>{% if res.caps_reached > 0 %}{{ res.caps_reached }}{% endif %}</td>
+					<td class="left-line right-line"><b>{{ res.score_delta }}</b></td>
+
+				{% endfor %}				
+				<td><b>{{ score.score }}</b></td>
+			</tr>
+			{% endfor %}
+		</table>
+		<img class="center" src="static/sponsors.png">
+    </body>
+</html>
+    

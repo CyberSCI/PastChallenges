@@ -1,0 +1,21 @@
+# Playwright MCP session artifacts
+.playwright-mcp/
+
+# Asset-generation venv (not part of the deployed image)
+challenges/defence/myspace/.venv/
+
+# Local Playwright smoke-test screenshots
+cyspace-*.png
+<<<<<<< Updated upstream
+
+
+**/__pycache__/
+**/.claude
+.claude/** 
+=======
+.venv/
+.pytest_cache/
+__pycache__/
+
+.DS_Store
+>>>>>>> Stashed changes
