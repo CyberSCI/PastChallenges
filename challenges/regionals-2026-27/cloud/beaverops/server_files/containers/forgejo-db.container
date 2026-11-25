@@ -1,0 +1,13 @@
+[Container]
+ContainerName=forgejo-db
+EnvironmentFile=/etc/containers/systemd/forgejo.env
+# 17.11-alpine3.24
+Image=docker.io/library/postgres@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24
+Network=forgejo.network
+Volume=forgejo-db-data:/var/lib/postgresql/data
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manual lock · DamWatch</title><link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
+</head>
+<body data-page="override">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><a class="brand" href="/" aria-label="DamWatch home"><span class="brand-mark" aria-hidden="true">≈</span><span>DamWatch</span></a><nav aria-label="Primary"><a href="/">Live telemetry</a><a href="/reports">Report archive</a><a href="/override" aria-current="page">Manual lock</a></nav><span class="station">Sector 04 / Nursery pool</span></header>
+  <main id="main" class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Field console / 03</p><h1>Manual lock</h1><p>Emergency gate isolation requires two approval slots on one ticket.</p></div><span class="timestamp">CONTROL / 04</span></div>
+    <div class="override-grid"><section class="panel ticket-panel" aria-labelledby="ticket-title"><div class="panel-heading"><h2 id="ticket-title">Current ticket</h2><span class="small-code" id="generation">GEN —</span></div><p class="ticket-value" id="ticket">Loading…</p><p class="ticket-note" id="ticket-note">A ticket is spent after one redemption. A failed attempt can be reset.</p><button type="button" class="secondary-button" id="reset">Issue new ticket</button></section>
+    <section class="panel approvals-panel" aria-labelledby="approval-title"><div class="panel-heading"><h2 id="approval-title">Approval slots</h2><span class="small-code">A + B</span></div><p>Both slots must carry receipts from the current ticket.</p><div class="slots"><div class="slot"><span>Slot A</span><strong id="slot-a">Awaiting receipt</strong><button type="button" data-slot="A">Redeem A</button></div><div class="slot"><span>Slot B</span><strong id="slot-b">Awaiting receipt</strong><button type="button" data-slot="B">Redeem B</button></div></div><button type="button" class="authorize-button" id="authorize">Engage manual lock</button></section>
+    <section class="panel lock-panel" aria-labelledby="lock-title"><div class="panel-heading"><h2 id="lock-title">Gate interlock</h2><span class="small-code">ISOLATION</span></div><p class="lock-state" id="lock-state">Standby</p><p>Local simulation only. The public gauge remains unchanged.</p><p class="flag-result" id="flag-result" hidden></p></section></div>
+    <p class="notice" id="override-message" role="status" aria-live="polite"></p>
+  </main><footer>DamWatch · Regional field console <span>Service area 04</span></footer>
+</body>
+</html>

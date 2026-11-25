@@ -1,0 +1,1 @@
+/work/cybersci/CS2027-RGNL/challenges/defence$ PYTHONPATH=/work/0xd13a/siege python3 -m siege.test_attacker log-monitor log_monitor_attacker.py LogMonitorAttacker 127.0.0.1:5000 1,2,3,-1,-2,-3

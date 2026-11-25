@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "es2019",
+		"module": "nodenext",
+		"outDir": "dist",
+		"rootDir": "src",
+		"types": ["node"],
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "nodenext"
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}

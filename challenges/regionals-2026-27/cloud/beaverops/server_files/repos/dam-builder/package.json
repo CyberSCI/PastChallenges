@@ -1,0 +1,35 @@
+{
+	"name": "dam-builder",
+	"version": "0.1.0",
+	"description": "",
+	"main": "src/cli.ts",
+	"scripts": {
+		"test": "tsc && vitest --run",
+		"build": "tsc"
+	},
+	"bin": {
+		"dam-builder": "./dist/cli.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "12.5.1",
+			"onFail": "download"
+		}
+	},
+	"packageManager": "pnpm@12.5.1",
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "2.5.14",
+		"@types/node": "^26.6.2",
+		"typescript": "^7.0.2",
+		"vitest": "^5.0.3",
+		"vitest-command-line": "^0.9.1"
+	},
+	"dependencies": {
+		"commander": "^15.0.0"
+	}
+}

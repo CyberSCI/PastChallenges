@@ -1,0 +1,3 @@
+[Build]
+ImageTag=beaverworks/npm-registry
+File=/etc/containers/systemd/verdaccio.dockerfile

@@ -1,0 +1,22 @@
+[Unit]
+Description=ForgeJo Runner instance.
+Requires=forgejo-podman-runtime.service
+After=forgejo-podman-runtime.service
+
+[Container]
+ContainerName=forgejo-runner
+Environment=DOCKER_HOST=tcp://forgejo-podman-runtime:2375
+; comment below line out to enable the runner
+Environment=DISABLE_RUNNER=1
+Entrypoint=/entrypoint.sh
+Image=data.forgejo.org/forgejo/runner:13
+Mount=type=bind,src=/etc/containers/systemd/forgejo-data,dst=/data,U=true
+Mount=type=bind,src=/etc/containers/systemd/forgejo-runner.entrypoint.sh,dst=/entrypoint.sh
+Network=forgejo.network
+User=1001
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

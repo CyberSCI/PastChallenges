@@ -1,0 +1,22 @@
+[Unit]
+Description=BeaverOps ForgeJo Server
+Requires=forgejo-db.service
+After=forgejo-db.service
+
+[Container]
+ContainerName=forgejo
+Environment=USER_UID=1000
+Environment=USER_GID=1000
+EnvironmentFile=/etc/containers/systemd/forgejo.env
+Image=codeberg.org/forgejo/forgejo:16
+Network=forgejo.network
+NetworkAlias=beaverops.damoverflow.com
+PublishPort=3000:3000
+PublishPort=2222:22
+Volume=forgejo-data:/data
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

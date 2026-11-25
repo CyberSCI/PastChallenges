@@ -1,0 +1,23 @@
+[Unit]
+Description=ForgeJo Podman Runtime instance.
+
+[Container]
+AddDevice=/dev/fuse
+ContainerName=forgejo-podman-runtime
+Exec=podman --storage-driver vfs system service --time=0 tcp:0.0.0.0:2375
+# v5.8.4
+Image=quay.io/podman/stable@sha256:3c99be9108dacd2b25d2f343c91386abd14a5ceaca68aa3e8d7f6ee2ebd50a16
+Network=forgejo.network
+# Nested rootless Podman must apply image layers (mount in a new userns); the
+# default containers-default AppArmor profile denies this (ApplyLayer: remount /,
+# flags: 0x44000: permission denied). --privileged lifts that confinement.
+# PodmanArgs is used because this host's quadlet (podman 5.7) lacks Privileged=.
+PodmanArgs=--privileged
+SecurityLabelDisable=true
+User=1000
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

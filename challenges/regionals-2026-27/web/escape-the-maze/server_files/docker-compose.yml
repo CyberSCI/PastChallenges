@@ -1,0 +1,8 @@
+services:
+  maze:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - flag=CyberSci{j_what_cc5833}
+    restart: unless-stopped

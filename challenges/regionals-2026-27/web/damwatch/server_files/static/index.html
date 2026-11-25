@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live telemetry · DamWatch</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body data-page="live">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="DamWatch home"><span class="brand-mark" aria-hidden="true">≈</span><span>DamWatch</span></a>
+    <nav aria-label="Primary"><a href="/" aria-current="page">Live telemetry</a><a href="/reports">Report archive</a><a href="/override">Manual lock</a></nav>
+    <span class="station">Sector 04 / Nursery pool</span>
+  </header>
+  <main id="main" class="workspace">
+    <div class="page-head"><div><p class="eyebrow">Field console / 01</p><h1>Live telemetry</h1><p>Reservoir readings and the public maintenance feed.</p></div><span class="timestamp" id="updated">Awaiting signal</span></div>
+    <div class="live-grid">
+      <section class="panel gauge-panel" aria-labelledby="level-title">
+        <div class="panel-heading"><h2 id="level-title">Nursery pool</h2><span class="status-dot">LIVE FEED</span></div>
+        <div class="gauge-layout"><div><p class="metric-label">Current level</p><p class="level"><span id="waterline">—</span><span class="unit"> cm</span></p><p class="baseline">Reference line <span id="baseline">100</span> cm</p></div><div class="water-visual" role="img" aria-label="Reservoir level compared with reference"><span class="water-reference"></span><span class="water-fill" id="water-fill"></span><span class="water-label">REFERENCE</span></div></div>
+      </section>
+      <section class="panel status-panel" aria-labelledby="status-title"><div class="panel-heading"><h2 id="status-title">Public status</h2><span class="small-code">DW / 04</span></div><p class="public-status" id="public-status">Connecting</p><p class="status-note">The public bulletin updates independently of the gauge reading.</p></section>
+      <section class="panel feed-panel" aria-labelledby="feed-title"><div class="panel-heading"><h2 id="feed-title">Maintenance feed</h2><span class="small-code">TODAY</span></div><ol class="feed"><li><time>03:14</time><span>North spillway test · Public status: NORMAL</span></li><li><time>03:10</time><span>Cooling Annex maintenance window opened.</span></li><li><time>02:58</time><span>Public gauge sample accepted.</span></li></ol><p class="feed-hint">Telemetry channels are listed in the <a href="/api/topics">topic catalog</a>.</p></section>
+    </div>
+    <p class="notice" id="live-message" role="status" aria-live="polite"></p>
+  </main>
+  <footer>DamWatch · Regional field console <span>Service area 04</span></footer>
+</body>
+</html>

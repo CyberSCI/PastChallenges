@@ -1,0 +1,29 @@
+on:
+  pull_request_target:
+    paths-ignore:
+      - ".forgejo/**"
+
+jobs:
+  warm-cache:
+    runs-on: debian
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          allow-unsafe-pr-checkout: true
+
+      - name: Install PNPM
+        uses: pnpm/setup@v1
+        with:
+          cache: true
+          runtime: node@24
+          cache-primary-key: beaverops-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - run: |
+          pnpm install

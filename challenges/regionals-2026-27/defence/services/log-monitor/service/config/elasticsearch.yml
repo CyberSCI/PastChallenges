@@ -1,0 +1,6 @@
+cluster.name: elk7-local
+node.name: elk7
+discovery.type: single-node
+network.host: 0.0.0.0
+path.data: /var/lib/elasticsearch
+xpack.security.enabled: false

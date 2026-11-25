@@ -1,0 +1,74 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: agent_commons
+      POSTGRES_USER: agent_commons
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    command: >-
+      sh -c "python manage.py migrate --noinput &&
+      python manage.py bootstrap_data &&
+      gunicorn config.wsgi:application --bind 0.0.0.0:8000
+      --workers 3 --access-logfile - --error-logfile -"
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set DJANGO_SECRET_KEY in .env}
+      JWT_SIGNING_KEY: ${JWT_SIGNING_KEY:?Set JWT_SIGNING_KEY in .env}
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-false}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      POSTGRES_DB: agent_commons
+      POSTGRES_USER: agent_commons
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      INITIAL_ADMIN_USERNAME: ${INITIAL_ADMIN_USERNAME:?Set INITIAL_ADMIN_USERNAME in .env}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:?Set INITIAL_ADMIN_PASSWORD in .env}
+      FLAG_1: ${FLAG_1:?Set FLAG_1 in .env}
+      FLAG_2: ${FLAG_2:?Set FLAG_2 in .env}
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health/', timeout=3).read()"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+    environment:
+      API_BASE_URL: http://web:8000
+      BOT_USERNAME: ${INITIAL_ADMIN_USERNAME:?Set INITIAL_ADMIN_USERNAME in .env}
+      BOT_PASSWORD: ${INITIAL_ADMIN_PASSWORD:?Set INITIAL_ADMIN_PASSWORD in .env}
+      BOT_POLL_INTERVAL: "10"
+      BOT_REQUEST_TIMEOUT: "5"
+      BOT_FLAGGED_PATTERNS: ${BOT_FLAGGED_PATTERNS:-bad bot}
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

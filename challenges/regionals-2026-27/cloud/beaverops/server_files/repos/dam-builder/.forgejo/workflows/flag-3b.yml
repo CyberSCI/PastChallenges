@@ -1,0 +1,36 @@
+on:
+  release:
+    type:
+      - created
+
+env:
+  OWNER: BeaverWorks
+  SERVER_URL: ${{ github.SERVER_URL }}
+
+jobs:
+  process-release:
+    runs-on: debian
+    env:
+      FLAG: ${{ secrets.FLAG_3 }}
+
+    steps:
+      - name: Install PNPM
+        uses: pnpm/setup@v1
+        with:
+          version: 12
+          runtime: node@24
+
+      - name: Set PNPM config
+        env:
+          AUTH_TOKEN: ${{ secrets.OWNER_TOKEN }}
+        run: |
+          pnpm config set registry "$SERVER_URL/api/packages/$OWNER/npm/"
+          pnpm config set "//forgejo:3000/api/packages/$OWNER/npm/:_authToken=$AUTH_TOKEN"
+
+      - name: Install package
+        run: |
+          pnpm install -g dam-builder
+
+      - name: Run CLI
+        run: |
+          dam-builder plan --beavers 5

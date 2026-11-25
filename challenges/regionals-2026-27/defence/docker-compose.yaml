@@ -1,0 +1,6 @@
+services:
+  attacker:
+    build: .
+    container_name: attacker
+    network_mode: host
+    restart: always

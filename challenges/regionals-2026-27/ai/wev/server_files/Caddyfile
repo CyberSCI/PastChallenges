@@ -1,0 +1,18 @@
+:80 {
+	handle_path / {
+		header Content-Type "text/html"
+		respond "<a href=/wev-0>wev-0</a> | <a href=/wev-1>wev-1</a> | <a href=/wev-2>wev-2</a>"
+	}
+
+	handle_path /wev-0 {
+		reverse_proxy http://wev-0:8080
+	}
+
+	handle_path /wev-1 {
+		reverse_proxy http://wev-1:8080
+	}
+
+	handle_path /wev-2 {
+		reverse_proxy http://wev-2:8080
+	}
+}

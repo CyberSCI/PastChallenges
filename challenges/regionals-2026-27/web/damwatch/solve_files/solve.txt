@@ -1,0 +1,33 @@
+DamWatch — author walkthrough
+
+Start at the live console. Its browser client subscribes to water/level over
+/ws/telemetry with {"action":"subscribe","topic":"water/level"}. The public
+topic catalog also names operations/triage as restricted. Keep the observer
+session cookie and send the same subscribe message with operations/triage.
+The server verifies the session but forgets to check permission for that topic.
+The incident response contains the first flag and names coolant-diversion.memo.
+Burp's WebSocket history or a small WebSocket client works as well as solve.py.
+
+Open the Report archive and select a public record. The browser requests
+/api/archive/read?path=public/<name>. The incident's memo is absent from the
+public list. The reader checks the raw public/ prefix before it normalizes
+logical path segments. Request public/../internal/coolant-diversion.memo to
+read the memo and its second evidence mark. This is a fixed in-memory record
+map; the path never reaches the VM filesystem. Editing the request in Burp
+Repeater is enough.
+
+The Manual lock view shows one ticket and two approval slots. A normal
+redemption spends the ticket, so redeeming A and then B returns a conflict.
+Send two POST /api/approvals/redeem requests for A and B at the same time,
+with the same ticket and observer cookie. Both can pass the initial unused
+check while the audit wait is in progress. They receive different receipts.
+POST those receipts as {"receipts":{"A":"...","B":"..."}} to
+/api/override/authorize; the response contains the third flag. Burp's
+parallel request feature or a two-thread script can create the overlap. If
+one request wins too early, issue a new ticket and retry. The author solver
+uses at most three attempts.
+
+Tickets and receipts belong to one observer session and generation. A reset
+invalidates old receipts. The lock is a local simulation for that session;
+other teams' sessions and the public water-level display do not change.
+Submit each recovered flag to its corresponding CTFd entry.

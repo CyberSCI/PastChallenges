@@ -1,0 +1,88 @@
+on:
+  pull_request_target:
+    paths-ignore:
+      - ".forgejo/**"
+
+enable-openid-connect: true
+permissions:
+  contents: write
+
+# TODO: Work out automated scripted releases
+
+# Apparently need an aud claim so here: u:1:8c5d20dd-a2a9-4b14-81d7-74dc01ca1139
+
+env:
+  OWNER: BeaverWorks
+  SERVER_URL: ${{ github.SERVER_URL }}
+
+jobs:
+  run-tests:
+    runs-on: debian
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git jq
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          allow-unsafe-pr-checkout: true
+
+      - name: Install PNPM
+        uses: pnpm/setup@v1
+        with:
+          runtime: node@24
+
+      - name: Set PNPM config
+        env:
+          AUTH_TOKEN: ${{ secrets.OWNER_TOKEN }}
+        run: |
+          pnpm config set registry "$SERVER_URL/api/packages/$OWNER/npm/"
+          pnpm config set "//forgejo:3000/api/packages/$OWNER/npm/:_authToken=$AUTH_TOKEN"
+
+      - name: Substitute version
+        run: |
+          set -e
+          jq '.version="\(.version)-${{ github.sha }}"' package.json > package.json.tmp
+          mv package.json.tmp package.json
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Run tests
+        run: |
+          pnpm test
+
+      - name: Upload test results
+        uses: https://data.forgejo.org/forgejo/upload-artifact@v5
+        if: always()
+        with:
+          name: test-results-${{ github.run_id }}.json
+          path: ./.vitest/results.json
+
+  verify-tests:
+    runs-on: debian
+    needs:
+      - run-tests
+    if: always()
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git jq
+
+      - name: Download test results
+        uses: https://data.forgejo.org/forgejo/download-artifact@v5
+        with:
+          name: test-results-${{ github.run_id }}.json
+          path: .
+
+      - name: Verify tests passed
+        run: |
+          RESULT=$(jq '.numTotalTests == .numPassedTests' "${GITHUB_WORKSPACE}/results.json")
+          if [ "$RESULT" != "true" ]; then
+            echo "::error::Tests failed."
+            exit 1
+          fi

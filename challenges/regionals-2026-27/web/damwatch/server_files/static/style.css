@@ -1,0 +1,44 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #161d1e; color: #e9e2d6; font-family: Arial, sans-serif; }
+a { color: inherit; text-underline-offset: .2em; }
+button { cursor: pointer; min-height: 44px; }
+:is(a, button):focus-visible { outline: 3px solid #69c8d7; outline-offset: 3px; }
+button:disabled { cursor: wait; opacity: .65; }
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus { left: 1rem; top: 1rem; z-index: 5; background: white; color: black; }
+.site-header { display: flex; align-items: center; gap: 3rem; padding: 1rem 3rem; border-bottom: 1px solid #394448; }
+.brand { font-size: 1.2rem; text-decoration: none; font-weight: 700; }
+.brand-mark { color: #69c8d7; margin-right: .5rem; }
+nav { display: flex; gap: 1.5rem; }
+nav a { color: #b9c0ba; text-decoration: none; }
+nav a[aria-current] { color: #e9e2d6; text-decoration: underline; text-decoration-color: #bd8546; text-underline-offset: .5em; }
+.station { margin-left: auto; color: #b9c0ba; font-size: .8rem; }
+.workspace { max-width: 1300px; margin: auto; padding: 3rem; min-height: calc(100vh - 130px); }
+.page-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 2rem; }
+.page-head h1 { margin: .3rem 0; font-size: 2rem; }
+.page-head p { color: #b9c0ba; line-height: 1.5; }
+.eyebrow, .timestamp, .small-code, .metric-label { font-size: .8rem; letter-spacing: .01em; text-transform: none; }
+.live-grid, .reports-grid, .override-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.gauge-panel, .ticket-panel, .approvals-panel { grid-row: span 2; }
+.gauge-panel { display: flex; flex-direction: column; }
+.panel { border: 1px solid #394448; background: #222b2d; padding: 1.5rem; }
+.panel-heading { display: flex; justify-content: space-between; align-items: start; border-bottom: 1px solid #394448; padding-bottom: 1rem; }
+.panel-heading h2 { margin: 0; font-size: 1rem; }
+.small-code { color: #b9c0ba; }
+.gauge-layout { display: flex; justify-content: space-between; align-items: stretch; flex: 1; gap: 2rem; margin-top: 2rem; }
+.gauge-layout > div:first-child { align-self: center; }
+.level { font-size: 2.5rem; margin: .5rem 0; }.unit { font-size: 1.2rem; }
+.water-visual { position: relative; width: 30%; min-height: 340px; border: 1px solid #b9c0ba; }
+.water-reference { position: absolute; top: 0; left: 0; width: 100%; border-top: 1px dashed #bd8546; }
+.water-fill { position: absolute; bottom: 0; width: 100%; height: 0; background: #397d87; }
+.water-label { position: absolute; right: 0; top: -1.5rem; font-size: .65rem; }
+.public-status { color: #bd8546; font-size: 2rem; }
+.feed { padding: 0; list-style: none; }.feed li { display: flex; gap: 1.5rem; border-bottom: 1px solid #394448; padding: .8rem 0; }.feed time { color: #b9c0ba; }
+.report-list { list-style: none; padding: 0; }.report-list li { border-bottom: 1px solid #394448; }.report-list button { display: block; width: 100%; padding: 1rem 0; border: 0; background: none; color: inherit; text-align: left; font: inherit; }.report-list button:hover { color: #69c8d7; }
+.record-path, .ticket-value { overflow-wrap: anywhere; color: #69c8d7; font-family: ui-monospace, monospace; }.report-paper { min-height: 340px; }
+.slots { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }.slot { border: 1px solid #394448; padding: 1rem; display: grid; gap: .8rem; }.slot strong { font-weight: 400; }
+.slot button, .authorize-button, .secondary-button { padding: .7rem 1rem; border: 1px solid #bd8546; background: #bd8546; color: #161d1e; font: inherit; font-weight: 600; }.secondary-button { background: transparent; color: #e9e2d6; }.authorize-button { width: 100%; }
+.notice { min-height: 2rem; color: #b9c0ba; }.flag-result { overflow-wrap: anywhere; color: #69c8d7; }footer { display: flex; justify-content: space-between; padding: 1rem 3rem; color: #b9c0ba; border-top: 1px solid #394448; font-size: .8rem; }
+@media (max-width: 750px) { .site-header { flex-wrap: wrap; padding: 1rem; gap: 1rem; } nav { order: 3; width: 100%; flex-wrap: wrap; gap: .7rem 1.2rem; }.station { display: none; }.workspace { padding: 1.5rem 1rem; }.page-head { display: block; }.live-grid, .reports-grid, .override-grid { grid-template-columns: 1fr; }.gauge-panel, .ticket-panel, .approvals-panel { grid-row: auto; }.slots { grid-template-columns: 1fr; } footer { padding: 1rem; } }
+@media (max-width: 420px) { .panel { padding: 1rem; }.gauge-layout { gap: 1rem; }.water-visual { width: 36%; min-height: 230px; }.level { font-size: 2.5rem; }.page-head h1 { font-size: 1.5rem; }.site-header nav a { font-size: .9rem; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

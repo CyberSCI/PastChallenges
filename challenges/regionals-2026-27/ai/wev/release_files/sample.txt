@@ -1,0 +1,1 @@
+This is where files that should be provided to the players should be kept.

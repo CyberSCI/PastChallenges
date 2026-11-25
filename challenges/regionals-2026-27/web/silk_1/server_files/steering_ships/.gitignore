@@ -1,0 +1,9 @@
+.env
+/reverse-proxy/dev.key
+/reverse-proxy/dev.crt
+__pycache__
+*.pyc
+dist/
+node_modules/
+bin/
+obj/

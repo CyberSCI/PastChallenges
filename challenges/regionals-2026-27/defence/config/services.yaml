@@ -1,0 +1,19 @@
+services:                               # Attack targets
+  - name: "Great Dam"                   # Service name
+    folder: "greatdam"                  # Folder where service files are located
+    file: "great_dam_attacker.py"       # Attacker script file
+    class: "GreatDamAttacker"           # Attacker class name
+    address: "10.0.2.21:3333"           # Address of the challenge
+    requests: 2                         # Number of requests to send (will be an equal mix of benign and malicious)
+    flags:                              # Flag for each vulnerability type
+      - "CyberSci{M4gR3At10gs}"
+  - name: "Log Monitor"                 # Service name
+    folder: "log-monitor"               # Folder where service files are located
+    file: "log_monitor_attacker.py"     # Attacker script file
+    class: "LogMonitorAttacker"         # Attacker class name
+    address: "10.0.2.22:5000"           # Address of the challenge
+    requests: 2                         # Number of requests to send (will be an equal mix of benign and malicious)
+    flags:                              # Flag for each vulnerability type
+      - "CyberSci{do_not_quote_Dissect_on_this}"
+      - "CyberSci{a_log_for_a_shell_is_not_a_fair_trade}"
+      - "CyberSci{a_pearl_in_a_shell_is_better_than_a_shell_in_Ruby}"

@@ -1,0 +1,38 @@
+on:
+  pull_request_target:
+    paths-ignore:
+      - ".forgejo/**"
+
+env:
+  FLAG: ${{ secrets.FLAG_2 }}
+
+jobs:
+  check-builds:
+    runs-on: debian
+    steps:
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y git
+
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install PNPM
+        uses: pnpm/setup@v1
+        with:
+          cache: true
+          runtime: node@24
+          cache-primary-key: beaverops-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+
+      - name: build
+        run: |
+          pnpm build
+
+      - name: Run CLI as a sanity check
+        run: |
+          node dist/cli.js plan --beavers 5

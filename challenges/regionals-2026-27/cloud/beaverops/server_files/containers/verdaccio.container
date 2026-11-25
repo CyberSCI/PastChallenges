@@ -1,0 +1,9 @@
+[Unit]
+Description=Verdaccio, a self-hosted NPM registry.
+
+[Container]
+ContainerName=npm-registry
+Image=verdaccio.build
+Network=forgejo.network
+PublishPort=4873:4873
+Mount=type=bind,src=/etc/containers/systemd/verdaccio-data/config.yaml,dst=/verdaccio/conf/config.yaml

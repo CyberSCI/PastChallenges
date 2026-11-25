@@ -1,0 +1,116 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.2
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME:?Set KC_BOOTSTRAP_ADMIN_USERNAME in .env}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD:?Set KC_BOOTSTRAP_ADMIN_PASSWORD in .env}
+      KC_HOSTNAME: https://auth.ships.damoverflow.com
+      KC_PROXY_HEADERS: xforwarded
+    volumes:
+      - ./auth_server:/opt/keycloak/data/import:ro
+    restart: unless-stopped
+
+  controller_plus_api:
+    build:
+      context: ./controller_plus/ControllerPlus
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+      Authentication__Issuer: https://auth.ships.damoverflow.com/realms/controller-plus
+      Authentication__Authority: https://auth.ships.damoverflow.com/realms/controller-plus
+      Authentication__Audience: controller-plus-api
+      LegacyControllerApi__BaseAddress: http://controller_api/
+      Frontend__Origin: https://ships.damoverflow.com
+    volumes:
+      - ./reverse-proxy/dev.crt:/usr/local/share/ca-certificates/ships-dev.crt:ro
+    extra_hosts:
+      - "auth.ships.damoverflow.com:host-gateway"
+    entrypoint: ["/bin/sh", "-c", "update-ca-certificates && exec dotnet ControllerPlus.dll"]
+    depends_on:
+      keycloak:
+        condition: service_started
+      controller_api:
+        condition: service_healthy
+    networks:
+      - default
+      - controller_internal
+    restart: unless-stopped
+
+  controller_api:
+    build:
+      context: ./controller_api
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_PATH: /var/lib/controller/ships.sqlite
+    volumes:
+      - controller_data:/var/lib/controller
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1/healthz').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    networks:
+      - controller_internal
+    restart: unless-stopped
+
+  ship_simulator:
+    build:
+      context: ./ship_simulator
+      dockerfile: Dockerfile
+    environment:
+      API_URL: http://controller_api
+      SHIP_IDS_PATH: /var/lib/ship-simulator/ship-ids.json
+      POSITION_INTERVAL_SECONDS: "2"
+      CONTROL_POLL_INTERVAL_SECONDS: "2"
+      FLAG_1: ${FLAG_1:?Set FLAG_1 in .env}
+      FLAG_2: ${FLAG_2:?Set FLAG_2 in .env}
+    depends_on:
+      controller_api:
+        condition: service_healthy
+    volumes:
+      - ship_simulator_data:/var/lib/ship-simulator
+    networks:
+      - controller_internal
+    restart: unless-stopped
+
+  controller_plus_frontend:
+    build:
+      context: ./controller_plus_frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: https://api.ships.damoverflow.com/api
+        VITE_KEYCLOAK_URL: https://auth.ships.damoverflow.com
+        VITE_KEYCLOAK_REALM: controller-plus
+        VITE_KEYCLOAK_CLIENT_ID: controller-plus-ui
+    depends_on:
+      - keycloak
+      - controller_plus_api
+    restart: unless-stopped
+
+  reverse_proxy:
+    image: nginx:alpine
+    volumes:
+      - ./reverse-proxy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./reverse-proxy/dev.crt:/etc/nginx/certs/dev.crt:ro
+      - ./reverse-proxy/dev.key:/etc/nginx/certs/dev.key:ro
+    depends_on:
+      - keycloak
+      - controller_plus_api
+      - controller_plus_frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+
+volumes:
+  controller_data:
+  ship_simulator_data:
+
+networks:
+  controller_internal:
+    internal: true
